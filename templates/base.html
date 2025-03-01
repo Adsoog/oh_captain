@@ -1,0 +1,73 @@
+{% load static tailwind_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>{% block title %}Django Tailwind Sidebar{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% tailwind_css %}
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Boxicons (Regresamos a los antiguos íconos) -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css">
+</head>
+
+<body class="text-gray-900 font-[Poppins] bg-gray-100">
+    <div class="flex min-h-screen">
+
+        <!-- Sidebar -->
+        <nav class="fixed h-full w-52 bg-white shadow-lg p-4 flex flex-col transition-all duration-300">
+
+            <!-- Logo -->
+            <div class="mb-4 flex justify-center">
+                <img src="{% static 'logos/justo_new.svg' %}" alt="Logo" class="h-10 w-auto">
+            </div>
+
+            <!-- Separador -->
+            <hr class="border-gray-300 mb-4">
+
+            <!-- Menú de navegación con un solo elemento -->
+            <ul class="flex-1 space-y-2">
+                <!-- Menú desplegable -->
+                <li x-data="{ open: false }">
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-gray-700 hover:bg-gray-200 p-2 rounded-lg transition text-sm">
+                        <div class="flex items-center space-x-3">
+                            <i class="bx bx-folder text-lg text-indigo-600"></i>
+                            <span>Opciones</span>
+                        </div>
+                        <i :class="{'rotate-180': open}" class="bx bx-chevron-down text-lg transition-transform"></i>
+                    </button>
+
+                    <ul x-show="open" class="ml-5 mt-2 space-y-1">
+                        <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded-lg text-xs">Subopción 1</a></li>
+                        <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded-lg text-xs">Subopción 2</a></li>
+                        <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded-lg text-xs">Subopción 3</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Perfil del usuario -->
+            <div class="border-t pt-3">
+                <div class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition">
+                    <div>
+                        <p class="text-sm font-semibold text-gray-900">Juan Pérez</p>
+                        <p class="text-xs text-gray-600">juan.perez@email.com</p>
+                    </div>
+                </div>
+                <a href="#" class="flex items-center justify-start text-red-600 hover:bg-red-100 p-2 rounded-lg mt-2 transition text-sm space-x-2">
+                    <i class="bx bx-log-out text-xl"></i>
+                    <span>Cerrar sesión</span>
+                </a>
+            </div>
+        </nav>
+        <!-- Contenido principal -->
+        <main class="flex-1 p-6 ml-52 transition-all">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <!-- Alpine.js para los desplegables -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.3/cdn.min.js"></script>
+</body>
+</html>
