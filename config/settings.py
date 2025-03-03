@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'django_cotton',
     'widget_tweaks',
     # apps
+    'apps.accounts',
+    'apps.home',
 
 ]
 
@@ -42,7 +44,7 @@ NPM_BIN_PATH = which("npm") or which("npm.cmd")
 
 if not NPM_BIN_PATH:
     raise RuntimeError(
-        "No se encontró npm. Asegúrate de que Node.js está instalado y en el PATH."
+        "npm not found. Make sure Node.js is installed and in your PATH."
     )
 
 MIDDLEWARE = [
@@ -51,6 +53,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.LoginRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
@@ -114,11 +117,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-LOGIN_URL = 'login_view'
+LOGIN_URL = 'login'
 
 LOGIN_REDIRECT_URL = 'home'
 
-LOGOUT_REDIRECT_URL = 'login_view'
+LOGOUT_REDIRECT_URL = 'login'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -135,3 +138,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 ASGI_APPLICATION = "config.asgi.application"
+
+AUTH_USER_MODEL = 'accounts.CaptainUser'

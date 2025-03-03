@@ -52,20 +52,29 @@
                     </ul>
                 </li>
             </ul>
-
             <!-- Perfil del usuario -->
             <div class="border-t pt-3" x-show="expanded">
-                <div class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition">
-                    <div>
-                        <p class="text-sm font-semibold text-gray-900">Juan Pérez</p>
-                        <p class="text-xs text-gray-600">juan.perez@email.com</p>
+                {% if user.is_authenticated %}
+                    <div class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900">{{ user.get_full_name|default:user.username }}</p>
+                            <p class="text-xs text-gray-600">{{ user.email }}</p>
+                        </div>
                     </div>
-                </div>
-                <a href="#" class="flex items-center justify-start text-red-600 hover:bg-red-100 p-2 rounded-lg mt-2 transition text-sm space-x-2">
-                    <i class="bx bx-log-out text-xl"></i>
-                    <span x-show="expanded">Cerrar sesión</span>
-                </a>
-            </div>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="flex items-center justify-start text-red-600 hover:bg-red-100 p-2 rounded-lg mt-2 transition text-sm space-x-2">
+                            <i class="bx bx-log-out text-xl"></i>
+                            <span x-show="expanded">Cerrar sesión</span>
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="flex items-center justify-start text-blue-600 hover:bg-blue-100 p-2 rounded-lg mt-2 transition text-sm space-x-2">
+                        <i class="bx bx-log-in text-xl"></i>
+                        <span x-show="expanded">Iniciar sesión</span>
+                    </a>
+                {% endif %}
+            </div>            
         </nav>
 
         <!-- Contenido principal -->
