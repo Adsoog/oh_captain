@@ -1,4 +1,4 @@
-<nav x-data="{ expanded: true }"
+<nav x-data="{ expanded: true, openItem1: false, openItem2: false }"
      :style="{ width: expanded ? '13rem' : '5rem' }"
      class="fixed h-full bg-white shadow-lg p-4 flex flex-col transition-all duration-300">
 
@@ -21,43 +21,21 @@
 
     <!-- Menú de navegación -->
     <ul class="flex-1 space-y-2">
-        <!-- Bloque "Solicitudes" -->
-        <div :class="expanded
-            ? 'flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-all duration-300'
-            : 'flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 transition-all duration-300'">
-            <i class="bx bx-folder text-2xl text-indigo-600"></i>
-            <!-- Contenedor del texto con ancho fijo en modo expandido -->
-            <div class="transition-all duration-300 overflow-hidden whitespace-nowrap"
-                 :style="expanded
-                    ? 'opacity: 1; margin-left: 0.5rem; width: 12rem;'
-                    : 'opacity: 0; margin-left: 0; width: 0;'">
-                <p class="text-sm font-semibold text-gray-900">Solicitudes</p>
-            </div>
-            <!-- Icono para indicar más opciones, solo en modo expandido -->
-            <template x-if="expanded">
-                <i class="bx bx-chevron-down text-lg text-gray-500"></i>
-            </template>
-        </div>
+        <!-- Bloque "Solicitudes" con desplegable -->
+        <c-sidebar.item item="openItem1" name="Solicitudes">
+            <c-sidebar.sub_item sub_item="Gola"></c-sidebar.sub_item>
+            <c-sidebar.sub_item sub_item="Gola"></c-sidebar.sub_item>
+            <c-sidebar.sub_item sub_item="Gola"></c-sidebar.sub_item>
+        </c-sidebar.item>
 
-        <!-- Bloque "Proformas" -->
-        <div :class="expanded
-            ? 'flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-all duration-300'
-            : 'flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 transition-all duration-300'">
-            <i class="bx bx-folder text-2xl text-indigo-600"></i>
-            <!-- Contenedor del texto con ancho fijo en modo expandido -->
-            <div class="transition-all duration-300 overflow-hidden whitespace-nowrap"
-                 :style="expanded
-                    ? 'opacity: 1; margin-left: 0.5rem; width: 12rem;'
-                    : 'opacity: 0; margin-left: 0; width: 0;'">
-                <p class="text-sm font-semibold text-gray-900">Proformas</p>
-            </div>
-            <!-- Icono para indicar más opciones, solo en modo expandido -->
-            <template x-if="expanded">
-                <i class="bx bx-chevron-down text-lg text-gray-500"></i>
-            </template>
-        </div>
+        <!-- Bloque "Proformas" con desplegable -->
+        <c-sidebar.item item="openItem2" name="Proformas">
+            <c-sidebar.sub_item sub_item="Proformas"></c-sidebar.sub_item>
+            <c-sidebar.sub_item sub_item="Clientes"></c-sidebar.sub_item>
+            <c-sidebar.sub_item sub_item="Tabla de costos"></c-sidebar.sub_item>
+        </c-sidebar.item>
     </ul>
-    
+
 
 
     <!-- Perfil del usuario -->
