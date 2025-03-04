@@ -39,7 +39,7 @@ class Area(models.Model):
 
 class Department(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    area = models.ForeignKey(Area, on_delete=models.CASCADE, related_name="departments")
+    area = models.ForeignKey(Area, on_delete=models.SET_NULL, null=True, blank=True)
     cod = models.CharField(max_length=100, unique=True)
 
     def __str__(self):

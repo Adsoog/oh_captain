@@ -1,7 +1,7 @@
 <div @click="{{ item }} = !{{ item }}"
      class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 transition-all duration-300 cursor-pointer">
     <div class="flex items-center space-x-2 flex-grow">
-        <i class="bx bx-folder text-2xl text-indigo-600"></i>
+        <i class="bx {{ icon }} text-2xl text-indigo-600"></i>
         <div class="flex-grow transition-all duration-300 overflow-hidden whitespace-nowrap"
              :style="expanded ? 'opacity: 1; margin-left: 0.5rem; width: auto;' : 'opacity: 0; margin-left: 0; width: 0;'">
             <p class="text-sm font-semibold text-gray-900">{{ name }}</p>

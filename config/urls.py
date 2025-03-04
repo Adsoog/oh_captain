@@ -7,8 +7,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
     path('core/', include('core.urls')),
-    path('account/', include('apps.accounts.urls')),
+    # apps urls
     path('', include('apps.home.urls')),
+    path('rrhh/', include('apps.rrhh.urls')),    
+    path('account/', include('apps.accounts.urls')),
+    path('requests/', include('apps.requests.urls')),
 ]
 
 if settings.DEBUG:

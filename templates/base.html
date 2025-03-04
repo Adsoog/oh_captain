@@ -2,31 +2,55 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <title>{% block title %}Django Tailwind Sidebar{% endblock %}</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        {% tailwind_css %}
-        <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-        <!-- Boxicons (Regresamos a los antiguos íconos) -->
-        <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css">
-    </head>
+  <head>
+    <title>{% block title %}Django Tailwind Sidebar{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% tailwind_css %}
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    >
+    <!-- Boxicons -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
+    >
+  </head>
 
-    <body class="text-gray-900 font-[Poppins] bg-gray-100">
-        <div class="flex min-h-screen" x-data="{ expanded: true }">
+  <body class="text-gray-900 font-[Poppins] bg-gray-100">
+      <!--
+        x-data global para que "expanded" y demás estados
+        estén disponibles en el sidebar y el main.
+      -->
+      <div class="flex min-h-screen" x-data="{
+          expanded: true,
+          openItem1: false,
+          openItem2: false,
+          openItem3: false,
+          openItem4: false,
+          openItem5: false,
+        }"
+      >
+        <!-- Sidebar -->
+        {% include 'base/sidebar.html' %}
 
-            <!-- Sidebar -->
-            {% include 'base/sidebar.html' %}
+        <!-- Contenido principal -->
+        <!--
+          Ajustamos la clase según expanded para moverlo
+          a la derecha (ml-52 o ml-20, por ejemplo).
+        -->
+        <main
+          class="flex-1 px-4 py-1 transition-all duration-300"
+          :class="expanded ? 'ml-52' : 'ml-20'"
+        >
+          {% block content %}{% endblock %}
+        </main>
+      </div>
 
-            <!-- Contenido principal -->
-            <main class="flex-1 p-6 transition-all" :class="expanded ? 'ml-52' : 'ml-20'">
-                {% block content %}{% endblock %}
-            </main>
-        </div>
-
-        <!-- Alpine.js para interactividad -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.3/cdn.min.js"></script>
+      <!-- Alpine.js para interactividad -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.3/cdn.min.js"></script>
     </body>
-</html>
+  </html>

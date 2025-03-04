@@ -1,3 +1,6 @@
-<li class="p-2 rounded-lg hover:bg-gray-200 transition-all duration-300">
-    <a href="#">{{ sub_item }}</a>
+<li class="p-2 rounded-lg hover:bg-gray-200 transition-all duration-300 flex items-center space-x-2">
+    <!-- Ícono a la izquierda -->
+    <i class="bx bx-chevron-right text-gray-600"></i>
+    <!-- Enlace del submenú con texto pequeño -->
+    <a href="{{ sub_item_url }}" class="text-sm">{{ sub_item }}</a>
 </li>

@@ -28,9 +28,12 @@ INSTALLED_APPS = [
     'easyaudit',
     'django_cotton',
     'widget_tweaks',
+    'mptt',
     # apps
-    'apps.accounts',
     'apps.home',
+    'apps.rrhh',
+    'apps.accounts',
+    'apps.requests',
 
 ]
 

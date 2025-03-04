@@ -1,82 +1,117 @@
-<nav x-data="{ expanded: true, openItem1: false, openItem2: false }"
-     :style="{ width: expanded ? '13rem' : '5rem' }"
-     class="fixed h-full bg-white shadow-lg p-4 flex flex-col transition-all duration-300">
+<!--
+  NOTA: Quitamos x-data aquí,
+  pues ya lo tenemos en el contenedor padre.
+-->
+<nav
+  :style="{ width: expanded ? '13rem' : '5rem' }"
+  class="fixed h-full bg-white shadow-lg p-4 flex flex-col transition-all duration-300"
+>
 
-    <!-- Logo Section -->
-    <div class="mb-4 flex justify-center">
-        <img
-            :src="expanded ? '{{ primary_logo }}' : '{{ secondary_logo }}'"
-            alt="Logo"
-            class="h-10 w-auto transition-all duration-300">
-    </div>
+  <!-- Logo Section -->
+  <div class="mb-4 flex justify-center">
+    <img
+      :src="expanded ? '{{ primary_logo }}' : '{{ secondary_logo }}'"
+      alt="Logo"
+      class="h-10 w-auto transition-all duration-300"
+    >
+  </div>
 
-    <!-- Separador (siempre visible) -->
-    <hr class="border-gray-300 mb-4">
+  <!-- Separador (siempre visible) -->
+  <hr class="border-gray-300 mb-4">
 
-    <!-- Botón de alternar sidebar -->
-    <button @click="expanded = !expanded"
-            class="mb-4 flex items-center justify-center p-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition-all duration-300">
-        <i class="bx" :class="expanded ? 'bx-chevron-left' : 'bx-chevron-right'"></i>
-    </button>
+  <!-- Botón de alternar sidebar -->
+  <button
+    @click="expanded = !expanded"
+    class="mb-4 flex items-center justify-center p-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition-all duration-300"
+  >
+    <i class="bx" :class="expanded ? 'bx-chevron-left' : 'bx-chevron-right'"></i>
+  </button>
 
-    <!-- Menú de navegación -->
-    <ul class="flex-1 space-y-2">
-        <!-- Bloque "Solicitudes" con desplegable -->
-        <c-sidebar.item item="openItem1" name="Solicitudes">
-            <c-sidebar.sub_item sub_item="Gola"></c-sidebar.sub_item>
-            <c-sidebar.sub_item sub_item="Gola"></c-sidebar.sub_item>
-            <c-sidebar.sub_item sub_item="Gola"></c-sidebar.sub_item>
-        </c-sidebar.item>
+  <!-- Contenido principal del menú con scroll -->
+  <div class="flex-1 overflow-y-auto">
+    <ul class="space-y-2">
+      <!-- Bloque "Solicitudes" con desplegable -->
+      <c-sidebar.item item="openItem1" icon="bx-receipt" name="Solicitudes">
+        <c-sidebar.sub_item sub_item_url="{% url 'requests_list' %}" sub_item="Mis solicitudes"></c-sidebar.sub_item>
+      </c-sidebar.item>
 
-        <!-- Bloque "Proformas" con desplegable -->
-        <c-sidebar.item item="openItem2" name="Proformas">
-            <c-sidebar.sub_item sub_item="Proformas"></c-sidebar.sub_item>
-            <c-sidebar.sub_item sub_item="Clientes"></c-sidebar.sub_item>
-            <c-sidebar.sub_item sub_item="Tabla de costos"></c-sidebar.sub_item>
-        </c-sidebar.item>
+      <!-- Bloque "Comercial" con desplegable -->
+      <c-sidebar.item item="openItem2" icon="bx-credit-card-alt" name="Comercial">
+        <c-sidebar.sub_item sub_item="Proformas"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item="Clientes"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item="Tabla de costos"></c-sidebar.sub_item>
+      </c-sidebar.item>
+
+      <!-- Bloque "RRHH" con desplegable -->
+      <c-sidebar.item item="openItem3" icon="bx-book-heart" name="RRHH">
+        <c-sidebar.sub_item sub_item="Proformas"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item="Clientes"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item="Tabla de costos"></c-sidebar.sub_item>
+      </c-sidebar.item>
+
+      <!-- Bloque "Almacen" con desplegable -->
+      <c-sidebar.item item="openItem4" icon="bx-book-heart" name="Almacen">
+        <c-sidebar.sub_item sub_item="Proformas"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item="Clientes"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item="Tabla de costos"></c-sidebar.sub_item>
+      </c-sidebar.item>
+
+      <!-- Bloque "Planeamiento" con desplegable -->
+      <c-sidebar.item item="openItem5" icon="bx-book-heart" name="Planeamiento">
+        <c-sidebar.sub_item sub_item_url="{% url 'requests_list' %}" sub_item="Proformas"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item="Clientes"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item="Tabla de costos"></c-sidebar.sub_item>
+      </c-sidebar.item>
     </ul>
+  </div>
 
-
-
-    <!-- Perfil del usuario -->
-    <div class="border-t pt-3">
-        {% if user.is_authenticated %}
-        <div :class="expanded
-? 'flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-all duration-300'
-             : 'flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 transition-all duration-300'">
-            <i class="bx bx-user-circle text-2xl text-gray-700"></i>
-            <div class="transition-all duration-300 overflow-hidden whitespace-nowrap"
-                 :style="expanded ? 'opacity: 1; margin-left: 0.5rem; max-width: 12rem;' : 'opacity: 0; margin-left: 0; max-width: 0;'">
-                <p class="text-sm font-semibold text-gray-900">{{ user.get_full_name|default:user.username }}</p>
-                <p class="text-xs text-gray-600">{{ user.email }}</p>
-            </div>
+  <!-- Perfil del usuario -->
+  <div class="border-t pt-3">
+    {% if user.is_authenticated %}
+      <div :class="expanded
+        ? 'flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-all duration-300'
+        : 'flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 transition-all duration-300'"
+      >
+        <i class="bx bx-user-circle text-2xl text-gray-700"></i>
+        <div
+          class="transition-all duration-300 overflow-hidden whitespace-nowrap"
+          :style="expanded ? 'opacity: 1; margin-left: 0.5rem; max-width: 12rem;' : 'opacity: 0; margin-left: 0; max-width: 0;'"
+        >
+          <p class="text-sm font-semibold text-gray-900">{{ user.get_full_name|default:user.username }}</p>
+          <p class="text-xs text-gray-600">{{ user.email }}</p>
         </div>
-        <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit"
-                    :class="expanded
-? 'flex items-center text-red-600 hover:bg-red-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'
-                    : 'flex items-center justify-center text-red-600 hover:bg-red-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'">
-                <i class="bx bx-log-out text-xl"></i>
-                <span
-                    class="transition-all duration-300 overflow-hidden whitespace-nowrap"
-                    :style="expanded ? 'opacity: 1; margin-left: 0.5rem; max-width: 8rem;' : 'opacity: 0; margin-left: 0; max-width: 0;'">
-                    Cerrar sesión
-                </span>
-            </button>
-        </form>
-        {% else %}
-        <a href="{% url 'login' %}"
-           :class="expanded
-? 'flex items-center text-blue-600 hover:bg-blue-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'
-           : 'flex items-center justify-center text-blue-600 hover:bg-blue-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'">
-            <i class="bx bx-log-in text-xl"></i>
-            <span
-                class="transition-all duration-300 overflow-hidden whitespace-nowrap"
-                :style="expanded ? 'opacity: 1; margin-left: 0.5rem; max-width: 8rem;' : 'opacity: 0; margin-left: 0; max-width: 0;'">
-                Iniciar sesión
-            </span>
-        </a>
-        {% endif %}
-    </div>
+      </div>
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit"
+          :class="expanded
+            ? 'flex items-center text-red-600 hover:bg-red-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'
+            : 'flex items-center justify-center text-red-600 hover:bg-red-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'"
+        >
+          <i class="bx bx-log-out text-xl"></i>
+          <span
+            class="transition-all duration-300 overflow-hidden whitespace-nowrap"
+            :style="expanded ? 'opacity: 1; margin-left: 0.5rem; max-width: 8rem;' : 'opacity: 0; margin-left: 0; max-width: 0;'"
+          >
+            Cerrar sesión
+          </span>
+        </button>
+      </form>
+    {% else %}
+      <a
+        href="{% url 'login' %}"
+        :class="expanded
+          ? 'flex items-center text-blue-600 hover:bg-blue-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'
+          : 'flex items-center justify-center text-blue-600 hover:bg-blue-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'"
+      >
+        <i class="bx bx-log-in text-xl"></i>
+        <span
+          class="transition-all duration-300 overflow-hidden whitespace-nowrap"
+          :style="expanded ? 'opacity: 1; margin-left: 0.5rem; max-width: 8rem;' : 'opacity: 0; margin-left: 0; max-width: 0;'"
+        >
+          Iniciar sesión
+        </span>
+      </a>
+    {% endif %}
+  </div>
 </nav>
