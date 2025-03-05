@@ -33,7 +33,8 @@ INSTALLED_APPS = [
     'apps.home',
     'apps.rrhh',
     'apps.accounts',
-    'apps.requests',
+    'apps.commercial',
+    'apps.solicitations',
 
 ]
 

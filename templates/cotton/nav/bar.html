@@ -1,0 +1,19 @@
+{% load static %}
+<div class="flex items-center justify-between bg-gray-100 text-gray-800 py-4 px-6 rounded-t-lg border-t border-gray-200 shadow-lg mb-6">
+    <!-- Botón de regreso -->
+    <a href=""
+       class="text-gray-800 text-4xl hover:text-gray-600 transition flex items-center animate-bounce"
+       title="Regresar">
+        <i class="bx bxs-chevrons-left"></i>
+    </a>
+
+    <!-- Contenedor flexible para centrar el título -->
+    <div class="flex-1 flex justify-center">
+        <h1 class="text-xl font-bold">{{ name }}</h1>
+    </div>
+
+    <!-- Botones adicionales -->
+    <div class="flex space-x-4">
+        {{ slot }}
+    </div>
+</div>

@@ -8,7 +8,7 @@ class Employee(MPTTModel):  # Cambio a MPTTModel
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="employee_profile",
+        related_name="employee",
         verbose_name="Usuario"
     )
 
@@ -19,13 +19,7 @@ class Employee(MPTTModel):  # Cambio a MPTTModel
     maternal_surname = models.CharField("Apellido materno", max_length=50, blank=True, null=True)
     dni = models.CharField("DNI", max_length=20, unique=True)
     date_of_birth = models.DateField("Fecha de nacimiento", blank=True, null=True)
-    gender = models.CharField(
-        "Género",
-        max_length=10,
-        choices=[('M', 'Masculino'), ('F', 'Femenino'), ('O', 'Otro')],
-        blank=True,
-        null=True
-    )
+    gender = models.CharField("Género",max_length=10,choices=[('M', 'Masculino'), ('F', 'Femenino'), ('O', 'Otro')], blank=True, null=True)
     blood_type = models.CharField("Tipo de sangre", max_length=3, blank=True, null=True)
     controlled = models.BooleanField("Controlado", default=False, help_text="¿Cuenta con registro de control sanitario?")
     marital_status = models.CharField(
@@ -40,8 +34,8 @@ class Employee(MPTTModel):  # Cambio a MPTTModel
     emergency_contact = models.CharField("Contacto de emergencia", max_length=100, blank=True, null=True)
 
     # Datos laborales
-    position = models.CharField(max_length=70, null=True, blank=True)
-    headquarters = models.CharField(max_length=50, null=True, blank=True)
+    position = models.CharField("Cargo", max_length=70, null=True, blank=True)
+    headquarters = models.CharField("Sede", max_length=50, null=True, blank=True)
     hire_date = models.DateField("Fecha de contratación", blank=True, null=True)
     job_title = models.CharField("Cargo", max_length=100, blank=True, null=True)
     salary = models.DecimalField("Salario", max_digits=10, decimal_places=2, blank=True, null=True)
@@ -52,7 +46,6 @@ class Employee(MPTTModel):  # Cambio a MPTTModel
         blank=True,
         null=True
     )
-
     parent = TreeForeignKey(
         'self',
         on_delete=models.SET_NULL,
@@ -61,7 +54,6 @@ class Employee(MPTTModel):  # Cambio a MPTTModel
         related_name='children',  # o 'subordinates', como prefieras
         verbose_name='Padre'
     )
-
     profession = models.CharField("Profesión", max_length=100, blank=True, null=True)
 
     # Relaciones con otras entidades

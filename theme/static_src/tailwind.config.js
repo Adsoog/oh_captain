@@ -42,8 +42,16 @@ module.exports = {
         // '../../**/*.py'
     ],
     theme: {
-        extend: {},
-    },
+        extend: {
+          fontFamily: {
+            'opensans': ['"Open Sans"', 'sans-serif'],
+            'nunito': ['Nunito', 'sans-serif'],
+            'montserrat': ['Montserrat', 'sans-serif'],
+            press: ['"Press Start 2P"', 'cursive'],
+            // Agrega las que desees
+          },
+        },
+      },
     plugins: [
         /**
          * '@tailwindcss/forms' is the forms plugin that provides a minimal styling

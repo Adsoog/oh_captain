@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="w-full">
+    <c-nav.bar name="Mis solicitudes">
+      <c-btn.create url="auto_solicitation_create" title="Mi solicitud"></c-btn.create>
+    </c-nav.bar>
+
+    <h1>Detalle de Solicitud</h1>
+
+    <!-- Formulario de Solicitud -->
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    </form>
+
+    <h2>Detalles de la solicitud:</h2>
+    <p><strong>Correlativo:</strong> {{ solicitation.correlative }}</p>
+    <p><strong>Razón:</strong> {{ solicitation.reason }}</p>
+    <p><strong>Estado:</strong> {{ solicitation.get_status_display }}</p>
+    <!-- Muestra cualquier otro detalle que quieras aquí -->
+  </div>
+{% endblock %}

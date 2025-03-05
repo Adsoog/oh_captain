@@ -31,7 +31,7 @@ class SiteConfig(models.Model):
 ### 📌 Organizational structure
 class Area(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    cod = models.CharField(max_length=100, unique=True)
+    cod = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
@@ -43,7 +43,7 @@ class Department(models.Model):
     cod = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
-        return f"{self.name} ({self.area.name})"
+        return f"{self.name} ({self.area.name if self.area else 'Sin área'})"
 
 
 class Period(models.Model):

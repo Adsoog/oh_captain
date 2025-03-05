@@ -3,7 +3,14 @@ from django.conf import settings
 from core.models import Area, Period, Department
 
 
-class Request(models.Model):
+class Solicitation(models.Model):
+    class SolicitationType(models.TextChoices):
+        EXIT_TICKET = 'exit_ticket', 'Papeleta de salida'
+        EXPENSES = 'expenses', 'Entregas por rendir'
+        PETTY_CASH = 'petty_cash', 'Caja chica'
+        MOBILITY_SHEET = 'mobility_sheet', 'Planilla de movilidad'
+        PERDIEM_REQUEST = 'perdiem_request', 'Solicitud de viáticos'
+
     STATUS_CHOICES = [
         ('draft', 'Borrador'),
         ('created', 'Creada'),
@@ -22,10 +29,14 @@ class Request(models.Model):
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='draft')
     oti = models.CharField(max_length=50, null=True, blank=True)
     client = models.CharField(max_length=50, null=True, blank=True)
+    solicitation_type = models.CharField(max_length=50, choices=SolicitationType.choices, default=SolicitationType.PERDIEM_REQUEST)
+
+    def __str__(self):
+        return f"{self.get_solicitation_type_display()} - {self.correlative}"
 
 
-class RequestAdvance(models.Model):
-    request = models.ForeignKey(Request, related_name='advances', on_delete=models.CASCADE)
+class SolicitationAdvance(models.Model):
+    solicitation = models.ForeignKey(Solicitation, related_name='advances', on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     deposit_date = models.DateField()
     comments = models.TextField(blank=True, null=True)
@@ -37,21 +48,21 @@ class RequestAdvance(models.Model):
         verbose_name_plural = "Abonos"
 
 
-class RequestApprovals(models.Model):
+class SolicitationApprovals(models.Model):
     APPROVAL_TYPES = [
         ('employee', 'Empleado'),
         ('manager', 'Gerente'),
         ('rrhh', 'Recursos Humanos'),
         ('finance', 'Finanzas'),
     ]
-    request = models.ForeignKey(Request, related_name='approvals', on_delete=models.CASCADE)
+    solicitation = models.ForeignKey(Solicitation, related_name='approvals', on_delete=models.CASCADE)
     approval_type = models.CharField(max_length=30, choices=APPROVAL_TYPES)
     approved_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     approved_at = models.DateTimeField(auto_now_add=True)
     comment = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.request.correlative} - {self.get_approval_type_display()} by {self.approved_by}"
+        return f"{self.solicitation.correlative} - {self.get_approval_type_display()} by {self.approved_by}"
 
     class Meta:
         verbose_name = "Aprobación de solicitud"

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="w-full">
+    <c-nav.basic name="Mis empleados"></c-nav.basic>
+
+    {% if employees %}
+      <table class="table-auto w-full border-collapse border border-gray-300">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="border border-gray-400 px-4 py-2">#</th> <!-- Nueva columna -->
+            <th class="border border-gray-400 px-4 py-2">DNI</th>
+            <th class="border border-gray-400 px-4 py-2">Nombre Completo</th>
+            <th class="border border-gray-400 px-4 py-2">Cargo</th>
+            <th class="border border-gray-400 px-4 py-2">Área</th>
+            <th class="border border-gray-400 px-4 py-2">Departamento</th>
+            <th class="border border-gray-400 px-4 py-2">Sede</th>
+            <th class="border border-gray-400 px-4 py-2">Usuario</th>
+            <th class="border border-gray-400 px-4 py-2">Grupos</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for employee in employees %}
+            <tr class="hover:bg-gray-100">
+              <td class="border border-gray-400 px-4 py-2">{{ forloop.counter }}</td> <!-- Número automático -->
+              <td class="border border-gray-400 px-4 py-2">{{ employee.dni }}</td>
+              <td class="border border-gray-400 px-4 py-2">
+                {{ employee.first_name }} {{ employee.second_name }} {{ employee.paternal_surname }} {{ employee.maternal_surname }}
+              </td>
+              <td class="border border-gray-400 px-4 py-2">{{ employee.position }}</td>
+              <td class="border border-gray-400 px-4 py-2">{{ employee.area.name|default:"Sin área" }}</td>
+              <td class="border border-gray-400 px-4 py-2">{{ employee.department.name|default:"Sin departamento" }}</td>
+              <td class="border border-gray-400 px-4 py-2">{{ employee.headquarters }}</td>
+              <td class="border border-gray-400 px-4 py-2">{{ employee.user.username }}</td>
+              <td class="border border-gray-400 px-4 py-2">
+                {% for group in employee.user.groups.all %}
+                  <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded-md">{{ group.name }}</span>
+                {% empty %}
+                  <span class="text-gray-500">Sin grupos</span>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="text-gray-500">No se encontraron empleados.</p>
+      {% endif %}
+    </div>
+  {% endblock %}
+  

@@ -1,19 +1,8 @@
-<!--
-  NOTA: Quitamos x-data aquí,
-  pues ya lo tenemos en el contenedor padre.
--->
-<nav
-  :style="{ width: expanded ? '13rem' : '5rem' }"
-  class="fixed h-full bg-white shadow-lg p-4 flex flex-col transition-all duration-300"
->
+<nav :style="{ width: expanded ? '13rem' : '5rem' }" class="fixed h-full bg-white shadow-lg p-4 flex flex-col transition-all duration-300">
 
   <!-- Logo Section -->
   <div class="mb-4 flex justify-center">
-    <img
-      :src="expanded ? '{{ primary_logo }}' : '{{ secondary_logo }}'"
-      alt="Logo"
-      class="h-10 w-auto transition-all duration-300"
-    >
+    <img :src="expanded ? '{{ primary_logo }}' : '{{ secondary_logo }}'" alt="Logo" class="h-10 w-auto transition-all duration-300">
   </div>
 
   <!-- Separador (siempre visible) -->
@@ -21,18 +10,19 @@
 
   <!-- Botón de alternar sidebar -->
   <button
-    @click="expanded = !expanded"
+    @click="expanded = !expanded; localStorage.setItem('sidebarExpanded', expanded)"
     class="mb-4 flex items-center justify-center p-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition-all duration-300"
   >
     <i class="bx" :class="expanded ? 'bx-chevron-left' : 'bx-chevron-right'"></i>
   </button>
+
 
   <!-- Contenido principal del menú con scroll -->
   <div class="flex-1 overflow-y-auto">
     <ul class="space-y-2">
       <!-- Bloque "Solicitudes" con desplegable -->
       <c-sidebar.item item="openItem1" icon="bx-receipt" name="Solicitudes">
-        <c-sidebar.sub_item sub_item_url="{% url 'requests_list' %}" sub_item="Mis solicitudes"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item_url="{% url 'solicitations_list' %}" sub_item="Mis solicitudes"></c-sidebar.sub_item>
       </c-sidebar.item>
 
       <!-- Bloque "Comercial" con desplegable -->
@@ -44,9 +34,7 @@
 
       <!-- Bloque "RRHH" con desplegable -->
       <c-sidebar.item item="openItem3" icon="bx-book-heart" name="RRHH">
-        <c-sidebar.sub_item sub_item="Proformas"></c-sidebar.sub_item>
-        <c-sidebar.sub_item sub_item="Clientes"></c-sidebar.sub_item>
-        <c-sidebar.sub_item sub_item="Tabla de costos"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item_url="{% url 'employees_list' %}" sub_item="Empleados"></c-sidebar.sub_item>
       </c-sidebar.item>
 
       <!-- Bloque "Almacen" con desplegable -->
@@ -58,7 +46,7 @@
 
       <!-- Bloque "Planeamiento" con desplegable -->
       <c-sidebar.item item="openItem5" icon="bx-book-heart" name="Planeamiento">
-        <c-sidebar.sub_item sub_item_url="{% url 'requests_list' %}" sub_item="Proformas"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item_url="{% url 'solicitations_list' %}" sub_item="Proformas"></c-sidebar.sub_item>
         <c-sidebar.sub_item sub_item="Clientes"></c-sidebar.sub_item>
         <c-sidebar.sub_item sub_item="Tabla de costos"></c-sidebar.sub_item>
       </c-sidebar.item>

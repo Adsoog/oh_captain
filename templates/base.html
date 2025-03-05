@@ -7,50 +7,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     {% tailwind_css %}
+
     <!-- Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-      rel="stylesheet"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <!-- Boxicons -->
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
-    >
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css">
+
+    <!-- Turbo.js para navegación sin recarga -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@latest/dist/turbo.es2017-esm.min.js"></script>
+
+    <!-- Alpine.js y plugin collapse (opcional) -->
+    <!-- El "defer" se recomienda para que Alpine cargue después del DOM -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Estilos para ocultar elementos con x-cloak hasta que Alpine inicialice -->
+    <style>
+      [x-cloak] {
+        display: none;
+      }
+    </style>
   </head>
 
-  <body class="text-gray-900 font-[Poppins] bg-gray-100">
-      <!--
-        x-data global para que "expanded" y demás estados
-        estén disponibles en el sidebar y el main.
-      -->
-      <div class="flex min-h-screen" x-data="{
-          expanded: true,
-          openItem1: false,
-          openItem2: false,
-          openItem3: false,
-          openItem4: false,
-          openItem5: false,
-        }"
+  <body class="text-gray-900 font-nunito bg-gray-100">
+    <!-- Contenedor principal con x-data y x-cloak -->
+    <div
+      class="flex min-h-screen"
+      x-data="{
+        expanded: true,
+        openItem1: false,
+        openItem2: false,
+        openItem3: false,
+        openItem4: false,
+        openItem5: false,
+
+        // Carga el estado inicial del sidebar
+        loadSidebarState() {
+          let sidebarState = localStorage.getItem('sidebarExpanded');
+          if (sidebarState !== null) {
+            this.expanded = (sidebarState === 'true');
+          }
+        },
+        // Cambia el estado expandido y lo guarda
+        toggleSidebar() {
+          this.expanded = !this.expanded;
+          localStorage.setItem('sidebarExpanded', this.expanded);
+        },
+        // Abre/cierra un item en particular y lo guarda
+        toggleItem(item) {
+          this[item] = !this[item];
+          localStorage.setItem(item, this[item]);
+        }
+      }"
+      x-init="loadSidebarState()"
+      @turbo:load="loadSidebarState()"
+      x-cloak
+    >
+      <!-- Sidebar -->
+      {% include 'base/sidebar.html' %}
+
+      <!-- Contenido principal -->
+      <main
+        class="flex-1 px-3 py-1 transition-all duration-300"
+        :class="expanded ? 'ml-52' : 'ml-20'"
       >
-        <!-- Sidebar -->
-        {% include 'base/sidebar.html' %}
-
-        <!-- Contenido principal -->
-        <!--
-          Ajustamos la clase según expanded para moverlo
-          a la derecha (ml-52 o ml-20, por ejemplo).
-        -->
-        <main
-          class="flex-1 px-4 py-1 transition-all duration-300"
-          :class="expanded ? 'ml-52' : 'ml-20'"
-        >
+        <turbo-frame id="main-content">
           {% block content %}{% endblock %}
-        </main>
-      </div>
+        </turbo-frame>
+      </main>
 
-      <!-- Alpine.js para interactividad -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.3/cdn.min.js"></script>
-    </body>
-  </html>
+    </div>
+
+    <!-- Script para manejar la navegación de Turbo.js -->
+    <script>
+      document.addEventListener("turbo:before-fetch-request", function(event) {
+        let turboFrame = event.target;
+        if (turboFrame.id === "main-content") {
+          history.pushState({}, "", event.detail.fetchOptions.url);
+        }
+      });
+
+      window.addEventListener("popstate", function(event) {
+        Turbo.visit(location.href);
+      });
+    </script>
+
+  </body>
+</html>
