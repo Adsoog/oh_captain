@@ -27,28 +27,23 @@
 
       <!-- Bloque "Comercial" con desplegable -->
       <c-sidebar.item item="openItem2" icon="bx-credit-card-alt" name="Comercial">
-        <c-sidebar.sub_item sub_item="Proformas"></c-sidebar.sub_item>
-        <c-sidebar.sub_item sub_item="Clientes"></c-sidebar.sub_item>
-        <c-sidebar.sub_item sub_item="Tabla de costos"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item_url="{% url 'clients_list' %}" sub_item="Clientes"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item_url="{% url 'instruments_list' %}" sub_item="Instrumentos"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item_url="{% url 'class_instruments_list' %}" sub_item="Instrumentos"></c-sidebar.sub_item>
       </c-sidebar.item>
 
       <!-- Bloque "RRHH" con desplegable -->
       <c-sidebar.item item="openItem3" icon="bx-book-heart" name="RRHH">
         <c-sidebar.sub_item sub_item_url="{% url 'employees_list' %}" sub_item="Empleados"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item_url="{% url 'employee_hierarchy' %}" sub_item="Jerarquia"></c-sidebar.sub_item>
       </c-sidebar.item>
 
       <!-- Bloque "Almacen" con desplegable -->
       <c-sidebar.item item="openItem4" icon="bx-book-heart" name="Almacen">
-        <c-sidebar.sub_item sub_item="Proformas"></c-sidebar.sub_item>
-        <c-sidebar.sub_item sub_item="Clientes"></c-sidebar.sub_item>
-        <c-sidebar.sub_item sub_item="Tabla de costos"></c-sidebar.sub_item>
       </c-sidebar.item>
 
       <!-- Bloque "Planeamiento" con desplegable -->
       <c-sidebar.item item="openItem5" icon="bx-book-heart" name="Planeamiento">
-        <c-sidebar.sub_item sub_item_url="{% url 'solicitations_list' %}" sub_item="Proformas"></c-sidebar.sub_item>
-        <c-sidebar.sub_item sub_item="Clientes"></c-sidebar.sub_item>
-        <c-sidebar.sub_item sub_item="Tabla de costos"></c-sidebar.sub_item>
       </c-sidebar.item>
     </ul>
   </div>

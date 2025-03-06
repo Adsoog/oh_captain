@@ -1,3 +1,6 @@
+from django.conf import settings
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 ### 📌 General system settings
@@ -51,3 +54,26 @@ class Period(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     is_active = models.BooleanField(default=True)
+
+
+### 📌 Organizational structure
+class Comment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    title = models.CharField(max_length=255, blank=True, null=True)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    attachment = models.FileField(upload_to="comentarios_adjuntos/", blank=True, null=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user.first_name} - {self.content_type} (ID {self.object_id})"
+
+    def get_related_object(self):
+        """Devuelve el objeto al que pertenece el comentario."""
+        return self.content_object

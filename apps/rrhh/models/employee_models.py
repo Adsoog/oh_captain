@@ -51,7 +51,7 @@ class Employee(MPTTModel):  # Cambio a MPTTModel
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='children',  # o 'subordinates', como prefieras
+        related_name='children',
         verbose_name='Padre'
     )
     profession = models.CharField("Profesión", max_length=100, blank=True, null=True)

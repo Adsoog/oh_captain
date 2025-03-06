@@ -1,4 +1,7 @@
+from django.conf import settings
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from core.models import Comment
 
 
 class Client(models.Model):
@@ -18,6 +21,10 @@ class Client(models.Model):
     foreign_trade = models.CharField(max_length=50, blank=True, null=True)
     company_type = models.CharField(max_length=100, blank=True, null=True)
     payment_method = models.CharField(max_length=50, default="Contado", choices=[('contado', 'Al contado'), ('credito', 'Credito')])
+    comments = GenericRelation(Comment)
+
+    def get_comments(self):
+        return self.comments.all()
 
     def __str__(self):
         return f"{self.business_name} - {self.status}"
@@ -25,11 +32,19 @@ class Client(models.Model):
 
 class Branch(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name="branches")
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, default="Sucursal")
     address = models.TextField()
+    ubigeo = models.CharField(max_length=10, blank=True, null=True)
     department = models.CharField(max_length=100, blank=True, null=True)
+    province = models.CharField(max_length=100, blank=True, null=True)
+    district = models.CharField(max_length=100, blank=True, null=True)
     is_headquarters = models.BooleanField(default=False)
-    sales_advisor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to={'groups__name': 'COMERCIAL'})
+    sales_advisor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        limit_choices_to={'groups__name': 'COMERCIAL'}
+    )
 
     def __str__(self):
         return f"{self.name} ({self.client.business_name})"

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<c-nav.basic name="{{ client.business_name }}" url="client_create" buttonname="Algun boton extra"></c-nav.basic>
+
+<div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Columna Izquierda: Detalles del Cliente -->
+    <div id="client-details" class="bg-white shadow-md rounded p-3">
+        <div class="flex justify-between items-center border-b border-gray-200 pb-1 mb-2">
+            <h3 class="text-lg font-semibold text-gray-800">Detalles del Cliente</h3>
+            <!-- Botón para editar -->
+            <c-btn.edit_id_hx  data-turbo="false" url="client_edit" :id="client.id" hx_target="#client-details" icon="bx bx-edit text-lg" editname="Editar cliente"></c-btn.edit_id_hx>
+        </div>
+
+        <table class="w-full table-auto text-sm text-gray-700">
+            <tbody>
+                <!-- Nombre (Razón Social) -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Nombre (Razón Social):</strong></td>
+                    <td class="py-1 px-2">{{ client.business_name|default:"-" }}</td>
+                </tr>
+
+                <!-- RUC -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>RUC:</strong></td>
+                    <td class="py-1 px-2">{{ client.tax_id|default:"-" }}</td>
+                </tr>
+
+                <!-- Dirección -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Dirección:</strong></td>
+                    <td class="py-1 px-2">{{ client.address|default:"-" }}</td>
+                </tr>
+
+                <!-- Departamento -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Departamento:</strong></td>
+                    <td class="py-1 px-2">{{ client.department|default:"-" }}</td>
+                </tr>
+
+                <!-- Provincia -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Provincia:</strong></td>
+                    <td class="py-1 px-2">{{ client.province|default:"-" }}</td>
+                </tr>
+
+                <!-- Distrito -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Distrito:</strong></td>
+                    <td class="py-1 px-2">{{ client.district|default:"-" }}</td>
+                </tr>
+
+                <!-- Actividad Económica -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Actividad Económica:</strong></td>
+                    <td class="py-1 px-2">{{ client.economic_activity|default:"-" }}</td>
+                </tr>
+
+                <!-- Estado (ACTIVO/INACTIVO) -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Estado:</strong></td>
+                    <td class="py-1 px-2">{{ client.status|default:"-" }}</td>
+                </tr>
+
+                <!-- Condición (HABIDO/NO HABIDO) -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Condición:</strong></td>
+                    <td class="py-1 px-2">{{ client.condition|default:"-" }}</td>
+                </tr>
+
+                <!-- Agente de Retención -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Agente de Retención:</strong></td>
+                    <td class="py-1 px-2">
+                        {% if client.is_retention_agent %}
+                            Sí
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
+                </tr>
+
+                <!-- Número de Trabajadores -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Número de Trabajadores:</strong></td>
+                    <td class="py-1 px-2">{{ client.workers_number|default:"-" }}</td>
+                </tr>
+
+                <!-- Tipo de Facturación -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Tipo de Facturación:</strong></td>
+                    <td class="py-1 px-2">{{ client.billing_type|default:"-" }}</td>
+                </tr>
+
+                <!-- Tipo de Contabilidad -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Tipo de Contabilidad:</strong></td>
+                    <td class="py-1 px-2">{{ client.accounting_type|default:"-" }}</td>
+                </tr>
+
+                <!-- Comercio Exterior -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Comercio Exterior:</strong></td>
+                    <td class="py-1 px-2">{{ client.foreign_trade|default:"-" }}</td>
+                </tr>
+
+                <!-- Tipo de Empresa -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Tipo de Empresa:</strong></td>
+                    <td class="py-1 px-2">{{ client.company_type|default:"-" }}</td>
+                </tr>
+
+                <!-- Metodo de pago -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Metodo de pago:</strong></td>
+                    <td class="py-1 px-2">{{ client.payment_method|default:"-" }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+
+    <!-- Columna Derecha: Sedes, Contacto y Asesor -->
+    <div class="space-y-4">
+        <!-- Sedes -->
+        {% include 'commercial/client/branch/branch_list.html' %}
+
+    </div>
+</div>
+
+{% endblock %}

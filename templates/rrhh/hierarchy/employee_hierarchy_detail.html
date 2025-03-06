@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mx-auto p-6">
+    <h1 class="text-2xl font-semibold mb-4">Jerarquía Completa de {{ employee.first_name }} {{ employee.paternal_surname }}</h1>
+
+    <!-- Jefes Superiores -->
+    <div class="py-4">
+      <h2 class="text-xl font-semibold">Jefes Superiores:</h2>
+      <div class="pl-4">
+        {% for boss in superior_bosses %}
+          <div class="py-2">
+            <span>{{ boss.first_name }} {{ boss.paternal_surname }} - {{ boss.position }}</span>
+          </div>
+        {% empty %}
+          <div class="py-2 text-red-500">Este empleado no tiene jefes superiores asignados.</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Jefe Directo -->
+    <div class="py-4">
+      <h2 class="text-xl font-semibold">Jefe Directo:</h2>
+      <div class="pl-4">
+        {% if direct_boss %}
+          <div class="py-2">
+            <span>{{ direct_boss.first_name }} {{ direct_boss.paternal_surname }} - {{ direct_boss.position }}</span>
+          </div>
+        {% else %}
+          <div class="py-2 text-red-500">Este empleado no tiene jefe directo asignado.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Empleado Consultado -->
+    <div class="py-4">
+      <h2 class="text-xl font-semibold">Empleado Consultado:</h2>
+      <div class="py-2">
+        <span>{{ employee.first_name }} {{ employee.paternal_surname }} - {{ employee.position }}</span>
+      </div>
+    </div>
+
+    <!-- Subordinados Directos -->
+    <div class="py-4">
+      <h2 class="text-xl font-semibold">Subordinados Directos:</h2>
+      <div class="pl-4">
+        {% for subordinate in direct_subordinates %}
+          <div class="py-2">
+            <span>{{ subordinate.first_name }} {{ subordinate.paternal_surname }} - {{ subordinate.position }}</span>
+          </div>
+        {% empty %}
+          <div class="py-2 text-red-500">Este empleado no tiene subordinados directos asignados.</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Subordinados Indirectos -->
+    <div class="py-4">
+      <h2 class="text-xl font-semibold">Subordinados Indirectos:</h2>
+      <div class="pl-4">
+        {% for subordinate in indirect_subordinates %}
+          <div class="py-2">
+            <span>{{ subordinate.first_name }} {{ subordinate.paternal_surname }} - {{ subordinate.position }}</span>
+          </div>
+        {% empty %}
+          <div class="py-2 text-red-500">Este empleado no tiene subordinados indirectos.</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Compañeros de Mismo Nivel -->
+    <div class="py-4">
+      <h2 class="text-xl font-semibold">Compañeros de Mismo Nivel:</h2>
+      <div class="pl-4">
+        {% for colleague in same_level_colleagues %}
+          <div class="py-2">
+            <span>{{ colleague.first_name }} {{ colleague.paternal_surname }} - {{ colleague.position }}</span>
+          </div>
+        {% empty %}
+          <div class="py-2 text-red-500">Este empleado no tiene compañeros de mismo nivel.</div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+{% endblock %}

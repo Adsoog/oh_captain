@@ -1,0 +1,48 @@
+<!-- Contactos -->
+<div id="client-contacts" class="bg-white shadow-md rounded p-3">
+    <div class="flex justify-between items-center border-b border-gray-200 pb-1 mb-2">
+        <h3 class="text-lg font-semibold text-gray-800">Contactos</h3>
+        <c-editbutton
+            url="client_contact_create"
+            :id="client.id"
+            hx_target="#client-contacts"
+            icon="bx bxs-contact text-lg"
+            editname="Añadir contactos">
+        </c-editbutton>
+    </div>
+
+    <ul class="space-y-1">
+        {% for contact in client.contacts.all %}
+        <li id="contact-row-{{ contact.id }}" class="border-b border-gray-200 py-2 flex justify-between items-center">
+            <p class="text-gray-700 flex-1">
+                <strong>{{ contact.name }}</strong> –
+                {{ contact.area }} –
+                {{ contact.email }} –
+                {{ contact.get_role_display }}
+            </p>
+
+            <!-- Contenedor de botones con espaciado -->
+            <div class="flex items-center space-x-2">
+                <!-- Botón para editar -->
+                <c-editbuttonlight
+                    url="client_contact_edit"
+                    :id="{{ contact.id }}"
+                    hx_target="#contact-row-{{ contact.id }}"
+                    icon="bx bx-edit text-lg">
+                </c-editbuttonlight>
+
+                <!-- Botón Eliminar -->
+                <c-deletebutton
+                    url="client_contact_delete"
+                    :id="contact.id"
+                    hx_target="#client-contacts"
+                    deleteinstance="¿Eliminar este contacto?">
+                </c-deletebutton>
+            </div>
+        </li>
+
+        {% empty %}
+        <li class="text-gray-500 text-sm">No hay contactos registrados.</li>
+        {% endfor %}
+    </ul>
+</div>

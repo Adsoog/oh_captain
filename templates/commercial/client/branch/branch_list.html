@@ -1,0 +1,59 @@
+<!-- Sedes -->
+<div id="client-branch" class="bg-white shadow-md rounded p-3">
+    <div class="flex justify-between items-center border-b border-gray-200 pb-1 mb-2">
+        <h3 class="text-lg font-semibold text-gray-800">Sedes</h3>
+        <c-btn.edit_id_hx
+            url="client_branch_create"
+            :id="client.id"
+            hx_target="#client-branch"
+            icon="bx bx-buildings text-lg"
+            editname="Añadir Sede">
+        </c-btn.edit_id_hx>
+    </div>
+
+    <ul class="space-y-1">
+        {% for branch in client.branches.all %}
+        <li id="branch-row-{{ branch.id }}" class="border-b border-gray-200 py-2 flex justify-between items-center">
+            <p class="text-gray-700 flex-1">
+                <strong>{{ branch.name }}</strong> – {{ branch.address }} – {{ branch.department|default:"-" }}
+
+                {% if branch.is_headquarters %}
+                <span class="text-xs text-blue-700 font-semibold ml-2">
+                    (Sede Principal)
+                </span>
+                {% endif %}
+
+                <!-- Mostrar el asesor de ventas -->
+                {% if branch.sales_advisor %}
+                <span class="text-sm text-gray-600">
+                    <i class="bx bx-user text-blue-600"></i>
+                    <strong>Asesor:</strong> {{ branch.sales_advisor.get_full_name|default:branch.sales_advisor.username }}
+                </span>
+                {% endif %}
+
+            </p>
+
+            <!-- Contenedor de los botones con espaciado -->
+            <div class="flex items-center space-x-2">
+                <!-- Botón para editar -->
+                <c-btn.edit_id_hx
+                    url="client_branch_edit"
+                    :id="{{ branch.id }}"
+                    hx_target="#branch-row-{{ branch.id }}"
+                    icon="bx bx-edit text-lg">
+                </c-btn.edit_id_hx>
+
+                <!-- Botón Eliminar -->
+                <c-btn.delete_id
+                    url="client_branch_delete"
+                    :id="branch.id"
+                    hx_target="#client-branch"
+                    deleteinstance="¿Eliminar esta sede?">
+                </c-btn.delete_id>
+            </div>
+        </li>
+        {% empty %}
+        <li class="text-gray-500 text-sm">No hay sedes registradas.</li>
+        {% endfor %}
+    </ul>
+</div>

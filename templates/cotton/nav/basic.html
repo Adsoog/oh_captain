@@ -1,35 +1,12 @@
 {% load static %}
-<div class="flex items-center justify-between bg-gray-100 text-gray-800 py-4 px-6 rounded-t-lg border-t border-gray-200 shadow-lg mb-6 relative">
-    <!-- Botón de regreso -->
-    <style>
-        @keyframes tada-delay {
-            0%, 85% { transform: scale(1) rotate(0deg); } /* Mantiene el icono normal el 85% del tiempo */
-            87% { transform: scale(1.1) rotate(8deg); } /* Pequeña inclinación */
-            89% { transform: scale(1.1) rotate(-8deg); } /* Inclina hacia el otro lado */
-            91% { transform: scale(1.1) rotate(12deg); } /* Mayor inclinación */
-            93% { transform: scale(1.1) rotate(-12deg); } /* Última inclinación */
-            95% { transform: scale(1.1) rotate(5deg); } /* Regresa casi a la normalidad */
-            100% { transform: scale(1) rotate(0deg); } /* Vuelve completamente a su estado original */
-          }
-          .icon-delay {
-            animation: tada-delay 6s infinite ease-in-out; /* Se repite cada 4 segundos */
-          }
-    </style>
-
-    <!-- Botón con la animación mejorada -->
-    <a href=""
-       class="absolute left-6 text-gray-800 text-4xl hover:text-gray-600 transition flex items-center"
-       title="Regresar">
-        <i class="bx bxs-chevrons-left icon-delay"></i>
-    </a>
-
-    <!-- Título centrado -->
-    <h1 class="text-xl font-bold text-center mx-auto">{{ name }}</h1>
+<div class="flex items-center justify-between bg-gray-100 text-gray-800 py-4 px-6 rounded-t-lg border-t border-gray-200 shadow-lg mb-6">
+    <!-- Contenedor flexible para centrar el título -->
+    <div class="flex-1 flex justify-center">
+        <h1 class="text-xl font-bold">{{ name }}</h1>
+    </div>
 
     <!-- Botones adicionales -->
-    <div class="absolute right-6 flex space-x-4">
-            {{ slot}}
-    </div>    <!-- Botones adicionales -->
-
-
+    <div class="flex space-x-4">
+        {{ slot }}
+    </div>
 </div>
