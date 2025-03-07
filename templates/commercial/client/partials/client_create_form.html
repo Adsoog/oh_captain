@@ -1,0 +1,10 @@
+{% load widget_tweaks %}
+
+<form method="POST" action="{% url 'client_create' %}" class="space-y-4">
+    {% csrf_token %}
+
+    <label class="block text-sm font-medium text-gray-700">RUC</label>
+    {{ form.tax_id|add_class:"w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500" }}
+
+    <c-btn.save name="Crear y validar cliente"></c-btn.save>
+</form>

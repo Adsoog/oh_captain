@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+<c-nav.basic name="Mis Proformas">
+  <c-btn.create url="auto_proforma_create" name="Crear proforma"></c-btn.create>
+</c-nav.basic>
+
+{% include 'commercial/proforma/partials/_proforma_list.html' %}
+
+{% endblock %}
+
+
+
+
+

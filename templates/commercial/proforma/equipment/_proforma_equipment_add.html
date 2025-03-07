@@ -1,0 +1,50 @@
+{% load widget_tweaks %}
+
+<div id="proforma-equipment-add-form" class="border border-gray-200 p-6 bg-white shadow-sm w-full">
+    <form method="POST"
+          class="flex items-center gap-4 w-full flex-nowrap"
+          hx-post="{% url 'proforma_equipment_add' proforma.id %}"
+          hx-target="#proforma-equipment-list"
+          hx-swap="outerHTML"
+    >
+        {% csrf_token %}
+
+        <!-- Selección de instrumento -->
+        <div class="flex items-center gap-2 flex-grow">
+            <label for="id_quoted_instrument" class="text-sm font-medium text-gray-700 whitespace-nowrap">
+                Instrumento:
+            </label>
+            <div class="w-full">
+                {{ equipment_add_form.quoted_instrument }}
+            </div>
+        </div>
+
+        <!-- Selección de lugar de servicio -->
+        <div class="flex items-center gap-2 flex-grow">
+            <label for="id_service_place" class="text-sm font-medium text-gray-700 whitespace-nowrap">
+                Lugar del servicio:
+            </label>
+            <div class="w-full">
+                {{ equipment_add_form.service_place|add_class:"form-select block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-2 py-1" }}
+            </div>
+        </div>
+
+
+        <!-- Selección de Servicios en una sola fila -->
+        <div class="flex items-center gap-2 flex-grow">
+            <div class="flex flex-row gap-2 flex-nowrap overflow-auto w-full">
+                {% for service in equipment_add_form.service %}
+                <label class="flex items-center space-x-1 whitespace-nowrap">
+                    {{ service.tag }}
+                    <span class="text-gray-600 text-sm">{{ service.choice_label }}</span>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Botón de Guardar -->
+        <div class="flex items-center justify-end flex-grow">
+            <c-btn.save name="Añadir" class="whitespace-nowrap"></c-btn.save>
+        </div>
+    </form>
+</div>

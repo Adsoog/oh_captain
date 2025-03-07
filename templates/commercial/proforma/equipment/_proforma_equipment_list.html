@@ -1,0 +1,88 @@
+<div id="proforma-equipment-list" class="col-span-4">
+<!-- Tabla de Equipos -->
+<div class="overflow-x-auto bg-white shadow-md">
+    <table class="table-auto w-full text-sm text-gray-700 border-collapse">
+        <thead class="bg-gray-100 text-gray-700">
+            <tr>
+                <th class="py-3 px-4 text-center">Equipo</th>
+                <th class="py-3 px-4 text-center">Marca</th>
+                <th class="py-3 px-4 text-center">Modelo</th>
+                <th class="py-3 px-4 text-center">Especificaciones</th>
+                <th class="py-3 px-4 text-center">N° de Serie</th>
+                <th class="py-3 px-4 text-center">Código</th>
+                <th class="py-3 px-4 text-center">Procedimiento</th>
+                <th class="py-3 px-4 text-center">Magnitud</th>
+                <th class="py-3 px-4 text-center">Lugar de servicio</th>
+                <th class="py-3 px-4 text-center">Lugar de Calibración</th>
+                <th class="py-3 px-4 text-center">Servicios</th>
+                <th class="py-3 px-4 text-center">Total</th>
+                <th class="py-3 px-4 text-center"><c-btn.edit_id_hx url="proforma_equipment_edit_all" :id="proforma.id" hx_target="#proforma-equipment-list" icon="bx bx-edit text-lg"></c-btn.edit_id_hx></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for equipment in proforma.equipments.all %}
+            <tr id="equipment-row-{{ equipment.id }}" class="hover:bg-gray-50 border-b">
+                <td class="py-3 px-4 text-center">{{ equipment.instrument }}</td>
+                <td class="py-3 px-4 text-center">{{ equipment.brand }}</td>
+                <td class="py-3 px-4 text-center">{{ equipment.model }}</td>
+                <td class="py-3 px-4 text-center">{{ equipment.specifications|default:"-" }}</td>
+                <td class="py-3 px-4 text-center">{{ equipment.serial_number|default:"-" }}</td>
+                <td class="py-3 px-4 text-center">{{ equipment.code|default:"-" }}</td>
+                <td class="py-3 px-4 text-center">{{ equipment.procedure }}</td>
+                <td class="py-3 px-4 text-center">{{ equipment.magnitude|default:"-" }}</td>
+                <td class="py-3 px-4 text-center">{{ equipment.service_place }}</td>
+                <td class="py-3 px-4 text-center">{{ equipment.calibration_place }}</td>
+                <td class="py-3 px-4 text-center">
+                    {% for service in equipment.service.all %}
+                    <span class="text-gray-700 text-xs font-medium px-2 py-1 rounded">
+                        {{ service.get_type_display }}
+                    </span>
+                    {% empty %}
+                    <span class="text-gray-500">Sin servicios</span>
+                    {% endfor %}
+                </td>
+                <td class="py-3 px-4 text-center">S/. {{ equipment.total }}</td>
+                <td class="py-3 px-4 text-center">
+                    <c-btn.delete_id url="proforma_equipment_delete" :id="equipment.id" hx_target="#proforma-equipment-list" deleteinstance="esta equipo de proforma? :P"></c-btn.delete_id>
+                    <c-btn.edit_id_hx
+                        url="proforma_equipment_edit"
+                        :id="{{ equipment.id }}"
+                        hx_target="#equipment-row-{{ equipment.id }}"
+                        icon="bx bx-edit text-lg">
+                    </c-btn.edit_id_hx>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="11" class="text-center text-gray-500 py-4">No hay equipos asociados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Tabla de Costos Adicionales -->
+
+<!-- Sección de Precios Mejorada -->
+<div class="flex items-center justify-center py-4 px-6 border-t border-b border-gray-400 shadow-md bg-gray-100 space-x-8 flex-wrap">
+    <!-- Subtotal -->
+    <div class="flex space-x-2">
+        <span class="text-gray-700 font-semibold">Subtotal:</span>
+        <span class="text-gray-900 font-bold">S/. {{ proforma.subtotal }}</span>
+    </div>
+
+    <!-- IGV -->
+    <div class="flex space-x-2">
+        <span class="text-gray-700 font-semibold">IGV (%):</span>
+        <span class="text-gray-900 font-bold">{{ proforma.igv }}</span>
+    </div>
+
+    <!-- Total -->
+    <div class="flex space-x-2">
+        <span class="text-gray-700 font-semibold">Total:</span>
+        <span class="text-gray-900 font-bold">S/. {{ proforma.total }}</span>
+    </div>
+
+    <!-- Botones -->
+</div>
+

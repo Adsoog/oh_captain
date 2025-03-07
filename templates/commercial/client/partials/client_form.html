@@ -1,0 +1,92 @@
+{% load widget_tweaks %}
+<div id="client-edit" class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg mx-auto">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Editar Cliente</h2>
+
+    <form method="POST"
+          hx-post="{% url 'client_edit' client.id %}"
+          hx-target="body"
+          hx-swap="outerHTML"
+          class="space-y-4">
+        {% csrf_token %}
+
+        <div class="grid grid-cols-1 gap-4">
+            <!-- Nombre del Cliente -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Nombre del Cliente</label>
+                {{ form.business_name|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- RUC -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">RUC</label>
+                {{ form.tax_id|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- Dirección -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Dirección</label>
+                {{ form.address|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- Departamento -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Departamento</label>
+                {{ form.department|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- Actividad Económica -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Actividad Económica</label>
+                {{ form.economic_activity|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- Asesor -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Asesor</label>
+                {{ form.sales_advisor|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- Número de Trabajadores -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Número de Trabajadores</label>
+                {{ form.workers_number|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- Tipo de Facturación -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Tipo de Facturación</label>
+                {{ form.billing_type|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- Tipo de Contabilidad -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Tipo de Contabilidad</label>
+                {{ form.accounting_type|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- Comercio Exterior -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Comercio Exterior</label>
+                {{ form.foreign_trade|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- Tipo de Empresa -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Tipo de Empresa</label>
+                {{ form.company_type|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- Metodo de pago -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Metodo de pago</label>
+                {{ form.payment_method|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="flex justify-between mt-6">
+            <c-btn.save name="Actualizar cliente"></c-btn.save>
+            <c-btn.cancel name="Regresar" url="client_detail" :id="client.id" hx_target="body"></c-btn.cancel>
+        </div>
+    </form>
+</div>

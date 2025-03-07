@@ -1,0 +1,24 @@
+<tr class="border-b border-gray-200" id="row-{{ key }}">
+    <td class="py-1 px-2"><strong>{{ key|capfirst }}:</strong></td>
+    <td class="py-1 px-2">
+        <input type="hidden" name="key" value="{{ key }}">
+        <input type="text"
+               name="value"
+               value="{{ value|default:'' }}"
+               class="border border-gray-300 p-1 rounded w-full"
+               hx-post="{% url 'asset_attribute' asset.id %}"
+               hx-trigger="input changed delay:500ms"
+               hx-include="closest tr"
+               hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+               hx-swap="none">
+    </td>
+    <td class="py-1 px-2">
+        <button class="text-red-500"
+                hx-delete="{% url 'asset_attribute' asset.id %}?key={{ key }}"
+                hx-target="#row-{{ key }}"
+                hx-swap="outerHTML"
+                hx-confirm="¿Seguro que quieres eliminar este atributo?">
+            <i class="bx bx-trash text-lg"></i>
+        </button>
+    </td>
+</tr>
