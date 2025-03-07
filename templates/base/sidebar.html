@@ -29,7 +29,7 @@
       <c-sidebar.item item="openItem2" icon="bx-credit-card-alt" name="Comercial">
         <c-sidebar.sub_item sub_item_url="{% url 'clients_list' %}" sub_item="Clientes"></c-sidebar.sub_item>
         <c-sidebar.sub_item sub_item_url="{% url 'instruments_list' %}" sub_item="Instrumentos"></c-sidebar.sub_item>
-        <c-sidebar.sub_item sub_item_url="{% url 'class_instruments_list' %}" sub_item="Instrumentos"></c-sidebar.sub_item>
+        <c-sidebar.sub_item sub_item_url="{% url 'proformas_list' %}" sub_item="Proformas"></c-sidebar.sub_item>
       </c-sidebar.item>
 
       <!-- Bloque "RRHH" con desplegable -->
@@ -51,50 +51,50 @@
   <!-- Perfil del usuario -->
   <div class="border-t pt-3">
     {% if user.is_authenticated %}
-      <div :class="expanded
-        ? 'flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-all duration-300'
-        : 'flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 transition-all duration-300'"
+    <div :class="expanded
+? 'flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-all duration-300'
+         : 'flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 transition-all duration-300'"
+    >
+      <i class="bx bx-user-circle text-2xl text-gray-700"></i>
+      <div
+        class="transition-all duration-300 overflow-hidden whitespace-nowrap"
+        :style="expanded ? 'opacity: 1; margin-left: 0.5rem; max-width: 12rem;' : 'opacity: 0; margin-left: 0; max-width: 0;'"
       >
-        <i class="bx bx-user-circle text-2xl text-gray-700"></i>
-        <div
-          class="transition-all duration-300 overflow-hidden whitespace-nowrap"
-          :style="expanded ? 'opacity: 1; margin-left: 0.5rem; max-width: 12rem;' : 'opacity: 0; margin-left: 0; max-width: 0;'"
-        >
-          <p class="text-sm font-semibold text-gray-900">{{ user.get_full_name|default:user.username }}</p>
-          <p class="text-xs text-gray-600">{{ user.email }}</p>
-        </div>
+        <p class="text-sm font-semibold text-gray-900">{{ user.get_full_name|default:user.username }}</p>
+        <p class="text-xs text-gray-600">{{ user.email }}</p>
       </div>
-      <form method="post" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button type="submit"
-          :class="expanded
-            ? 'flex items-center text-red-600 hover:bg-red-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'
-            : 'flex items-center justify-center text-red-600 hover:bg-red-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'"
-        >
-          <i class="bx bx-log-out text-xl"></i>
-          <span
-            class="transition-all duration-300 overflow-hidden whitespace-nowrap"
-            :style="expanded ? 'opacity: 1; margin-left: 0.5rem; max-width: 8rem;' : 'opacity: 0; margin-left: 0; max-width: 0;'"
-          >
-            Cerrar sesión
-          </span>
-        </button>
-      </form>
-    {% else %}
-      <a
-        href="{% url 'login' %}"
-        :class="expanded
-          ? 'flex items-center text-blue-600 hover:bg-blue-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'
-          : 'flex items-center justify-center text-blue-600 hover:bg-blue-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'"
+    </div>
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit"
+              :class="expanded
+? 'flex items-center text-red-600 hover:bg-red-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'
+              : 'flex items-center justify-center text-red-600 hover:bg-red-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'"
       >
-        <i class="bx bx-log-in text-xl"></i>
+        <i class="bx bx-log-out text-xl"></i>
         <span
           class="transition-all duration-300 overflow-hidden whitespace-nowrap"
           :style="expanded ? 'opacity: 1; margin-left: 0.5rem; max-width: 8rem;' : 'opacity: 0; margin-left: 0; max-width: 0;'"
         >
-          Iniciar sesión
+          Cerrar sesión
         </span>
-      </a>
+      </button>
+    </form>
+    {% else %}
+    <a
+      href="{% url 'login' %}"
+      :class="expanded
+? 'flex items-center text-blue-600 hover:bg-blue-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'
+      : 'flex items-center justify-center text-blue-600 hover:bg-blue-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'"
+    >
+      <i class="bx bx-log-in text-xl"></i>
+      <span
+        class="transition-all duration-300 overflow-hidden whitespace-nowrap"
+        :style="expanded ? 'opacity: 1; margin-left: 0.5rem; max-width: 8rem;' : 'opacity: 0; margin-left: 0; max-width: 0;'"
+      >
+        Iniciar sesión
+      </span>
+    </a>
     {% endif %}
   </div>
 </nav>

@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+<c-nav.basic name="Detalle proforma">
+</c-nav.basic>
+<!-- Detalles de la Proforma -->
+{% include 'commercial/proforma/partials/_proforma_detail.html' %}
+
+{% include 'commercial/proforma/equipment/_proforma_equipment_add.html' %}
+
+{% include 'commercial/proforma/equipment/_proforma_equipment_list.html' %}
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+{% endblock %}

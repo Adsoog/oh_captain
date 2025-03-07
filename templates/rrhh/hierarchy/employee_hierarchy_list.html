@@ -1,43 +1,43 @@
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 
 {% block content %}
-  <div class="container mx-auto p-6">
-    <h1 class="text-2xl font-semibold mb-4">Lista de empleados y jerarquía</h1>
+<div class="container mx-auto p-6">
+  <h1 class="text-2xl font-semibold mb-4">Lista de empleados y jerarquía</h1>
 
-    <ul class="space-y-4">
-      {% for employee in employees %}
-        <li class="p-4 bg-white shadow-md rounded-lg flex justify-between items-center">
-          <div>
-            <strong class="text-lg">{{ employee.first_name }} {{ employee.paternal_surname }}</strong>
-            <span class="text-gray-500">- {{ employee.position }}</span>
-            <div class="text-sm mt-2">
-              {% if employee.parent %}
-                <span class="text-green-500">Jefe: {{ employee.parent.first_name }} {{ employee.parent.paternal_surname }}</span>
-              {% else %}
-                <span class="text-red-500">Sin jefe asignado</span>
-              {% endif %}
-            </div>
-          </div>
+  <ul class="space-y-4">
+    {% for employee in employees %}
+    <li class="p-4 bg-white shadow-md rounded-lg flex justify-between items-center">
+      <div>
+        <strong class="text-lg">{{ employee.first_name }} {{ employee.paternal_surname }}</strong>
+        <span class="text-gray-500">- {{ employee.position }}</span>
+        <div class="text-sm mt-2">
+          {% if employee.parent %}
+          <span class="text-green-500">Jefe: {{ employee.parent.first_name }} {{ employee.parent.paternal_surname }}</span>
+          {% else %}
+          <span class="text-red-500">Sin jefe asignado</span>
+          {% endif %}
+        </div>
+      </div>
 
-          <div class="flex space-x-2">
-            <!-- Botón de asignación de jefe -->
-            <a data-turbo="false" href="{% url 'assign_hierarchy' employee.id %}">
-              <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
-                Asignar jefe
-              </button>
-            </a>
+      <div class="flex space-x-2">
+        <!-- Botón de asignación de jefe -->
+        <a data-turbo="false" href="{% url 'assign_hierarchy' employee.id %}">
+          <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
+            Asignar jefe
+          </button>
+        </a>
 
-            <!-- Botón para ver detalles del empleado -->
-            <a data-turbo="false" href="{% url 'employee_hierarchy_detail' employee.id %}">
-              <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
-                Ver detalles
-              </button>
-            </a>
+        <!-- Botón para ver detalles del empleado -->
+        <a data-turbo="false" href="{% url 'employee_hierarchy_detail' employee.id %}">
+          <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
+            Ver detalles
+          </button>
+        </a>
 
 
-          </div>
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
 {% endblock %}

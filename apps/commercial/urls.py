@@ -1,6 +1,11 @@
 from django.urls import path
-from apps.commercial.views.client_views import clients_list, client_create, client_detail, client_delete, client_edit, client_branch_edit, client_branch_delete, client_branch_create
+from apps.commercial.views.client_views import clients_list, client_create, client_detail, client_delete, client_edit, \
+    client_branch_edit, client_branch_delete, client_branch_create
+from apps.commercial.views.equipment_views import proforma_equipment_add, proforma_equipment_edit, \
+    proforma_equipment_edit_all, proforma_equipment_delete
 from apps.commercial.views.instrument_views import instruments_list, InstrumentListView
+from apps.commercial.views.proforma_views import proformas_list, proforma_detail, auto_proforma_create, proforma_delete, \
+    proforma_edit
 
 urlpatterns = []
 
@@ -21,5 +26,20 @@ instrumentpatterns = [
     path('instruments-class/list/', InstrumentListView.as_view(), name='class_instruments_list'),
 ]
 
+proformapatterns = [
+    path('proforma/list/', proformas_list, name='proformas_list'),
+    path('proforma/create/', auto_proforma_create, name='auto_proforma_create'),
+    path('proforma/detail/<int:id>/', proforma_detail, name='proforma_detail'),
+    path('proforma/delete/<int:id>/', proforma_delete, name='proforma_delete'),
+    path('proforma/edit/<int:id>/', proforma_edit, name='proforma_edit'),
+
+    # EQUIPMENT
+    path('proforma/detail/add-equipment/<int:id>/', proforma_equipment_add, name='proforma_equipment_add'),
+    path('proforma/detail/edit-equipment/<int:id>/', proforma_equipment_edit, name='proforma_equipment_edit'),
+    path('proforma/detail/edit-all-equipment/<int:id>/', proforma_equipment_edit_all, name='proforma_equipment_edit_all'),
+    path('proforma/detail/delete-equipment/<int:id>/', proforma_equipment_delete, name='proforma_equipment_delete'),
+]
+
 urlpatterns += clientpatterns
 urlpatterns += instrumentpatterns
+urlpatterns += proformapatterns

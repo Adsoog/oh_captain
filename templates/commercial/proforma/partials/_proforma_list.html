@@ -1,0 +1,43 @@
+<div class="overflow-x-auto bg-white shadow-md rounded-lg">
+    <table class="table-auto w-full text-sm text-gray-700 border-collapse">
+        <thead class="bg-gray-100 text-gray-700">
+            <tr>
+                <th class="py-3 px-4 text-center">Correlativo</th>
+                <th class="py-3 px-4 text-center">Cliente</th>
+                <th class="py-3 px-4 text-center">Fecha</th>
+                <th class="py-3 px-4 text-center">Método de Pago</th>
+                <th class="py-3 px-4 text-center">Tipo de Servicio</th>
+                <th class="py-3 px-4 text-center">Dirección</th>
+                <th class="py-3 px-4 text-center">Total</th>
+                <th class="py-3 px-4 text-center">Versión</th>
+                <th class="py-3 px-4 text-center">Estado</th>
+                <th class="py-3 px-4 text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proforma in proformas %}
+            <tr class="hover:bg-gray-50 border-b">
+                <td class="py-3 px-4 text-center">{{ proforma.proforma_number }}</td>
+                <td class="py-3 px-4 text-center">{{ proforma.client.business_name }}</td>
+                <td class="py-3 px-4 text-center">{{ proforma.proforma_date }}</td>
+                <td class="py-3 px-4 text-center">{{ proforma.get_payment_method_display }}</td>
+                <td class="py-3 px-4 text-center">{{ proforma.get_service_type_display }}</td>
+                <td class="py-3 px-4 text-center">{{ proforma.service_address|default:"-" }}</td>
+                <td class="py-3 px-4 text-center">S/. {{ proforma.total }}</td>
+                <td class="py-3 px-4 text-center">{{ proforma.version_name }}</td>
+                <td class="py-3 px-4 text-center">{{ proforma.status }}</td>
+                <td class="py-3 px-4 text-center">
+                    <div class="flex gap-2 justify-center">
+                        <c-btn.view_id url="proforma_detail" :id="proforma.id" viewname="Ver proforma"></c-btn.view_id>
+                        <c-btn.delete_id url="proforma_delete" :id="proforma.id" hx_target="body" deleteinstance="¿Esta Proforma? :P"></c-btn.delete_id>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10" class="text-center text-gray-500 py-4">No hay proformas registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

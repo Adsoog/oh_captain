@@ -1,0 +1,84 @@
+{% load widget_tweaks %}
+<div id="proforma-edit" class="bg-white shadow-md rounded-lg">
+    <form method="POST"
+          hx-post="{% url 'proforma_edit' proforma.id %}"
+          hx-target="#proforma-edit"
+          hx-swap="outerHTML">
+
+        {% csrf_token %}
+
+        <table class="w-full table-auto text-sm text-gray-700">
+            <tbody>
+                <!-- Fila: Cliente, Método de pago y Validez de la oferta -->
+                <tr class="border-b">
+                    <td class="py-3 px-4"><strong>Cliente:</strong></td>
+                    <td class="py-3 px-4">
+                        {% render_field form.client class="form-input border border-gray-300 rounded-md p-2" %}
+                    </td>
+                    <td class="py-3 px-4"><strong>Validez de la Oferta (días):</strong></td>
+                    <td class="py-3 px-4">
+                        {% render_field form.offer_validity class="form-input border border-gray-300 rounded-md p-2" %}
+                    </td>
+                </tr>
+
+                <!-- Fila: Fechas de la Proforma -->
+                <tr class="border-b">
+                    <td class="py-3 px-4"><strong>Fecha de Solicitud:</strong></td>
+                    <td class="py-3 px-4">
+                        <input type="text" name="request_date" value="{{ proforma.request_date|date:'d/m/Y' }}" class="form-input border border-gray-300 rounded-md p-2" id="request_date" required>
+                    </td>
+                    <td class="py-3 px-4"><strong>Fecha de Proforma:</strong></td>
+                    <td class="py-3 px-4">
+                        <input type="text" name="proforma_date" value="{{ proforma.proforma_date|date:'d/m/Y' }}" class="form-input border border-gray-300 rounded-md p-2" id="proforma_date" required>
+                    </td>
+                </tr>
+                <!-- Fila: Tipo de Servicio y Dirección del certificado y raazon social -->
+                <tr class="border-b">
+                    <td class="py-3 px-4"><strong>Dirección del certificado:</strong></td>
+                    <td class="py-3 px-4">
+                        {% render_field form.certificate_address class="form-input border border-gray-300 rounded-md p-2" %}
+                    </td>
+                    <td class="py-3 px-4"><strong>Razon social del certificado:</strong></td>
+                    <td class="py-3 px-4">
+                        {% render_field form.certificate_owner class="form-input border border-gray-300 rounded-md p-2" %}
+                    </td>
+                    <td class="py-3 px-4"><strong>Tipo de Servicio:</strong></td>
+                    <td class="py-3 px-4">
+                        {% render_field form.service_type class="form-input border border-gray-300 rounded-md p-2" %}
+                    </td>
+                </tr>
+                <!-- Fila: Dirección de Servicio y Botones -->
+                <tr class="border-b">
+                    <td class="py-3 px-4"><strong>Dirección de Servicio:</strong></td>
+                    <td class="py-3 px-4" colspan="3">
+                        {% render_field form.service_address class="form-input border border-gray-300 rounded-md p-2 w-full" %}
+                    </td>
+                    <td class="py-3 px-4 text-right" colspan="2">
+                        <div class="flex justify-end gap-2">
+                            <button type="submit" data-turbo="false"
+                                    class="inline-flex items-center gap-2 px-3 py-1 border-2 border-yellow-500 text-yellow-600 text-xs font-semibold rounded-md transition-all hover:bg-yellow-100 hover:border-yellow-700 hover:text-yellow-800 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
+                                <i class="bx bx-save text-lg"></i>
+                                <span>Guardar cambios</span>
+                            </button>
+                            <c-btn.cancel cancelname="Regresar" url="proforma_detail" :id="proforma.id" hx_target="body"></c-btn.cancel>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<script>
+    $("#id_client").select2();
+    // Iniciar Flatpickr con el formato DD/MM/YYYY
+    flatpickr("#request_date", {
+        dateFormat: "d/m/Y",
+    });
+    flatpickr("#proforma_date", {
+        dateFormat: "d/m/Y",
+    });
+    flatpickr("#oti_date", {
+        dateFormat: "d/m/Y",
+    });
+</script>
+

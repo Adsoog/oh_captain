@@ -1,20 +1,20 @@
-{% extends "base.html" %}
+{% extends "base/base.html" %}
 
 {% block content %}
-  <div class="w-full">
-    <c-nav.bar name="Mis solicitudes">
-      <c-btn.create url="auto_solicitation_create" title="Crear solicitud"></c-btn.create>
-    </c-nav.bar>
-    {% if solicitations %}
-      <ul class="list-disc pl-5">
-        {% for solicitation in solicitations %}
-          <li>
-            <strong>{{ solicitation.correlative }}</strong> - {{ solicitation.reason }} ({{ solicitation.get_status_display }})
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>No se encontraron solicitudes.</p>
-    {% endif %}
-  </div>
+<div class="w-full">
+  <c-nav.basic name="Mis solicitudes">
+    <c-btn.create url="auto_solicitation_create" title="Mi solicitud"></c-btn.create>
+  </c-nav.basic>
+  {% if solicitations %}
+  <ul class="list-disc pl-5">
+    {% for solicitation in solicitations %}
+    <li>
+      <strong>{{ solicitation.area }}</strong> - {{ solicitation.employee }} ({{ solicitation.get_status_display }})
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No se encontraron solicitudes.</p>
+  {% endif %}
+</div>
 {% endblock %}

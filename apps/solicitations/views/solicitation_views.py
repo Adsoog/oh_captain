@@ -2,7 +2,6 @@ from apps.solicitations.forms.solicitation_forms import SolicitationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.timezone import now
 from core.models import Period
-from apps.rrhh.models.employee_models import Employee
 from apps.solicitations.models.solicitation_models import Solicitation
 
 

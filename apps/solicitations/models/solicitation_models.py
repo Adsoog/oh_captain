@@ -23,13 +23,15 @@ class Solicitation(models.Model):
     requested_at = models.DateField(null=True, blank=True)
     period = models.ForeignKey(Period, on_delete=models.SET_NULL, null=True, blank=True)
     reason = models.CharField(max_length=255)
-    employee = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL, null=True, related_name="expenditure_reports")
+    employee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,
+                                 related_name="expenditure_reports")
     area = models.ForeignKey(Area, on_delete=models.SET_NULL, null=True, related_name="expenditure_reports")
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, related_name="expenditure_reports")
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='draft')
     oti = models.CharField(max_length=50, null=True, blank=True)
     client = models.CharField(max_length=50, null=True, blank=True)
-    solicitation_type = models.CharField(max_length=50, choices=SolicitationType.choices, default=SolicitationType.PERDIEM_REQUEST)
+    solicitation_type = models.CharField(max_length=50, choices=SolicitationType.choices,
+                                         default=SolicitationType.PERDIEM_REQUEST)
 
     def __str__(self):
         return f"{self.get_solicitation_type_display()} - {self.correlative}"
@@ -41,7 +43,8 @@ class SolicitationAdvance(models.Model):
     deposit_date = models.DateField()
     comments = models.TextField(blank=True, null=True)
     voucher_number = models.CharField(max_length=50, blank=True, null=True, help_text="Número del comprobante")
-    voucher_file = models.FileField(upload_to='vouchers/', blank=True, null=True, help_text="Archivo del comprobante (PDF o imagen)")
+    voucher_file = models.FileField(upload_to='vouchers/', blank=True, null=True,
+                                    help_text="Archivo del comprobante (PDF o imagen)")
 
     class Meta:
         verbose_name = "Abono"

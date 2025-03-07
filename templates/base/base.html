@@ -40,30 +40,30 @@
     <div
       class="flex min-h-screen"
       x-data="{
-        expanded: true,
-        openItem1: false,
-        openItem2: false,
-        openItem3: false,
-        openItem4: false,
-        openItem5: false,
+expanded: true,
+openItem1: false,
+openItem2: false,
+openItem3: false,
+openItem4: false,
+openItem5: false,
 
-        // Carga el estado inicial del sidebar
-        loadSidebarState() {
-          let sidebarState = localStorage.getItem('sidebarExpanded');
-          if (sidebarState !== null) {
-            this.expanded = (sidebarState === 'true');
-          }
-        },
-        // Cambia el estado expandido y lo guarda
-        toggleSidebar() {
-          this.expanded = !this.expanded;
-          localStorage.setItem('sidebarExpanded', this.expanded);
-        },
-        // Abre/cierra un item en particular y lo guarda
-        toggleItem(item) {
-          this[item] = !this[item];
-          localStorage.setItem(item, this[item]);
-        }
+// Carga el estado inicial del sidebar
+loadSidebarState() {
+let sidebarState = localStorage.getItem('sidebarExpanded');
+if (sidebarState !== null) {
+this.expanded = (sidebarState === 'true');
+}
+},
+// Cambia el estado expandido y lo guarda
+toggleSidebar() {
+this.expanded = !this.expanded;
+localStorage.setItem('sidebarExpanded', this.expanded);
+},
+// Abre/cierra un item en particular y lo guarda
+toggleItem(item) {
+this[item] = !this[item];
+localStorage.setItem(item, this[item]);
+}
       }"
       x-init="loadSidebarState()"
       @turbo:load="loadSidebarState()"
@@ -86,15 +86,20 @@
 
     <!-- Script para manejar la navegación de Turbo.js -->
     <script>
-      document.addEventListener("turbo:before-fetch-request", function(event) {
+      document.addEventListener("turbo:before-fetch-request", function (event) {
         let turboFrame = event.target;
         if (turboFrame.id === "main-content") {
           history.pushState({}, "", event.detail.fetchOptions.url);
         }
       });
 
-      window.addEventListener("popstate", function(event) {
+      window.addEventListener("popstate", function (event) {
         Turbo.visit(location.href);
+      });
+    </script>
+    <script>
+      document.body.addEventListener('htmx:configRequest', (event) => {
+        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
       });
     </script>
 
