@@ -17,8 +17,8 @@
 
                 <td class="py-3 px-4 text-center">
                     <div class="flex gap-2 justify-center">
-                        <c-viewhtmxid url="asset_detail" :id="{{ asset.id }}" hx_target="#asset-extra" icon="bx bx-edit text-lg"> </c-viewhtmxid>
-                        <c-deletebutton url="asset_delete" :id="asset.id" hx_target="body" deleteinstance="este asset? :P"></c-deletebutton>
+                        <c-btn.view_id_hx url="asset_detail" :id="{{ asset.id }}" hx_target="#asset-extra" icon="bx bx-edit text-lg"> </c-btn.view_id_hx>
+                        <c-btn.delete_id url="asset_delete" :id="asset.id" hx_target="body" deleteinstance="este asset? :P"></c-btn.delete_id>
                     </div>
                 </td>
             </tr>

@@ -1,0 +1,7 @@
+{# templates/partials/search_form.html #}
+<form hx-get="{% url 'generic_search' %}" hx-target="#search-results"
+      hx-trigger="keyup changed delay:100ms" class="mb-4">
+    <input type="hidden" name="model" value="{{ model_name }}">
+    <input type="text" name="q" placeholder="Buscar {{ model_label }}..."
+           class="px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-200">
+</form>

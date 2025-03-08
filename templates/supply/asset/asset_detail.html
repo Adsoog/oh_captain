@@ -3,7 +3,7 @@
         <div class="flex justify-between items-center border-b border-gray-200 pb-1 mb-2">
             <h3 class="text-lg font-semibold text-gray-800">Detalles del Activo</h3>
             <!-- Botón para editar -->
-            <c-editbutton url="asset_edit" :id="asset.id" hx_target="#asset-extra" icon="bx bx-edit text-lg" editname="Editar activo"></c-editbutton>
+            <c-btn.edit_id_hx url="asset_edit" :id="asset.id" hx_target="#asset-extra" icon="bx bx-edit text-lg" name="Editar activo"></c-btn.edit_id_hx>
         </div>
 
         <table class="w-full table-auto text-sm text-gray-700">

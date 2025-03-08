@@ -1,0 +1,8 @@
+<button id="view-htmx-id"
+        class="inline-flex items-center gap-2 px-3 py-1 border-2 border-yellow-500 text-yellow-600 text-xs font-semibold rounded-md transition-all hover:bg-yellow-100 hover:border-yellow-700 hover:text-yellow-800 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
+        hx-get="{% url url id %}"
+        hx-target="{{ hx_target }}"
+        hx-swap="outerHTML">
+    <i class='bx bx-layer text-lg'></i>
+</button>
+

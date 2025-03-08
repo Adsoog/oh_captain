@@ -7,7 +7,7 @@ from apps.supply.models.asset_models import Asset, AssetAttributes
 
 def assets_list(request):
     assets = Asset.objects.all()
-    return render(request, 'supply/asset/asset_list.html', {'assets': assets})
+    return render(request, 'supply/asset/assets_list.html', {'assets': assets})
 
 
 def asset_detail(request, id):
@@ -47,7 +47,7 @@ def asset_delete(request, id):
     asset = get_object_or_404(Asset, id=id)
     if request.method == 'POST':
         asset.delete()
-        return redirect('asset_list')
+        return redirect('assets_list')
 
 
 def asset_attribute(request, asset_id):
@@ -61,7 +61,7 @@ def asset_attribute(request, asset_id):
         if key:
             asset_attributes.custom_fields[key] = value
             asset_attributes.save(update_fields=["custom_fields"])
-            return HttpResponse(status=204)  # Guardar y no retornar nada
+            return HttpResponse(status=204)
 
         new_key = request.POST.get("new_key")
         new_value = request.POST.get("new_value", "")
