@@ -1,13 +1,32 @@
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 
 {% block content %}
-<div id="cost-table" class="w-full mx-auto">
-    <!-- Tabla de instrumentos optimizada -->
-    <div id="instrument-table" class="table-container overflow-x-auto bg-white shadow-md rounded-lg">
-        <table class="table-auto w-full text-xs text-gray-700 border-collapse">
+
+
+<c-nav.basic name="Instrumentos o artefeactos">
+    <form method="get" action="{% url 'download_instruments_list' %}">
+        <button type="submit" data-turbo="false" class="btn btn-primary">Descargar Reporte de Instrumentos</button>
+    </form>
+
+    <!-- Formulario de carga integrado en la misma página -->
+    <div id="upload-section">
+        <form action="{% url 'upload_instruments_list' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="file" required>
+            <button type="submit">Subir Archivo</button>
+        </form>
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+    </div>
+
+</c-nav.basic>
+<div class="container mx-auto bg-gray-100 w-full">
+    <div id="instrument-table" class="overflow-x-auto bg-white shadow-md rounded-lg w-full">
+        <table class="min-w-full table-auto border-collapse text-gray-700">
             <thead class="bg-gray-100 text-gray-700">
                 <tr>
-                    <th class="py-2 px-2 text-left">#</th>
+                    <th class="py-2 px-2 text-left w-12">#</th>
                     <th class="py-2 px-2 text-left">Disciplina</th>
                     <th class="py-2 px-2 text-left">Subdisciplina</th>
                     <th class="py-2 px-2 text-left">Instrumento</th>
@@ -38,7 +57,11 @@
                 {% if instruments %}
                 {% for instrument in instruments %}
                 <tr class="hover:bg-gray-50 border-b">
-                    <td class="py-2 px-2">{{ forloop.counter }}</td>
+                    <td class="py-2 px-2">
+                        <a href="{% url 'instrument_detail' instrument.id %}" class="text-blue-500 hover:underline">
+                            {{ forloop.counter }}
+                        </a>
+                    </td>
                     <td class="py-2 px-2">{{ instrument.discipline }}</td>
                     <td class="py-2 px-2">{{ instrument.subdiscipline|default:"-" }}</td>
                     <td class="py-2 px-2">{{ instrument.instrument }}</td>
@@ -57,8 +80,7 @@
                     <td class="py-2 px-2">{{ instrument.man_hours }}</td>
                     <td class="py-2 px-2 text-right">{{ instrument.calibration_cost|floatformat:2 }}</td>
                     <td class="py-2 px-2 text-right">{{ instrument.verification_cost|floatformat:2 }}</td>
-                    <td class="py-2 px-2 text-right">{{ instrument.preventive_maintenance_cost|floatformat:2|default:"-"
-                        }}</td>
+                    <td class="py-2 px-2 text-right">{{ instrument.preventive_maintenance_cost|floatformat:2|default:"-" }}</td>
                     <td class="py-2 px-2 text-center">{% if instrument.for_sale %}✔{% else %}✘{% endif %}</td>
                     <td class="py-2 px-2">{{ instrument.technical_notes|default:"-" }}</td>
                     <td class="py-2 px-2">{{ instrument.cost_center }}</td>
@@ -75,6 +97,5 @@
         </table>
     </div>
 </div>
-
 
 {% endblock %}

@@ -78,5 +78,26 @@ class Equipment(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     quoted_instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
 
+    def calculate_total(self, services):
+        total = Decimal('0.00')
+
+        # Mapa de costos según el tipo de servicio
+        SERVICE_COST_MAP = {
+            'calibracion': 'calibration_cost',
+            'verificacion': 'verification_cost',
+            'preventivo': 'preventive_maintenance_cost'
+        }
+
+        for service in services:
+            cost_field = SERVICE_COST_MAP.get(service.type)
+            if cost_field:
+                service_cost = getattr(self.quoted_instrument, cost_field, Decimal('0.00'))
+                if service_cost is not None:
+                    total += service_cost
+
+        # Sumamos el costo indirecto
+        total += self.indirect_cost
+        return total
+
     def __str__(self):
         return f"{self.brand} {self.model} - {self.serial_number if self.serial_number else 'No Serial Number'}"

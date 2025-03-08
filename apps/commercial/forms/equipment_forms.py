@@ -19,6 +19,7 @@ class EquipmentForm(forms.ModelForm):
     class Meta:
         model = Equipment
         fields = '__all__'
-        exclude = ['proforma', 'instrument']
+        exclude = ['proforma', 'quoted_instrument']
+
 
 EquipmentFormSet = modelformset_factory(Equipment, form=EquipmentForm, extra=0)
