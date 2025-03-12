@@ -1,0 +1,98 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+{% load widget_tweaks %}
+
+<c-nav.basic name="Lista de clientes">
+    <!-- Botón para abrir el modal -->
+    <button onclick="document.getElementById('modal').classList.remove('hidden')"
+            class="inline-flex items-center gap-2 px-3 py-1 border-2 border-green-500 text-green-600 text-sm font-semibold rounded-md transition-all hover:bg-green-100 hover:border-green-700 hover:text-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+        <i class='bx bxs-folder-plus text-lg'></i>
+        <span>Crear Cliente</span>
+    </button>
+</c-nav.basic>
+
+<div class="overflow-x-auto bg-white shadow-md rounded-lg">
+    <table class="table-auto w-full text-sm text-gray-700 border-collapse">
+        <thead class="bg-gray-100 text-gray-700">
+            <tr>
+                <th class="py-3 px-4 text-center">ID</th>
+                <th class="py-3 px-4 text-center">Cliente</th>
+                <th class="py-3 px-4 text-center">RUC</th>
+                <th class="py-3 px-4 text-center">Dirección</th>
+                <th class="py-3 px-4 text-center">Departamento</th>
+                <th class="py-3 px-4 text-center">Actividad Económica</th>
+                <th class="py-3 px-4 text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients %}
+            <tr class="hover:bg-gray-50 border-b">
+                <td class="py-3 px-4 text-center">{{ client.id }}</td>
+                <td class="py-3 px-4 text-center">{{ client.business_name }}</td>
+                <td class="py-3 px-4 text-center">{{ client.tax_id }}</td>
+                <td class="py-3 px-4 text-center">{{ client.address }}</td>
+                <td class="py-3 px-4 text-center">{{ client.department|default:"-" }}</td>
+                <td class="py-3 px-4 text-center">{{ client.economic_activity|default:"-" }}</td>
+                <td class="py-3 px-4 text-center">
+                    <div class="flex gap-2 justify-center">
+                        <c-btn.view_id url="client_detail" :id="client.id" viewname="Ver cliente"></c-btn.view_id>
+                        <c-btn.delete_id url="client_delete" :id="client.id" hx_target="body" deleteinstance="¿Eliminar este cliente?"></c-btn.delete_id>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center text-gray-500 py-4">No hay clientes registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div id="modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white p-6 rounded shadow-lg w-96">
+        <!-- Formulario -->
+        <form method="POST" action="{% url 'client_create' %}" class="space-y-4">
+            {% csrf_token %}
+
+            <!-- Campo RUC -->
+            <label class="block text-sm font-medium text-gray-700">RUC</label>
+            <input
+                type="text"
+                name="tax_id"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500"
+                placeholder="Ingrese el RUC"
+                required
+                maxlength="11"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);"
+            >
+            <!-- Mostrar errores del formulario -->
+            {% if form.tax_id.errors %}
+            <p class="text-red-500 text-sm mt-1">{{ form.tax_id.errors.0 }}</p>
+            {% endif %}
+
+            <!-- Contenedor de botones en línea -->
+            <div class="flex justify-between items-center gap-2 mt-4">
+                <!-- Botón "Crear y validar cliente" -->
+                <c-btn.save name="Crear y validar cliente"></c-btn.save>
+
+                <!-- Botón "Cerrar" -->
+                <button type="button" onclick="document.getElementById('modal').classList.add('hidden')"
+                        class="inline-flex items-center gap-2 px-3 py-1 border-2 border-red-500 text-red-600 text-sm font-semibold rounded-md transition-all hover:bg-red-100 hover:border-red-700 hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                    <i class='bx bx-x text-lg'></i>
+                    <span>Cerrar</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    document.querySelector("button[hx-get]").addEventListener("click", function () {
+        document.getElementById("modal").classList.remove("hidden");
+    });
+</script>
+
+{% endblock %}
+

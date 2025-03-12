@@ -1,0 +1,84 @@
+<div id="asset-extra" class="w-full">
+    <div class="w-full bg-white shadow-md rounded p-3">
+        <div class="flex justify-between items-center border-b border-gray-200 pb-1 mb-2">
+            <h3 class="text-lg font-semibold text-gray-800">Detalles del Activo</h3>
+            <!-- Botón para editar -->
+            <c-btn.edit_id_hx url="asset_edit" :id="asset.id" hx_target="#asset-extra" icon="bx bx-edit text-lg" name="Editar activo"></c-btn.edit_id_hx>
+        </div>
+
+        <table class="w-full table-auto text-sm text-gray-700">
+            <tbody>
+                <!-- Nombre del Activo -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Nombre del Activo:</strong></td>
+                    <td class="py-1 px-2">{{ asset.name|default:"-" }}</td>
+                </tr>
+
+                <!-- Tipo de Activo -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Tipo de Activo:</strong></td>
+                    <td class="py-1 px-2">{{ asset.get_asset_type_display|default:"-" }}</td>
+                </tr>
+
+                <!-- Número de Serie -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Número de Serie:</strong></td>
+                    <td class="py-1 px-2">{{ asset.serial_number|default:"-" }}</td>
+                </tr>
+
+                <!-- Ubicación -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Ubicación:</strong></td>
+                    <td class="py-1 px-2">{{ asset.location|default:"-" }}</td>
+                </tr>
+
+                <!-- Estado -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Estado:</strong></td>
+                    <td class="py-1 px-2">{{ asset.get_status_display|default:"-" }}</td>
+                </tr>
+
+                <!-- Asignado a -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Asignado a:</strong></td>
+                    <td class="py-1 px-2">
+                        {% if asset.assigned_to %}
+                        {{ asset.assigned_to.get_full_name|default:asset.assigned_to.username }}
+                        {% else %}
+                        No asignado
+                        {% endif %}
+                    </td>
+                </tr>
+
+                <!-- Fecha de Adquisición -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Fecha de Adquisición:</strong></td>
+                    <td class="py-1 px-2">{{ asset.acquisition_date|date:"d/m/Y"|default:"-" }}</td>
+                </tr>
+
+                <!-- Cantidad -->
+                <tr class="border-b border-gray-200">
+                    <td class="py-1 px-2"><strong>Cantidad disponible:</strong></td>
+                    <td class="py-1 px-2">{{ asset.quantity_available|default:"-" }}</td>
+                </tr>
+
+                <!-- Notas -->
+                <tr>
+                    <td class="py-1 px-2"><strong>Notas:</strong></td>
+                    <td class="py-1 px-2">{{ asset.notes|default:"-" }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Pedidos pendientes -->
+    {% include 'supply/asset/partials/_asset_requests.html' %}
+
+    <!-- 🔹 Atributos Personalizados -->
+    {% include 'supply/asset/partials/_asset_attribute.html' %}
+
+    <!-- 🔹 Historial de Mantenimiento -->
+    {% include 'supply/asset/partials/_asset_maintenance.html' %}
+
+    <!-- 🔹 Historial de Movimientos -->
+    {% include 'supply/asset/partials/_asset_movement.html' %}
+</div>

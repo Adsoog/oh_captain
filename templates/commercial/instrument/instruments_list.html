@@ -1,0 +1,101 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+
+<c-nav.basic name="Instrumentos o artefeactos">
+    <form method="get" action="{% url 'download_instruments_list' %}">
+        <button type="submit" data-turbo="false" class="btn btn-primary">Descargar Reporte de Instrumentos</button>
+    </form>
+
+    <!-- Formulario de carga integrado en la misma página -->
+    <div id="upload-section">
+        <form action="{% url 'upload_instruments_list' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="file" required>
+            <button type="submit">Subir Archivo</button>
+        </form>
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+    </div>
+
+</c-nav.basic>
+<div class="container mx-auto bg-gray-100 w-full">
+    <div id="instrument-table" class="overflow-x-auto bg-white shadow-md rounded-lg w-full">
+        <table class="min-w-full table-auto border-collapse text-gray-700">
+            <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                    <th class="py-2 px-2 text-left w-12">#</th>
+                    <th class="py-2 px-2 text-left">Disciplina</th>
+                    <th class="py-2 px-2 text-left">Subdisciplina</th>
+                    <th class="py-2 px-2 text-left">Instrumento</th>
+                    <th class="py-2 px-2 text-left">Código Procedimiento</th>
+                    <th class="py-2 px-2 text-left">Procedimiento</th>
+                    <th class="py-2 px-2 text-left">Notas Comerciales</th>
+                    <th class="py-2 px-2 text-left">Intervalo Desde</th>
+                    <th class="py-2 px-2 text-left">Intervalo Hasta</th>
+                    <th class="py-2 px-2 text-left">Resolución Indicador</th>
+                    <th class="py-2 px-2 text-left">Marca</th>
+                    <th class="py-2 px-2 text-left">Modelo</th>
+                    <th class="py-2 px-2 text-left">Incertidumbre Expandida</th>
+                    <th class="py-2 px-2 text-center">Acreditado</th>
+                    <th class="py-2 px-2 text-left">Condición Acreditación</th>
+                    <th class="py-2 px-2 text-left">Patrones Empleados</th>
+                    <th class="py-2 px-2 text-left">Horas Hombre</th>
+                    <th class="py-2 px-2 text-right">Costo Calibración</th>
+                    <th class="py-2 px-2 text-right">Costo Verificación</th>
+                    <th class="py-2 px-2 text-right">Costo Mantenimiento</th>
+                    <th class="py-2 px-2 text-center">En Venta</th>
+                    <th class="py-2 px-2 text-left">Notas Técnicas</th>
+                    <th class="py-2 px-2 text-left">Centro de Costos</th>
+                    <th class="py-2 px-2 text-center">En Arequipa</th>
+                    <th class="py-2 px-2 text-center">En Lima</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if instruments %}
+                {% for instrument in instruments %}
+                <tr class="hover:bg-gray-50 border-b">
+                    <td class="py-2 px-2">
+                        <a href="{% url 'instrument_detail' instrument.id %}" class="text-blue-500 hover:underline">
+                            {{ forloop.counter }}
+                        </a>
+                    </td>
+                    <td class="py-2 px-2">{{ instrument.discipline }}</td>
+                    <td class="py-2 px-2">{{ instrument.subdiscipline|default:"-" }}</td>
+                    <td class="py-2 px-2">{{ instrument.instrument }}</td>
+                    <td class="py-2 px-2">{{ instrument.procedure_code }}</td>
+                    <td class="py-2 px-2">{{ instrument.procedure }}</td>
+                    <td class="py-2 px-2">{{ instrument.commercial_area_notes|default:"-" }}</td>
+                    <td class="py-2 px-2">{{ instrument.measurement_range_from }}</td>
+                    <td class="py-2 px-2">{{ instrument.measurement_range_to }}</td>
+                    <td class="py-2 px-2">{{ instrument.indicator_resolution }}</td>
+                    <td class="py-2 px-2">{{ instrument.brand|default:"-" }}</td>
+                    <td class="py-2 px-2">{{ instrument.model|default:"-" }}</td>
+                    <td class="py-2 px-2">{{ instrument.expanded_uncertainty|default:"-" }}</td>
+                    <td class="py-2 px-2 text-center">{% if instrument.accredited %}✔{% else %}✘{% endif %}</td>
+                    <td class="py-2 px-2">{{ instrument.accreditation_condition|default:"-" }}</td>
+                    <td class="py-2 px-2">{{ instrument.employed_standards|default:"-" }}</td>
+                    <td class="py-2 px-2">{{ instrument.man_hours }}</td>
+                    <td class="py-2 px-2 text-right">{{ instrument.calibration_cost|floatformat:2 }}</td>
+                    <td class="py-2 px-2 text-right">{{ instrument.verification_cost|floatformat:2 }}</td>
+                    <td class="py-2 px-2 text-right">{{ instrument.preventive_maintenance_cost|floatformat:2|default:"-" }}</td>
+                    <td class="py-2 px-2 text-center">{% if instrument.for_sale %}✔{% else %}✘{% endif %}</td>
+                    <td class="py-2 px-2">{{ instrument.technical_notes|default:"-" }}</td>
+                    <td class="py-2 px-2">{{ instrument.cost_center }}</td>
+                    <td class="py-2 px-2 text-center">{% if instrument.in_arequipa %}✔{% else %}✘{% endif %}</td>
+                    <td class="py-2 px-2 text-center">{% if instrument.in_lima %}✔{% else %}✘{% endif %}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="25" class="text-center text-red-600 py-3">No hay datos disponibles.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

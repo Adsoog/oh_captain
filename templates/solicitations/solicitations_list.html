@@ -1,0 +1,45 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block content %}
+
+<c-nav.basic name="Mis solicitudes">
+  <c-btn.create url="auto_solicitation_create" title="Mi solicitud"></c-btn.create>
+</c-nav.basic>
+
+<div class="overflow-x-auto bg-white shadow-md rounded-lg mt-4">
+  <table class="table-auto w-full text-sm text-gray-700 border-collapse">
+    <thead class="bg-gray-100 text-gray-700">
+      <tr>
+        <th class="py-3 px-4 text-center">Correlativo</th>
+        <th class="py-3 px-4 text-center">Área</th>
+        <th class="py-3 px-4 text-center">Empleado</th>
+        <th class="py-3 px-4 text-center">Tipo</th>
+        <th class="py-3 px-4 text-center">Estado</th>
+        <th class="py-3 px-4 text-center">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for solicitation in solicitations %}
+      <tr class="hover:bg-gray-50 border-b">
+        <td class="py-3 px-4 text-center">{{ solicitation.correlative }}</td>
+        <td class="py-3 px-4 text-center">{{ solicitation.area }}</td>
+        <td class="py-3 px-4 text-center">{{ solicitation.employee }}</td>
+        <td class="py-3 px-4 text-center">{{ solicitation.get_solicitation_type_display }}</td>
+        <td class="py-3 px-4 text-center">{{ solicitation.get_status_display }}</td>
+        <td class="py-3 px-4 text-center">
+          <div class="flex gap-2 justify-center">
+            <c-btn.view_id url="solicitation_detail" :id="solicitation.id" viewname="Ver Solicitud"></c-btn.view_id>
+            <c-btn.delete_id url="solicitation_delete" :id="solicitation.id" hx_target="body" deleteinstance="¿Eliminar esta Solicitud?"></c-btn.delete_id>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center text-gray-500 py-4">No hay solicitudes registradas.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

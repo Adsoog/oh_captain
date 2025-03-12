@@ -1,0 +1,32 @@
+<div class="overflow-x-auto bg-white shadow-md rounded-lg">
+    <table class="table-auto w-full text-sm text-gray-700 border-collapse">
+        <thead class="bg-gray-100 text-gray-700">
+            <tr>
+                <th class="py-3 px-4 text-center">Asset</th>
+                <th class="py-3 px-4 text-center">Tipo</th>
+                <th class="py-3 px-4 text-center">Estado</th>
+                <th class="py-3 px-4 text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for asset in assets %}
+            <tr class="hover:bg-gray-50 border-b">
+                <td class="py-3 px-4 text-center">{{ asset.name }}</td>
+                <td class="py-3 px-4 text-center">{{ asset.asset_type }}</td>
+                <td class="py-3 px-4 text-center">{{ asset.status }}</td>
+
+                <td class="py-3 px-4 text-center">
+                    <div class="flex gap-2 justify-center">
+                        <c-btn.view_id_hx url="asset_detail" :id="{{ asset.id }}" hx_target="#asset-extra" icon="bx bx-edit text-lg"> </c-btn.view_id_hx>
+                        <c-btn.delete_id url="asset_delete" :id="asset.id" hx_target="body" deleteinstance="este asset? :P"></c-btn.delete_id>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10" class="text-center text-gray-500 py-4">No hay assets registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

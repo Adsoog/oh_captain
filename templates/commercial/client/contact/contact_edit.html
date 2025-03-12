@@ -1,0 +1,56 @@
+{% load widget_tweaks %}
+<div id="contact-form" class="bg-white p-6 rounded-lg shadow-lg w-full mx-auto">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Editar Contacto</h2>
+
+    <form method="post"
+          hx-post="{% url 'client_contact_edit' contact.id %}"
+          hx-target="#client-contacts"
+          hx-swap="outerHTML"
+          class="space-y-4">
+        {% csrf_token %}
+
+        <div class="grid grid-cols-1 gap-4">
+            <!-- Sucursal -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Sucursal</label>
+                {{ form.branch|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 bg-white" }}
+            </div>
+
+            <!-- Nombre del contacto -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Nombre del Contacto</label>
+                {{ form.name|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- Área o departamento -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Área o Departamento</label>
+                {{ form.area|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- Correo electrónico -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Correo Electrónico</label>
+                {{ form.email|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- Teléfono -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Teléfono</label>
+                {{ form.phone|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </div>
+
+            <!-- Cargo / Rol -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Cargo o Rol</label>
+                {{ form.role|add_class:"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 bg-white" }}
+            </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="flex justify-between mt-6">
+            <c-btn.save name="Actualizar contacto"></c-btn.save>
+            <c-btn.cancel name="Cancelar" url="client_detail" :id="contact.client.id" hx_target="body"></c-btn.cancel>
+        </div>
+    </form>
+</div>

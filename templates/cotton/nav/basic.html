@@ -1,0 +1,12 @@
+{% load static %}
+<div class="flex items-center justify-between bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100 py-4 px-6 rounded-t-lg border-t border-gray-200 dark:border-gray-700 shadow-lg mb-6">
+    <!-- Contenedor flexible para centrar el título -->
+    <div class="flex-1 flex justify-center">
+        <h1 class="text-xl font-bold">{{ name }}</h1>
+    </div>
+
+    <!-- Botones adicionales -->
+    <div class="flex space-x-4">
+        {{ slot }}
+    </div>
+</div>

@@ -1,0 +1,56 @@
+<!-- Sección de Proformas -->
+{% load widget_tweaks %}
+
+<div id="client-proformas" class="bg-white shadow-md rounded p-4 mt-6">
+    <h3 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">Proformas del Cliente</h3>
+
+    {% if client.proforma_set.all %}
+    <div class="overflow-x-auto bg-white shadow-md  mt-6">
+        <table class="table-auto w-full text-sm text-gray-700 border-collapse">
+            <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                    <th class="py-3 px-4 text-center">ID</th>
+                    <th class="py-3 px-4 text-center">Fecha</th>
+                    <th class="py-3 px-4 text-center">Estado</th>
+                    <th class="py-3 px-4 text-center">Total (S/.)</th>
+                    <th class="py-3 px-4 text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for proforma in client.proforma_set.all %}
+                <tr class="hover:bg-gray-50 border-b">
+                    <td class="py-3 px-4 text-center">{{ proforma.id }}</td>
+                    <td class="py-3 px-4 text-center">{{ proforma.proforma_date|default:"-" }}</td>
+                    <td class="py-3 px-4 text-center">
+                        <span class="px-2 py-1 rounded text-xs font-semibold
+{% if proforma.status == 'draft' %}bg-gray-200 text-gray-700
+{% elif proforma.status == 'completed' %}bg-green-200 text-green-700
+{% elif proforma.status == 'sent' %}bg-blue-200 text-blue-700
+{% elif proforma.status == 'rejected' %}bg-red-200 text-red-700
+{% elif proforma.status == 'approved' %}bg-yellow-200 text-yellow-700
+{% elif proforma.status == 'accepted' %}bg-purple-200 text-purple-700
+                              {% endif %}">
+                            {{ proforma.get_status_display }}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4 text-center">{{ proforma.total|default:"0.00" }}</td>
+                    <td class="py-3 px-4 text-center">
+                        <div class="flex gap-2 justify-center">
+                            <c-btn.view_id url="proforma_detail" :id="proforma.id" name="Ver"></c-btn.view_id>
+                            <c-btn.delete_id url="proforma_delete" :id="proforma.id" hx_target="body" deleteinstance="¿Eliminar esta proforma?"></c-btn.delete_id>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-gray-500 py-4">No hay proformas registradas.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+    <p class="text-gray-500">No hay proformas registradas para este cliente.</p>
+    {% endif %}
+</div>

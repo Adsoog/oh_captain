@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>A.FORGE</title>
+        {% load static %}
+        <!-- Tailwind CSS CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Font Awesome para iconos -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+        <!-- Google Fonts -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            body,
+            html {
+                height: 100%;
+                font-family: 'Montserrat', sans-serif;
+                font-size: large;
+            }
+        </style>
+    </head>
+    <body class="flex">
+        <!-- Contenedor Izquierdo: Imagen de fondo -->
+        <div
+            class="w-3/4 h-full bg-cover bg-center"
+            style="  background-image: url('https://thumbs.dreamstime.com/b/sinking-boat-two-businessman-being-panic-abstract-illustration-business-concept-bankruptcy-49640810.jpg');"
+        ></div>
+
+        <!-- Contenedor Derecho: Franja negra con contenido -->
+        <div class="w-1/4 h-full bg-black flex flex-col">
+            <!-- Bloque superior: Cita -->
+            <div class="pt-8 px-4 text-center">
+                <blockquote class="relative pl-10 text-3xl font-semibold italic text-yellow-400 m-0 mx-auto">
+                    OH CAPITAN<br>MI CAPITAN
+                </blockquote>
+            </div>
+
+            <!-- Bloque inferior: Formulario de login centrado en el espacio restante -->
+            <div class="flex-grow flex items-center justify-center">
+                <div class="bg-black bg-opacity-75 text-white p-8 rounded-lg shadow-lg max-w-sm w-full">
+                    <h3 class="text-center text-xl mt-4 mb-4">ERP LO JUSTO</h3>
+                    {% if messages %}
+                    <ul class="mb-4">
+                        {% for message in messages %}
+                        <li class="text-red-400">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <input
+                                type="text"
+                                name="username"
+                                placeholder="Usuario"
+                                aria-label="Usuario"
+                                class="w-full p-3 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                        <div class="mb-6">
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Contraseña"
+                                aria-label="Contraseña"
+                                class="w-full p-3 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            class="w-full bg-yellow-400 text-black p-3 rounded-full hover:bg-yellow-500 transition-colors duration-300"
+                            aria-label="Iniciar sesión"
+                        >
+                            <i class="fas fa-sign-in-alt mr-2"></i> Iniciar sesión
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

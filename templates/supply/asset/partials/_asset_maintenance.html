@@ -1,0 +1,25 @@
+<div class="w-full bg-white shadow-md rounded p-3 mt-4">
+    <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-1 mb-2">Historial de Mantenimiento</h3>
+    <table class="w-full table-auto text-sm text-gray-700">
+        <thead>
+            <tr class="border-b border-gray-300 font-semibold">
+                <td class="py-1 px-2">Fecha</td>
+                <td class="py-1 px-2">Descripción</td>
+                <td class="py-1 px-2">Realizado por</td>
+                <td class="py-1 px-2">Costo</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for maintenance in asset.maintenances.all %}
+            <tr class="border-b border-gray-200">
+                <td class="py-1 px-2">{{ maintenance.maintenance_date|date:"d/m/Y" }}</td>
+                <td class="py-1 px-2">{{ maintenance.description }}</td>
+                <td class="py-1 px-2">{{ maintenance.performed_by.get_full_name|default:"-" }}</td>
+                <td class="py-1 px-2">${{ maintenance.cost|default:"0.00" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" class="py-1 px-2 text-center text-gray-500">No hay registros</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

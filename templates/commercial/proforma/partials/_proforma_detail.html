@@ -1,0 +1,97 @@
+{% load widget_tweaks %}
+
+<div id="proforma-edit" class="bg-white shadow-md rounded-lg p-4">
+    <form method="POST"
+          hx-post="{% url 'proforma_edit' proforma.id %}"
+          hx-target="#response-message"
+          hx-swap="innerHTML"
+          hx-trigger="keyup delay:3s">
+
+        {% csrf_token %}
+
+        <table class="w-full table-auto border-collapse">
+            <tbody>
+
+                <!-- Fila: Cliente y Sede -->
+                <tr class="border-b border-gray-300">
+                    <td class="py-1 px-2 w-1/6"><strong>Cliente:</strong></td>
+                    <td class="py-1 px-2 w-1/4">
+                        {% render_field form.client class="form-input p-1 w-full" %}
+                    </td>
+                    <td class="py-1 px-2 w-1/6"><strong>Sede:</strong></td>
+                    <td class="py-1 px-2 w-1/4">
+                        {% render_field form.branch class="form-input p-1 w-full" %}
+                    </td>
+                </tr>
+
+                <!-- Fila: Validez de la oferta y Tipo de Servicio -->
+                <tr class="border-b border-gray-300">
+                    <td class="py-1 px-2 w-1/6"><strong>Validez (días):</strong></td>
+                    <td class="py-1 px-2 w-1/6">
+                        {% render_field form.offer_validity class="form-input p-1 w-full text-center" %}
+                    </td>
+                    <td class="py-1 px-2 w-1/6"><strong>Tipo de Servicio:</strong></td>
+                    <td class="py-1 px-2 w-1/4">
+                        {% render_field form.service_type class="form-input p-1 w-full" %}
+                    </td>
+                </tr>
+
+                <!-- Fila: Fechas -->
+                <tr class="border-b border-gray-300">
+                    <td class="py-1 px-2 w-1/6"><strong>Fecha Solicitud:</strong></td>
+                    <td class="py-1 px-2 w-1/6">
+                        <input type="text" name="request_date"
+                               value="{{ proforma.request_date|date:'d/m/Y' }}"
+                               class="form-input p-1 w-full text-center" id="request_date" required>
+                    </td>
+                    <td class="py-1 px-2 w-1/6"><strong>Fecha Proforma:</strong></td>
+                    <td class="py-1 px-2 w-1/6">
+                        <input type="text" name="proforma_date"
+                               value="{{ proforma.proforma_date|date:'d/m/Y' }}"
+                               class="form-input p-1 w-full text-center" id="proforma_date" required>
+                    </td>
+                </tr>
+
+                <!-- Fila: Razón Social -->
+                <tr class="border-b border-gray-300">
+                    <td class="py-1 px-2 w-1/6"><strong>Razón Social:</strong></td>
+                    <td class="py-1 px-2" colspan="3">
+                        {% render_field form.certificate_owner class="form-input p-1 w-full" %}
+                    </td>
+                </tr>
+
+                <!-- Fila: Dirección (Certificado y Servicio en una sola fila) -->
+                <tr class="border-b border-gray-300">
+                    <td class="py-1 px-2 w-1/6"><strong>Dirección Certificado:</strong></td>
+                    <td class="py-1 px-2 w-1/3">
+                        {% render_field form.certificate_address class="form-input p-1 w-full" %}
+                    </td>
+                    <td class="py-1 px-2 w-1/6"><strong>Dirección de Servicio:</strong></td>
+                    <td class="py-1 px-2 w-1/3">
+                        {% render_field form.service_address class="form-input p-1 w-full" %}
+                    </td>
+                </tr>
+
+                <!-- Fila: Botón de Guardado -->
+                <tr>
+                    <td class="py-2 px-2 text-right" colspan="4">
+                        <div class="flex items-center justify-end gap-2">
+                            <c-btn.save name="Actualizar"></c-btn.save>
+                            <div id="response-message" class="text-sm text-green-600"></div>
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </form>
+</div>
+
+<!-- Scripts -->
+<script>
+    $(document).ready(function () {
+        $("#id_client").select2();
+        flatpickr("#request_date", { dateFormat: "d/m/Y" });
+        flatpickr("#proforma_date", { dateFormat: "d/m/Y" });
+    });
+</script>

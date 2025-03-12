@@ -1,0 +1,100 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+<c-nav.basic name="Detalle de Orden de Trabajo"></c-nav.basic>
+
+<div class="bg-white shadow-md rounded-lg p-6 mt-4">
+    <h1 class="text-2xl font-bold mb-4">Orden de Trabajo - Proforma {{ order.proforma.correlative }}</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <p class="mb-2"><span class="font-semibold">Fecha Programada:</span>
+                {% if order.planned_date %}
+                {{ order.planned_date|date:"Y-m-d H:i" }}
+                {% else %}
+                -
+                {% endif %}
+            </p>
+            <p class="mb-2"><span class="font-semibold">Estado:</span> {{ order.status }}</p>
+        </div>
+    </div>
+
+    <!-- 📌 Contenedor con 3 Columnas -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+        <!-- 🟢 Equipos Asignados -->
+        <div class="bg-gray-100 p-4 rounded-lg shadow">
+            <h3 class="font-semibold mb-2">Equipos Asignados</h3>
+            <ul class="list-disc ml-5">
+                {% for equipo in order.equipments.all %}
+                <li>{{ equipo }}</li>
+                {% empty %}
+                <li>No hay equipos asignados.</li>
+                {% endfor %}
+            </ul>
+
+            <!-- Formulario para asignar equipos -->
+            <form method="post">
+                {% csrf_token %}
+                {{ equipment_form.as_p }}
+                <button type="submit" name="update_equipment" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mt-2">
+                    Guardar Equipos
+                </button>
+            </form>
+        </div>
+
+        <!-- 🔵 Activos Necesarios -->
+        <div class="bg-gray-100 p-4 rounded-lg shadow">
+            <h3 class="font-semibold mb-2">Activos Necesarios</h3>
+            <p>
+                {% if order.assets %}
+                {{ order.assets }}
+                {% else %}
+                No hay activos asignados.
+                {% endif %}
+            </p>
+
+            <!-- Formulario para asignar activos -->
+            <form method="post">
+                {% csrf_token %}
+                {{ asset_form.as_p }}
+                <button type="submit" name="update_asset" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mt-2">
+                    Guardar Activos
+                </button>
+            </form>
+        </div>
+
+        <!-- 🟠 Trabajadores Asignados -->
+        <div class="bg-gray-100 p-4 rounded-lg shadow">
+            <h3 class="font-semibold mb-2">Trabajadores Asignados</h3>
+            <ul class="list-disc ml-5">
+                {% for worker in order.workers.all %}
+                <li>{{ worker.get_full_name }}</li>
+                {% empty %}
+                <li>No hay trabajadores asignados.</li>
+                {% endfor %}
+            </ul>
+
+            <!-- Formulario para asignar trabajadores -->
+            <form method="post">
+                {% csrf_token %}
+                {{ worker_form.as_p }}
+                <button type="submit" name="update_worker" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mt-2">
+                    Guardar Trabajadores
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 📌 Botones de Acción -->
+    <div class="mt-6 flex gap-4">
+        <a href="{% url 'work_order_edit' order.id %}" data-turbo="false" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+            Editar
+        </a>
+        <a href="{% url 'work_orders_list' %}" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded">
+            Volver a la lista
+        </a>
+    </div>
+</div>
+
+{% endblock %}

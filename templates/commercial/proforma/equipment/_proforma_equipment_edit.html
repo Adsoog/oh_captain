@@ -1,0 +1,79 @@
+{% load widget_tweaks %}
+
+<tr id="equipment-row-{{ equipment.id }}" class="hover:bg-gray-50 border-b">
+    <td colspan="13" class="p-0">
+        <form method="post"
+              hx-post="{% url 'proforma_equipment_edit' equipment.id %}"
+              hx-target="#proforma-equipment-list"
+              hx-swap="outerHTML"
+              class="w-full">
+            {% csrf_token %}
+            <div class="p-2 bg-gray-50 border-b">
+                <div class="text-sm font-medium text-gray-700 mb-2">
+                    {{ equipment.instrument }}
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <div class="flex flex-col">
+                        <label class="text-gray-600">Marca</label>
+                        {{ form.brand|add_class:"px-1 py-0.5 border border-gray-300 rounded text-sm" }}
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="text-gray-600">Modelo</label>
+                        {{ form.model|add_class:"px-1 py-0.5 border border-gray-300 rounded text-sm" }}
+                    </div>
+
+                    <!-- Especificaciones -->
+                    <div class="flex flex-col">
+                        <label class="text-gray-600">Especificaciones</label>
+                        {{ form.specifications|attr:"rows=1"|add_class:"px-1 py-0.5 w-full border border-gray-300 rounded text-sm h-6 min-h-0 resize-y" }}
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-gray-600">N° de Serie</label>
+                        {{ form.serial_number|add_class:"px-1 py-0.5 border border-gray-300 rounded text-sm" }}
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="text-gray-600">Código</label>
+                        {{ form.code|add_class:"px-1 py-0.5 border border-gray-300 rounded text-sm" }}
+                    </div>
+
+                    <!-- Procedimiento -->
+                    <div class="flex flex-col">
+                        <label class="text-gray-600">Procedimiento</label>
+                        {{ form.procedure|attr:"rows=1"|add_class:"px-1 py-0.5 w-full border border-gray-300 rounded text-sm h-6 min-h-0 resize-y" }}
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-gray-600">Magnitud</label>
+                        {{ form.magnitude|add_class:"px-1 py-0.5 border border-gray-300 rounded text-sm" }}
+                    </div>
+
+                    <!-- Lugar de Calibración -->
+                    <div class="flex flex-col">
+                        <label class="text-gray-600">Lugar de Calibración</label>
+                        {{ form.calibration_place|attr:"rows=1"|add_class:"px-1 py-0.5 w-full border border-gray-300 rounded text-sm h-6 min-h-0 resize-y" }}
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-gray-600">Servicios</label>
+                        {{ form.service|add_class:"px-1 py-0.5 border border-gray-300 rounded text-sm" }}
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-gray-600">Costo indirecto</label>
+                        {{ form.indirect_cost|add_class:"px-1 py-0.5 border border-gray-300 rounded text-sm" }}
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-gray-600">Total</label>
+                        {{ form.total|add_class:"px-1 py-0.5 border border-gray-300 rounded text-sm" }}
+                    </div>
+                </div>
+                <div class="mt-2 flex justify-end gap-2">
+                    <c-btn.save savename="Actualizar equipo"></c-btn.save>
+                    <c-btn.cancel_simple name="Regresar"></c-btn.cancel_simple>
+                </div>
+            </div>
+        </form>
+    </td>
+</tr>

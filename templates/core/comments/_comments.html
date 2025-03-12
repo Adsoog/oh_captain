@@ -1,0 +1,55 @@
+<div id="comments-section" class="pt-2">
+    <div class="max-w-2xl mx-auto p-4 space-y-4 bg-white rounded shadow">
+        <!-- Formulario de Nuevo Comentario -->
+        <form method="POST"
+              hx-post="{% url 'get_comments' model_name=model_name object_id=objeto.id %}"
+              hx-target="#comments-section"
+              hx-swap="outerHTML"
+              enctype="multipart/form-data"
+              class="flex flex-col gap-3">
+            {% csrf_token %}
+
+            <div class="flex gap-2">
+                <input type="text"
+                       name="title"
+                       placeholder="Título"
+                       class="w-24 p-1 border rounded text-xs">
+                <input type="text"
+                       name="message"
+                       placeholder="Comentario"
+                       class="w-full p-1 border rounded text-xs">
+            </div>
+
+            <div class="flex justify-between items-center">
+                <label for="attachment" class="text-xs text-gray-600 cursor-pointer hover:text-gray-800">
+                    📎 Adjuntar Archivo
+                </label>
+                <input type="file" name="attachment" id="attachment" class="hidden">
+                <button type="submit"
+                        class="px-3 py-1 bg-green-500 text-white text-xs font-semibold rounded-md hover:bg-green-600">
+                    Comentar
+                </button>
+            </div>
+        </form>
+
+        <!-- Lista de Comentarios -->
+        <ul class="space-y-3">
+            {% for comentario in comentarios %}
+            <li class="bg-gray-50 p-2 rounded border border-gray-200">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm font-medium">{{ comentario.user.username }}</span>
+                    <span class="text-xs text-gray-500">{{ comentario.created_at }}</span>
+                </div>
+                <p class="text-sm text-gray-700">{{ comentario.title }}</p>
+                <p class="text-xs text-gray-600">{{ comentario.message }}</p>
+                {% if comentario.attachment %}
+                <a href="{{ comentario.attachment.url }}" download
+                   class="text-blue-500 hover:underline text-xs">📎 Descargar</a>
+                {% endif %}
+            </li>
+            {% empty %}
+            <li class="text-gray-500 text-sm">No hay comentarios aún.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

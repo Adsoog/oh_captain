@@ -1,0 +1,62 @@
+<div class="w-full bg-white shadow-md rounded p-3 mt-4">
+    <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-1 mb-2">Pedidos Relacionados</h3>
+
+    {% if requests %}
+    <table class="w-full table-auto text-sm text-gray-700">
+        <thead>
+            <tr class="border-b border-gray-200">
+                <th class="py-1 px-2 text-left">Usuario</th>
+                <th class="py-1 px-2 text-left">Aprovador</th>
+                <th class="py-1 px-2 text-left">Cantidad</th>
+                <th class="py-1 px-2 text-left">Estado</th>
+                <th class="py-1 px-2 text-left">Fecha</th>
+                {% if user.is_staff %}  <!-- 🔹 Solo admins ven esta columna -->
+                <th class="py-1 px-2 text-left">Acciones</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests %}
+            <tr class="border-b border-gray-200">
+                <td class="py-1 px-2">{{ request.requested_by.get_full_name|default:request.requested_by.username }}</td>
+                <td class="py-1 px-2">{{ request.approved_by.get_full_name|default:request.approved_by.username }}</td>
+                <td class="py-1 px-2">{{ request.quantity }}</td>
+                <td class="py-1 px-2">
+                    {% if request.status == "pending" %}
+                    <span class="text-yellow-500 font-semibold">Pendiente</span>
+                    {% elif request.status == "approved" %}
+                    <span class="text-green-600 font-semibold">Aprobado</span>
+                    {% elif request.status == "rejected" %}
+                    <span class="text-red-500 font-semibold">Rechazado</span>
+                    {% elif request.status == "returned" %}
+                    <span class="text-blue-500 font-semibold">Devuelto</span>
+                    {% endif %}
+                </td>
+                <td class="py-1 px-2">{{ request.request_date|date:"d/m/Y" }}</td>
+
+                <td class="py-1 px-2">
+                    {% if request.status == "pending" %}
+                    <div class="flex gap-2">
+                        <!-- Botón Aprobar -->
+                        <a href="{% url 'approve_request' request.id %}"
+                           class="px-3 py-1 text-white bg-green-600 hover:bg-green-700 rounded">
+                            Aprobar
+                        </a>
+                        <!-- Botón Rechazar -->
+                        <a href="{% url 'reject_request' request.id %}"
+                           class="px-3 py-1 text-white bg-red-600 hover:bg-red-700 rounded">
+                            Rechazar
+                        </a>
+                    </div>
+                    {% else %}
+                    <span class="text-gray-400 italic">Sin acciones</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-gray-500">No hay pedidos registrados para este activo.</p>
+    {% endif %}
+</div>

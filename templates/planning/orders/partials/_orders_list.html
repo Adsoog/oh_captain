@@ -1,0 +1,47 @@
+<div class="overflow-x-auto bg-white shadow-md rounded-lg">
+    <table class="table-auto w-full text-sm text-gray-700 border-collapse">
+        <thead class="bg-gray-100 text-gray-700">
+            <tr>
+                <th class="py-3 px-4 text-center">Proforma</th>
+                <th class="py-3 px-4 text-center">Fecha Programada</th>
+                <th class="py-3 px-4 text-center">Equipos</th>
+                <th class="py-3 px-4 text-center">Activo</th>
+                <th class="py-3 px-4 text-center">Estado</th>
+                <th class="py-3 px-4 text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in workorders %}
+            <tr class="hover:bg-gray-50 border-b">
+                <td class="py-3 px-4 text-center">{{ order.proforma.correlative }}</td>
+                <td class="py-3 px-4 text-center">
+                    {% if order.planned_date %}
+                    {{ order.planned_date|date:"Y-m-d H:i" }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td class="py-3 px-4 text-center">{{ order.equipments.all|length }}</td>
+                <td class="py-3 px-4 text-center">
+                    {% if order.assets %}
+                    {{ order.assets }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td class="py-3 px-4 text-center">{{ order.status }}</td>
+                <td class="py-3 px-4 text-center">
+                    <div class="flex gap-2 justify-center">
+                        <c-btn.view_id url="work_order_detail" :id="order.id" viewname="Ver Orden"></c-btn.view_id>
+                        <c-btn.delete_id url="work_order_delete" :id="order.id" hx_target="body" deleteinstance="¿Eliminar esta Orden?"></c-btn.delete_id>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center text-gray-500 py-4">No hay órdenes de trabajo registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

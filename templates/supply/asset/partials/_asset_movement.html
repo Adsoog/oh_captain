@@ -1,0 +1,27 @@
+<div class="w-full bg-white shadow-md rounded p-3 mt-4">
+    <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-1 mb-2">Historial de Movimientos</h3>
+    <table class="w-full table-auto text-sm text-gray-700">
+        <thead>
+            <tr class="border-b border-gray-300 font-semibold">
+                <td class="py-1 px-2">Fecha</td>
+                <td class="py-1 px-2">Ubicación Anterior</td>
+                <td class="py-1 px-2">Nueva Ubicación</td>
+                <td class="py-1 px-2">Usuario</td>
+                <td class="py-1 px-2">Motivo</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movement in asset.movements.all %}
+            <tr class="border-b border-gray-200">
+                <td class="py-1 px-2">{{ movement.movement_date|date:"d/m/Y H:i" }}</td>
+                <td class="py-1 px-2">{{ movement.previous_location|default:"-" }}</td>
+                <td class="py-1 px-2">{{ movement.new_location }}</td>
+                <td class="py-1 px-2">{{ movement.user.get_full_name|default:"-" }}</td>
+                <td class="py-1 px-2">{{ movement.reason|default:"-" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="py-1 px-2 text-center text-gray-500">No hay movimientos registrados</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

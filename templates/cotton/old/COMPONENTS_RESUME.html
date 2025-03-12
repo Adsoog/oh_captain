@@ -1,0 +1,58 @@
+<!-- Botón Guardar - savebutton.html -->
+<c-savebutton savename="Añadir equipo"></c-savebutton>
+
+<!-- Botón Detalle -->
+<c-viewbutton url="proforma_detail" :id="proforma.id" viewname="Ver proforma"></c-viewbutton>
+
+<!-- Botón Eliminar -->
+<c-deletebutton url="proforma_delete" :id="proforma.id" hx_target="body" deleteinstance="esta Proforma? :P "></c-deletebutton>
+
+<!-- Botón Editar -->
+<c-editbutton url="proforma_edit" :id="proforma.id" hx_target="#proforma-info" icon="bx bx-edit text-lg" editname="Editar proforma"></c-editbutton>
+
+<c-editbutton url="proforma_contact_form" :id="proforma.id" hx_target="#proforma-info" icon="bx bxs-contact text-lg" editname="Añadir contactos"></c-editbutton>
+
+<c-editbutton url="proforma_edit" :id="proforma.id" hx_target="#proforma-info" icon="bx bxs-wallet text-lg" editname="Añadir costos"></c-editbutton>
+
+<!-- cancel button -->
+<c-cancelbutton cancelname="Regresar" url="proforma_detail" :id="proforma.id" hx_target="body"></c-cancelbutton>
+
+<!-- header -->
+<c-header back_url="clients_list" title="Lista de clientes" url="client_create" buttonname="Crear cliente"></c-header>
+
+<!-- Botón para editar ligero -->
+<c-editbuttonlight url="client_branch_edit" :id="{{ branch.id }}" hx_target="#branch-row-{{ branch.id }}" icon="bx bx-edit text-lg"> </c-editbuttonlight>
+
+<!-- simpleheader -->
+<c-simpleheader back_url="proforma_list" title="Lista de clientes"><!-- Botón para abrir el modal -->
+    <!-- Formulario para subir archivo Excel -->
+    <form id="excel-upload-form" method="post" action="{% url 'upload_cost_table_excel' %}" class="flex items-center space-x-4">
+        {% csrf_token %}
+        <div>
+            <label for="file" class="block text-sm font-medium text-gray-700">Subir Excel:</label>
+            <input type="file" id="file" name="file" accept=".xlsx" class="mt-1 p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+        </div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+            Procesar
+        </button>
+    </form>
+</c-simpleheader>
+
+<!-- create button with id-->
+<c-createbuttonwithid url="proforma_clone" :id="proforma.id" title="Nueva version"></c-createbuttonwithid>
+
+<!-- create button htmx-->
+<c-createbuttonhtmx url="proforma_edit" hx_target="#proforma-info" buttonhtmx="Editar proforma"></c-createbuttonhtmx>
+
+<!-- simpleheader with createbutton-->
+<c-simpleheader back_url="proforma_list" title="Proforma {{ proforma.id }}">
+    <c-createbuttonwithid url="proforma_clone" :id="proforma.id" title="Nueva version"></c-createbuttonwithid>
+</c-simpleheader>
+
+<!-- basicheader -->
+<c-basicheader title="ASSETS"></c-basicheader>
+
+<!-- view with htmx and id -->
+<c-viewhtmxid url="asset_detail" :id="{{ asset.id }}" hx_target="#asset-extra" icon="bx bx-edit text-lg"> </c-viewhtmxid>
+
+#prueba
