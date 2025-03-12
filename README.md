@@ -47,3 +47,7 @@ TURBO JS USAR DESPUES:
 COLOR DE LETRA PARA TODOS
 
  text-gray-700
+
+
+
+commit chiquitillo >.<
