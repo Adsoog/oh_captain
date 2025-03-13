@@ -1,109 +1,145 @@
 {% extends "base/base.html" %}
-
 {% load static %}
+{% load widget_tweaks %}
 
-{% block page_title %} Detalles {% endblock %}
-
-{% load widget_tweaks %} {# Cargar widget tweaks para personalizar los inputs #}
+{% block title %}Detalles de la Solicitud{% endblock %}
+{% block page_title %}Detalles de la Solicitud{% endblock %}
 
 {% block content %}
-<div class="w-full ">
-  <c-nav.basic name="Solicitud {{ solicitation.id }}">
-    <c-btn.create url="auto_solicitation_create" title="Solicitud {{ solicitation.id }}"></c-btn.create>
-  </c-nav.basic>
+<!-- Contenedor grid: 2 columnas en pantallas md+ -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
 
-  <h1 class="text-2xl font-bold mb-6 text-gray-800">Detalle de Solicitud</h1>
+  <!-- ***** Columna Izquierda: “un solo panel” con 2 formularios ***** -->
+  <div class="bg-white shadow-md rounded-lg p-3">
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Formulario 1: Cambiar Tipo (primera fila de la tabla) -->
+    <form method="POST"
+          hx-post="{% url 'solicitation_type_form' solicitation.pk %}"
+          hx-target="body"
+          hx-swap='outerHTML'
+          hx-trigger='change'>
+      {% csrf_token %}
+      <table class="w-full table-auto">
+        <tbody>
+          <!-- Fila para seleccionar el tipo de Solicitud -->
+          <tr class="border-b border-gray-200">
+            <td class="py-1 px-2 w-1/4 font-bold">
+              Tipo de Solicitud
+            </td>
+            <td class="py-1 px-2">
+              {% render_field type_form.solicitation_type class="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" %}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+    {% if solicitation.solicitation_type %}
+    <!-- Formulario 2: Resto de la Solicitud (mismas clases de “tabla cliente”) -->
+    <form method="POST" action="{% url 'solicitation_edit' solicitation.pk %}">
+      {% csrf_token %}
+      <table class="w-full table-auto">
+        <tbody>
+          <!-- Fecha de Solicitud -->
+          <tr class="border-b border-gray-200">
+            <td class="py-1 px-2 w-1/4">
+              <strong>Fecha de Solicitud:</strong>
+            </td>
+            <td class="py-1 px-2">
+              {{ form.requested_at|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </td>
+          </tr>
 
-    <!-- Columna 1: Formulario de la Solicitud -->
-    <div class="bg-white shadow-md rounded-lg p-6">
-      <h2 class="text-lg font-semibold mb-4 text-gray-700">Formulario de Solicitud</h2>
+          <!-- Razón -->
+          <tr class="border-b border-gray-200">
+            <td class="py-1 px-2">
+              <strong>Razón:</strong>
+            </td>
+            <td class="py-1 px-2">
+              {{ form.reason|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </td>
+          </tr>
 
-      <form method="POST" action="{% url 'solicitation_edit' solicitation.pk %}" class="space-y-4">
-        {% csrf_token %}
+          <!-- Empleado -->
+          <tr class="border-b border-gray-200">
+            <td class="py-1 px-2">
+              <strong>Empleado:</strong>
+            </td>
+            <td class="py-1 px-2">
+              {{ form.employee|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </td>
+          </tr>
 
-        <!-- Fecha de Solicitud -->
-        <div>
-          <label class="block text-sm font-semibold text-gray-700">Fecha de Solicitud</label>
-          {{ form.requested_at|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-        </div>
+          <!-- Área -->
+          <tr class="border-b border-gray-200">
+            <td class="py-1 px-2">
+              <strong>Área:</strong>
+            </td>
+            <td class="py-1 px-2">
+              {{ form.area|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </td>
+          </tr>
 
-        <!-- Tipo de Solicitud -->
-        <div>
-          <label class="block text-sm font-semibold text-gray-700">Tipo de Solicitud</label>
-          {{ form.solicitation_type|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-        </div>
+          <!-- Departamento -->
+          <tr class="border-b border-gray-200">
+            <td class="py-1 px-2">
+              <strong>Departamento:</strong>
+            </td>
+            <td class="py-1 px-2">
+              {{ form.department|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </td>
+          </tr>
 
-        <!-- Razón -->
-        <div>
-          <label class="block text-sm font-semibold text-gray-700">Razón</label>
-          {{ form.reason|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-        </div>
+          <!-- Orden de Trabajo -->
+          <tr class="border-b border-gray-200">
+            <td class="py-1 px-2">
+              <strong>Orden de Trabajo:</strong>
+            </td>
+            <td class="py-1 px-2">
+              {{ form.work_order|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </td>
+          </tr>
 
-        <!-- Empleado -->
-        <div>
-          <label class="block text-sm font-semibold text-gray-700">Empleado</label>
-          {{ form.employee|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-        </div>
+          <!-- Cliente -->
+          <tr class="border-b border-gray-200">
+            <td class="py-1 px-2">
+              <strong>Cliente:</strong>
+            </td>
+            <td class="py-1 px-2">
+              {{ form.client|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-        <!-- Área -->
-        <div>
-          <label class="block text-sm font-semibold text-gray-700">Área</label>
-          {{ form.area|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-        </div>
+      <!-- Botón del segundo formulario -->
+      <div class="flex justify-end mt-4">
+        <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition">
+          Guardar cambios
+        </button>
+      </div>
+    </form>
+    {% else %}
+    <!-- Aquí un mensaje o lo que prefieras mostrar cuando
+    no hay tipo de solicitud seleccionado -->
+    <p class="text-gray-700">Para ver los campos de solicitud, primero seleccione el tipo de Solicitud.</p>
+    {% endif %}
 
-        <!-- Departamento -->
-        <div>
-          <label class="block text-sm font-semibold text-gray-700">Departamento</label>
-          {{ form.department|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-        </div>
+  </div>  <!-- Fin Columna Izquierda -->
 
-        <!-- Orden de Trabajo -->
-        <div>
-          <label class="block text-sm font-semibold text-gray-700">Orden de Trabajo</label>
-          {{ form.work_order|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-        </div>
-
-        <!-- Cliente -->
-        <div>
-          <label class="block text-sm font-semibold text-gray-700">Cliente</label>
-          {{ form.client|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-        </div>
-
-        <div class="flex justify-end mt-4">
-          <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition">
-            Guardar cambios
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <!-- Columna 2: Partial específico según el tipo -->
-    <div class="bg-white shadow-md rounded-lg p-6">
-      <h2 class="text-lg font-semibold mb-4 text-gray-700">Detalles adicionales</h2>
-      {% with partial_template="solicitations/partials/_detail_"|add:solicitation.solicitation_type|add:".html" %}
+  <!-- ***** Columna Derecha: partial con detalles adicionales ***** -->
+{% if solicitation.solicitation_type %}
+  <div class="bg-white shadow-md rounded-lg p-6">
+    {% with partial_template="solicitations/partials/_detail_"|add:solicitation.solicitation_type|add:".html" %}
       {% include partial_template %}
-      {% endwith %}
-    </div>
+    {% endwith %}
   </div>
+{% else %}
+  <!-- Opcional: Muestra un aviso o deja un espacio en blanco -->
+  <div class="bg-white shadow-md rounded-lg p-6 mt-4">
+    <p class="text-gray-700">No hay detalles adicionales porque aún no se ha seleccionado el tipo de Solicitud.</p>
+  </div>
+{% endif %}
 
-  <!-- Información de la Solicitud -->
-  <div class="mt-8 bg-white shadow-md rounded-lg p-6">
-    <h2 class="text-lg font-semibold mb-4 text-gray-700">Información de la Solicitud</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <p><strong class="text-gray-700">Correlativo:</strong> {{ solicitation.correlative }}</p>
-      <p><strong class="text-gray-700">Razón:</strong> {{ solicitation.reason }}</p>
-      <p><strong class="text-gray-700">Estado:</strong> {{ solicitation.get_status_display }}</p>
-      <p><strong class="text-gray-700">Orden de Trabajo:</strong>
-        {% if solicitation.work_order %}
-        {{ solicitation.work_order }}
-        {% else %}
-        <span class="text-red-500">No asignada</span>
-        {% endif %}
-      </p>
-    </div>
-  </div>
 
 </div>
-{% endblock %}
+{% endblock content %}

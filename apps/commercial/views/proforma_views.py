@@ -3,7 +3,7 @@ from django.utils.timezone import now
 from django.shortcuts import render, get_object_or_404, redirect
 from apps.commercial.forms.equipment_forms import EquipmentAddForm
 from apps.commercial.forms.proforma_forms import ProformaForm
-from apps.commercial.models.proforma_models import Proforma
+from apps.commercial.models.proforma_models import Proforma, ProformaParameters
 
 
 def proformas_list(request):
@@ -21,6 +21,7 @@ def auto_proforma_create(request):
             proforma_date=today,
             sales_advisor=user,
         )
+        ProformaParameters.objects.create(proforma=proforma)
         return redirect('proforma_detail', id=proforma.id)
     else:
         return redirect('proformas_list')
@@ -44,6 +45,11 @@ def proforma_edit(request, id):
         if form.is_valid():
             form.save()
             return HttpResponse("<span style='color: green;'>✔ Proforma actualizada</span>")
+
+
+def branch(request):
+    form = ProformaForm(request.GET)
+    return HttpResponse(form['branch'])
 
 
 def proforma_delete(request, id):

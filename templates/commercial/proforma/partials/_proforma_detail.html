@@ -1,22 +1,22 @@
 {% load widget_tweaks %}
-
 <div id="proforma-edit" class="bg-white shadow-md rounded-lg p-4">
     <form method="POST"
           hx-post="{% url 'proforma_edit' proforma.id %}"
           hx-target="#response-message"
-          hx-swap="innerHTML"
-          hx-trigger="keyup delay:3s">
-
+          hx-swap="innerHTML">
         {% csrf_token %}
-
         <table class="w-full table-auto border-collapse">
             <tbody>
-
                 <!-- Fila 1: Cliente, Sede y Validez -->
                 <tr class="border-b border-gray-300">
                     <td class="py-1 px-2 w-1/6"><strong>Cliente:</strong></td>
                     <td class="py-1 px-2 w-1/6">
-                        {% render_field form.client class="form-input p-1 w-full" %}
+                        {% render_field form.client
+                        class="form-input p-1 w-full"
+                        hx-get="/commercial/branch/"
+                        hx-target="#id_branch"
+                        hx-trigger="change"
+                        %}
                     </td>
                     <td class="py-1 px-2 w-1/6"><strong>Sede:</strong></td>
                     <td class="py-1 px-2 w-1/6">
@@ -27,7 +27,6 @@
                         {% render_field form.offer_validity class="form-input p-1 w-full text-center" %}
                     </td>
                 </tr>
-
                 <!-- Fila 2: Tipo de Servicio, Fecha Solicitud y Fecha Proforma -->
                 <tr class="border-b border-gray-300">
                     <td class="py-1 px-2 w-1/6"><strong>Tipo de Servicio:</strong></td>
@@ -47,7 +46,6 @@
                                class="form-input p-1 w-full text-center" id="proforma_date" required>
                     </td>
                 </tr>
-
                 <!-- Fila 3: Razón Social, Dirección Certificado y Dirección de Servicio -->
                 <tr class="border-b border-gray-300">
                     <td class="py-1 px-2 w-1/6"><strong>Razón Social:</strong></td>
@@ -63,7 +61,6 @@
                         {% render_field form.service_address class="form-input p-1 w-full" %}
                     </td>
                 </tr>
-
                 <!-- Fila 4: Botón de Guardado (Ocupa las 6 columnas) -->
                 <tr>
                     <td class="py-2 px-2 text-right" colspan="6">
@@ -73,7 +70,6 @@
                         </div>
                     </td>
                 </tr>
-
             </tbody>
         </table>
     </form>
@@ -82,8 +78,16 @@
 <!-- Scripts -->
 <script>
     $(document).ready(function () {
+        // Iniciamos Select2
         $("#id_client").select2();
+        // Forzamos que el evento select2:select lance también un change nativo
+        $("#id_client").on("select2:select", function (e) {
+            // Esto hace que el <select> original dispare un evento change real
+            this.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+        // Igual para Branch si lo usas, aunque en tu caso lo dinámico se hace al cambiar Client
         $("#id_branch").select2();
+        // Tus flatpickr
         flatpickr("#request_date", { dateFormat: "d/m/Y" });
         flatpickr("#proforma_date", { dateFormat: "d/m/Y" });
     });

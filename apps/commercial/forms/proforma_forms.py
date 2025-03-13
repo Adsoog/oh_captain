@@ -1,8 +1,32 @@
 from django import forms
-from apps.commercial.models.proforma_models import Proforma
+from apps.commercial.models.proforma_models import Proforma, Client, Branch
+from dynamic_forms import DynamicField, DynamicFormMixin
 
 
-class ProformaForm(forms.ModelForm):
+class ProformaForm(DynamicFormMixin, forms.ModelForm):
+
+    def branch_choices(form):
+        client = form['client'].value()
+        if client:
+            return Branch.objects.filter(client=client)
+        return Branch.objects.none()
+
+    def initial_branch(form):
+        client = form['client'].value()
+        if client:
+            return Branch.objects.filter(client=client).first()
+        return None
+
+    client = forms.ModelChoiceField(
+        queryset=Client.objects.all(),
+        initial=Client.objects.first()
+    )
+    branch = DynamicField(
+        forms.ModelChoiceField,
+        queryset=branch_choices,
+        initial=initial_branch
+    )
+
     class Meta:
         model = Proforma
         fields = ['client', 'branch', 'request_date', 'proforma_date', 'offer_validity',

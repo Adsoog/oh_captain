@@ -33,8 +33,7 @@ class Solicitation(models.Model):
     work_order = models.ForeignKey(WorkOrder, on_delete=models.SET_NULL, null=True, blank=True,
                                    related_name='solicitations')
     client = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True, blank=True)
-    solicitation_type = models.CharField(max_length=50, choices=SolicitationType.choices,
-                                         default=SolicitationType.PERDIEM_REQUEST)
+    solicitation_type = models.CharField(max_length=50, choices=SolicitationType.choices, null=True, blank=True)
 
     def __str__(self):
         return f"{self.get_solicitation_type_display()} - {self.correlative}"
