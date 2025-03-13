@@ -1,18 +1,27 @@
 <!-- Navbar -->
 <div class="navbar bg-gradient-to-r from-black via-gray-900 to-black shadow-md shadow-gray-600 px-3 fixed top-0 w-full z-50 transition-colors duration-300">
+    <!-- Botón para alternar la sidebar -->
     <div class="flex-none">
         <button onclick="toggleSidebar()" class="btn btn-square btn-ghost">
             <i class="bx bx-menu text-2xl text-white"></i>
         </button>
     </div>
 
-    <!-- 🔹 Título dinámico en el centro -->
+    <!-- Título estático "O! Captain" y Título dinámico centrado -->
     <div class="flex-1 text-center">
         <span class="text-xl font-semibold text-white">
-            {% block title %}Dashboard{% endblock %}
+            O! Captain
         </span>
     </div>
 
+    <!-- Título dinámico centrado -->
+    <div class="flex-1 text-center">
+        <span class="text-sm text-white">
+            {% block page_title %}{% endblock %}
+        </span>
+    </div>
+
+    <!-- Iconos del navbar (carrito, tema, perfil) -->
     <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
             <div class="indicator">

@@ -1,102 +1,111 @@
-<nav :style="{ width: expanded ? '13rem' : '5rem' }" class="fixed h-full bg-white shadow-lg p-4 flex flex-col transition-all duration-300">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="bg-base-200 text-gray-800 min-h-screen p-3 transition-all duration-300 fixed left-0 top-16 shadow-lg sidebar-expanded">
+      <ul>
+        <!-- Inicio -->
+        <li>
+          <a class="p-3 rounded-md flex items-center gap-3 transition-all duration-200 hover:bg-gray-300 text-gray-900">
+            <i class="bx bx-home text-xl"></i>
+            <span class="sidebar-text">Inicio</span>
+          </a>
+        </li>
 
-  <!-- Logo Section -->
-  <div class="mb-4 flex justify-center">
-    <img :src="expanded ? '{{ primary_logo }}' : '{{ secondary_logo }}'" alt="Logo" class="h-10 w-auto transition-all duration-300">
-  </div>
+        <!-- Usuarios (con submenú) -->
+        <li class="relative">
+          <button onclick="toggleSubmenu('users-submenu')" class="p-3 w-full rounded-md flex items-center justify-between transition-all duration-200 hover:bg-gray-300 text-gray-900 submenu-toggle">
+            <div class="flex items-center gap-3">
+              <i class="bx bx-user text-xl"></i>
+              <span class="sidebar-text">Comercial</span>
+            </div>
+            <i class="bx bx-chevron-down text-xl"></i>
+          </button>
+          <ul id="users-submenu" class="submenu bg-base-100 shadow-lg rounded-md w-full transition-all duration-300">
+            <li>
+              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="{% url 'clients_list' %}">
+                <i class="bx bx-list-ul text-lg"></i>
+                <span>Clientes</span>
+              </a>
+            </li>
+            <li>
+              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="{% url 'instruments_list' %}">
+                <i class="bx bx-user-plus text-lg"></i>
+                <span>Tabla de costos</span>
+              </a>
+            </li>
+            <li>
+              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="{% url 'proformas_list' %}">
+                <i class="bx bx-mail-send text-lg"></i>
+                <span>Proformas</span>
+              </a>
+            </li>
+          </ul>
+        </li>
 
-  <!-- Separador (siempre visible) -->
-  <hr class="border-gray-300 mb-4">
+        <!-- Solicitudes (con submenú) -->
+        <li class="relative">
+          <button onclick="toggleSubmenu('solicitations-submenu')" class="p-3 w-full rounded-md flex items-center justify-between transition-all duration-200 hover:bg-gray-300 text-gray-900 submenu-toggle">
+            <div class="flex items-center gap-3">
+              <i class="bx bx-user text-xl"></i>
+              <span class="sidebar-text">Solicitudes</span>
+            </div>
+            <i class="bx bx-chevron-down text-xl"></i>
+          </button>
+          <ul id="solicitations-submenu" class="submenu bg-base-100 shadow-lg rounded-md w-full transition-all duration-300">
+            <li>
+              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="{% url 'solicitations_list' %}">
+                <i class="bx bx-list-ul text-lg"></i>
+                <span>Solicitudes</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- Assets (con submenú) -->
+        <li class="relative">
+          <button onclick="toggleSubmenu('supply-submenu')" class="p-3 w-full rounded-md flex items-center justify-between transition-all duration-200 hover:bg-gray-300 text-gray-900 submenu-toggle">
+            <div class="flex items-center gap-3">
+              <i class="bx bxs-store-alt text-xl"></i>
+              <span class="sidebar-text">Logistica</span>
+            </div>
+            <i class="bx bx-chevron-down text-xl"></i>
+          </button>
+          <ul id="supply-submenu" class="submenu bg-base-100 shadow-lg rounded-md w-full transition-all duration-300">
+            <li>
+              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="{% url 'assets_list' %}">
+                <i class="bx bxs-package text-lg"></i>
+                <span>Inventario</span>
+              </a>
+            </li>
+            <li>
+              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="{% url 'asset_request' %}">
+                <i class="bx bxs-truck text-lg"></i>
+                <span>Requisiciones</span>
+              </a>
+            </li>
+          </ul>
+        </li>
 
-  <!-- Botón de alternar sidebar -->
-  <button
-    @click="expanded = !expanded; localStorage.setItem('sidebarExpanded', expanded)"
-    class="mb-4 flex items-center justify-center p-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition-all duration-300"
-  >
-    <i class="bx" :class="expanded ? 'bx-chevron-left' : 'bx-chevron-right'"></i>
-  </button>
-
-
-  <!-- Contenido principal del menú con scroll -->
-  <div class="flex-1 overflow-y-auto">
-    <ul class="space-y-2">
-      <!-- Bloque "Solicitudes" con desplegable -->
-      <c-sidebar.item item="openItem1" icon="bxs-receipt" name="Solicitudes">
-        <c-sidebar.sub_item sub_item_url="{% url 'solicitations_list' %}" sub_item="Mis solicitudes"></c-sidebar.sub_item>
-      </c-sidebar.item>
-
-      <!-- Bloque "Comercial" con desplegable -->
-      <c-sidebar.item item="openItem2" icon="bxs-credit-card-alt" name="Comercial">
-        <c-sidebar.sub_item sub_item_url="{% url 'clients_list' %}" sub_item="Clientes"></c-sidebar.sub_item>
-        <c-sidebar.sub_item sub_item_url="{% url 'instruments_list' %}" sub_item="Instrumentos"></c-sidebar.sub_item>
-        <c-sidebar.sub_item sub_item_url="{% url 'proformas_list' %}" sub_item="Proformas"></c-sidebar.sub_item>
-      </c-sidebar.item>
-
-      <!-- Bloque "RRHH" con desplegable -->
-      <c-sidebar.item item="openItem3" icon="bxs-book-heart" name="RRHH">
-        <c-sidebar.sub_item sub_item_url="{% url 'employees_list' %}" sub_item="Empleados"></c-sidebar.sub_item>
-        <c-sidebar.sub_item sub_item_url="{% url 'employee_hierarchy' %}" sub_item="Jerarquia"></c-sidebar.sub_item>
-      </c-sidebar.item>
-
-      <!-- Bloque "Activos" con desplegable -->
-      <c-sidebar.item item="openItem4" icon="bxs-package" name="Inventario">
-        <c-sidebar.sub_item sub_item_url="{% url 'assets_list' %}" sub_item="Activos"></c-sidebar.sub_item>
-      </c-sidebar.item>
-
-      <!-- Bloque "Planeamiento" con desplegable -->
-      <c-sidebar.item item="openItem5" icon="bxs-chalkboard" name="Planeamiento">
-        <c-sidebar.sub_item sub_item_url="{% url 'work_orders_list' %}" sub_item="Ordenes"></c-sidebar.sub_item>
-      </c-sidebar.item>
-    </ul>
-  </div>
-
-  <!-- Perfil del usuario -->
-  <div class="border-t pt-3">
-    {% if user.is_authenticated %}
-    <div :class="expanded
-? 'flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-all duration-300'
-         : 'flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 transition-all duration-300'"
-    >
-      <i class="bx bx-user-circle text-2xl text-gray-700"></i>
-      <div
-        class="transition-all duration-300 overflow-hidden whitespace-nowrap"
-        :style="expanded ? 'opacity: 1; margin-left: 0.5rem; max-width: 12rem;' : 'opacity: 0; margin-left: 0; max-width: 0;'"
-      >
-        <p class="text-sm font-semibold text-gray-900">{{ user.get_full_name|default:user.username }}</p>
-        <p class="text-xs text-gray-600">{{ user.email }}</p>
-      </div>
-    </div>
-    <form method="post" action="{% url 'logout' %}">
-      {% csrf_token %}
-      <button type="submit"
-              :class="expanded
-? 'flex items-center text-red-600 hover:bg-red-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'
-              : 'flex items-center justify-center text-red-600 hover:bg-red-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'"
-      >
-        <i class="bx bx-log-out text-xl"></i>
-        <span
-          class="transition-all duration-300 overflow-hidden whitespace-nowrap"
-          :style="expanded ? 'opacity: 1; margin-left: 0.5rem; max-width: 8rem;' : 'opacity: 0; margin-left: 0; max-width: 0;'"
-        >
-          Cerrar sesión
-        </span>
-      </button>
-    </form>
-    {% else %}
-    <a
-      href="{% url 'login' %}"
-      :class="expanded
-? 'flex items-center text-blue-600 hover:bg-blue-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'
-      : 'flex items-center justify-center text-blue-600 hover:bg-blue-100 p-2 rounded-lg mt-2 transition-all duration-300 text-sm'"
-    >
-      <i class="bx bx-log-in text-xl"></i>
-      <span
-        class="transition-all duration-300 overflow-hidden whitespace-nowrap"
-        :style="expanded ? 'opacity: 1; margin-left: 0.5rem; max-width: 8rem;' : 'opacity: 0; margin-left: 0; max-width: 0;'"
-      >
-        Iniciar sesión
-      </span>
-    </a>
-    {% endif %}
-  </div>
-</nav>
+        <!-- Configuración (con submenú) -->
+        <li class="relative">
+          <button onclick="toggleSubmenu('settings-submenu')" class="p-3 w-full rounded-md flex items-center justify-between transition-all duration-200 hover:bg-gray-300 text-gray-900 submenu-toggle">
+            <div class="flex items-center gap-3">
+              <i class="bx bx-cog text-xl"></i>
+              <span class="sidebar-text">Configuración</span>
+            </div>
+            <i class="bx bx-chevron-down text-xl"></i>
+          </button>
+          <ul id="settings-submenu" class="submenu bg-base-100 shadow-lg rounded-md w-full transition-all duration-300">
+            <li>
+              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="#">
+                <i class="bx bx-cog text-lg"></i>
+                <span>General</span>
+              </a>
+            </li>
+            <li>
+              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="#">
+                <i class="bx bx-lock text-lg"></i>
+                <span>Seguridad</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </aside>

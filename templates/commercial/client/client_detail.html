@@ -1,5 +1,8 @@
 {% extends 'base/base.html' %}
 {% load static %}
+
+{% block page_title %} Detalle del cliente {% endblock %}
+
 {% block content %}
 
 <c-nav.basic name="{{ client.business_name }}" url="client_create" buttonname="Algun boton extra"></c-nav.basic>
