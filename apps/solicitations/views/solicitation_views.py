@@ -1,4 +1,4 @@
-from apps.solicitations.forms.solicitation_forms import SolicitationForm
+from apps.solicitations.forms.solicitation_forms import SolicitationForm, SolicitationTypeForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.timezone import now
 from core.models import Period
@@ -37,6 +37,7 @@ def solicitations_list(request):
 
 def solicitation_detail(request, pk):
     solicitation = get_object_or_404(Solicitation, pk=pk)
+    form_type = SolicitationTypeForm(instance=solicitation)
     form = SolicitationForm(instance=solicitation)
     detail_form = None
     if solicitation.solicitation_type == 'exit_ticket':
@@ -52,11 +53,19 @@ def solicitation_detail(request, pk):
 
     context = {
         'solicitation': solicitation,
+        'type_form': form_type,
         'form': form,
         'detail_form': detail_form,
     }
     return render(request, 'solicitations/solicitation_detail.html', context)
 
+def solicitation_type_form(request, pk):
+    solicitation = get_object_or_404(Solicitation, pk=pk)
+    if request.method == 'POST':
+        form = SolicitationTypeForm(request.POST, instance=solicitation)
+        if form.is_valid():
+            form.save()
+            return redirect('solicitation_detail', pk=solicitation.pk)
 
 def solicitation_edit(request, pk):
     solicitation = get_object_or_404(Solicitation, pk=pk)
@@ -65,6 +74,10 @@ def solicitation_edit(request, pk):
         form.save()
         return redirect('solicitation_detail', pk=solicitation.pk)
 
-
-def solicitation_delete(request):
-    pass
+def solicitation_delete(request, pk):
+    solicitation = get_object_or_404(Solicitation, pk=pk)
+    if request.user != solicitation.employee and not request.user.is_superuser:
+        messages.error(request, "No tienes permiso para eliminar esta solicitud.")
+        return redirect('solicitations_list')
+    solicitation.delete()
+    return redirect('solicitations_list')

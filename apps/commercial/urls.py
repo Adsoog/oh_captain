@@ -7,7 +7,7 @@ from apps.commercial.views.equipment_views import proforma_equipment_add, profor
 from apps.commercial.views.instrument_views import instruments_list, InstrumentListView, upload_instruments_list, \
     instrument_detail, download_instruments_list
 from apps.commercial.views.proforma_views import proformas_list, proforma_detail, auto_proforma_create, proforma_delete, \
-    proforma_edit
+    proforma_edit, branch
 
 urlpatterns = []
 
@@ -41,7 +41,7 @@ proformapatterns = [
     path('proforma/detail/<int:id>/', proforma_detail, name='proforma_detail'),
     path('proforma/delete/<int:id>/', proforma_delete, name='proforma_delete'),
     path('proforma/edit/<int:id>/', proforma_edit, name='proforma_edit'),
-
+    path('branch/', branch, name='branch'),
     # EQUIPMENT
     path('proforma/detail/add-equipment/<int:id>/', proforma_equipment_add, name='proforma_equipment_add'),
     path('proforma/detail/edit-equipment/<int:id>/', proforma_equipment_edit, name='proforma_equipment_edit'),

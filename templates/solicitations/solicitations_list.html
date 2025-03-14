@@ -1,10 +1,10 @@
 {% extends "base/base.html" %}
-{% load static %}
-{% block content %}
 
-<c-nav.basic name="Mis solicitudes">
-  <c-btn.create url="auto_solicitation_create" title="Mi solicitud"></c-btn.create>
-</c-nav.basic>
+{% load static %}
+
+{% block page_title %} Solicitudes {% endblock %}
+
+{% block content %}
 
 <div class="overflow-x-auto bg-white shadow-md rounded-lg mt-4">
   <table class="table-auto w-full text-sm text-gray-700 border-collapse">
@@ -15,7 +15,7 @@
         <th class="py-3 px-4 text-center">Empleado</th>
         <th class="py-3 px-4 text-center">Tipo</th>
         <th class="py-3 px-4 text-center">Estado</th>
-        <th class="py-3 px-4 text-center">Acciones</th>
+        <th class="py-3 px-4 text-center">  <c-btn.create url="auto_solicitation_create" name="Crear solicitud"></c-btn.create></th>
       </tr>
     </thead>
     <tbody>

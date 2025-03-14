@@ -1,0 +1,144 @@
+input, select, textarea {
+    border: none !important;
+    outline: none !important;
+    background: transparent;
+}
+
+
+/* Modo oscuro para la sidebar */
+[data-theme="dark"] #sidebar {
+    background-color: #1e293b; /* Gris oscuro */
+    color: #ffffff;
+}
+[data-theme="dark"] #sidebar a {
+    color: #ffffff;
+}
+[data-theme="dark"] #sidebar a:hover {
+    background-color: #334155; /* Un gris más claro */
+}
+[data-theme="dark"] .bx {
+    color: #ffffff !important;
+}
+
+
+/* Clases para controlar el ancho de la sidebar */
+.sidebar-expanded {
+    width: 12rem;
+}
+.sidebar-collapsed {
+    width: 5rem;
+}
+
+
+/* Transición del margen en el contenido principal */
+#main-content {
+    transition: margin-left 0.3s ease-in-out;
+}
+
+
+/* Ocultar flechas cuando la sidebar está colapsada */
+.sidebar-collapsed .submenu-toggle .bx-chevron-down {
+    display: none;
+}
+
+
+/* Estilos para el texto de la sidebar */
+.sidebar-text {
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: width 0.3s ease-in-out;
+}
+
+
+/* Cuando la sidebar está contraída, el texto no ocupa espacio */
+.sidebar-collapsed .sidebar-text {
+    width: 0;
+}
+
+
+/* Submenús */
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+}
+.submenu.open {
+    max-height: 500px;
+}
+
+
+/* Submenú flotante en modo colapsado */
+.sidebar-collapsed .submenu {
+    position: absolute;
+    left: 5rem;
+    top: 0;
+    background: #ffffff;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 180px;
+    display: none;
+    z-index: 50;
+}
+.sidebar-collapsed .submenu.open {
+    display: block;
+    max-height: none;
+}
+
+
+/* Submenús ahora usan todo el ancho de la sidebar */
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+}
+
+
+/* Cuando el submenú está activo */
+.submenu.open {
+    max-height: 500px;
+}
+
+
+/* Submenú flotante en modo colapsado */
+.sidebar-collapsed .submenu {
+    position: absolute;
+    left: 5rem;
+    top: 0;
+    background: #ffffff;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 180px;
+    display: none;
+    z-index: 50;
+}
+.sidebar-collapsed .submenu.open {
+    display: block;
+    max-height: none;
+}
+
+
+/* Estilo de cada elemento del submenú */
+.submenu li {
+    width: 100%;
+}
+.submenu li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 15px;
+    transition: background 0.2s ease-in-out;
+}
+.submenu li a:hover {
+    background-color: #e2e8f0;
+}
+input:focus, select:focus, textarea:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important; /* Evita sombras azules en algunos navegadores */
+}
+input:focus, select:focus, textarea:focus {
+    background-color: rgba(200, 230, 255, 0.5); /* Azul muy suave */
+}

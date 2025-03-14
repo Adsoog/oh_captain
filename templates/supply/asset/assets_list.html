@@ -2,11 +2,9 @@
 
 {% load static %}
 
-{% block content %}
+{% block page_title %} Activos {% endblock %}
 
-<c-nav.basic name="Lista de activos">
-    <c-btn.create_hx url="asset_create" hx_target="#asset-extra" name="Crear activo"></c-btn.create_hx>
-</c-nav.basic>
+{% block content %}
 
 <div class="flex gap-4">
     <!-- Columna Izquierda - 35% -->

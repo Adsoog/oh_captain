@@ -9,291 +9,63 @@
     <meta name="csrf-token" content="{{ csrf_token }}">
     {% tailwind_css %}
     {% include 'base/imports.html' %}
-
-    <style>
-      input, select, textarea {
-        border: none !important;
-        outline: none !important;
-        background: transparent;
-      }
-
-
-
-      /* Modo oscuro para la sidebar */
-      [data-theme="dark"] #sidebar {
-        background-color: #1e293b; /* Gris oscuro */
-        color: #ffffff;
-      }
-      [data-theme="dark"] #sidebar a {
-        color: #ffffff;
-      }
-      [data-theme="dark"] #sidebar a:hover {
-        background-color: #334155; /* Un gris más claro */
-      }
-      [data-theme="dark"] .bx {
-        color: #ffffff !important;
-      }
-
-
-
-      /* Clases para controlar el ancho de la sidebar */
-      .sidebar-expanded {
-        width: 12rem;
-      }
-      .sidebar-collapsed {
-        width: 5rem;
-      }
-
-
-
-      /* Transición del margen en el contenido principal */
-      #main-content {
-        transition: margin-left 0.3s ease-in-out;
-      }
-
-
-
-      /* Ocultar flechas cuando la sidebar está colapsada */
-      .sidebar-collapsed .submenu-toggle .bx-chevron-down {
-        display: none;
-      }
-
-
-
-      /* Estilos para el texto de la sidebar */
-      .sidebar-text {
-        display: inline-block;
-        width: 100%;
-        overflow: hidden;
-        white-space: nowrap;
-        transition: width 0.3s ease-in-out;
-      }
-
-
-
-      /* Cuando la sidebar está contraída, el texto no ocupa espacio */
-      .sidebar-collapsed .sidebar-text {
-        width: 0;
-      }
-
-
-
-      /* Submenús */
-      .submenu {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease-in-out;
-      }
-      .submenu.open {
-        max-height: 500px;
-      }
-
-
-
-      /* Submenú flotante en modo colapsado */
-      .sidebar-collapsed .submenu {
-        position: absolute;
-        left: 5rem;
-        top: 0;
-        background: #ffffff;
-        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        width: 180px;
-        display: none;
-        z-index: 50;
-      }
-      .sidebar-collapsed .submenu.open {
-        display: block;
-        max-height: none;
-      }
-
-
-
-      /* Submenús ahora usan todo el ancho de la sidebar */
-      .submenu {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease-in-out;
-      }
-
-
-
-      /* Cuando el submenú está activo */
-      .submenu.open {
-        max-height: 500px;
-      }
-
-
-
-      /* Submenú flotante en modo colapsado */
-      .sidebar-collapsed .submenu {
-        position: absolute;
-        left: 5rem;
-        top: 0;
-        background: #ffffff;
-        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        width: 180px;
-        display: none;
-        z-index: 50;
-      }
-      .sidebar-collapsed .submenu.open {
-        display: block;
-        max-height: none;
-      }
-
-
-
-      /* Estilo de cada elemento del submenú */
-      .submenu li {
-        width: 100%;
-      }
-      .submenu li a {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        width: 100%;
-        padding: 10px 15px;
-        transition: background 0.2s ease-in-out;
-      }
-      .submenu li a:hover {
-        background-color: #e2e8f0;
-      }
-      input:focus, select:focus, textarea:focus {
-        outline: none !important;
-        border: none !important;
-        box-shadow: none !important; /* Evita sombras azules en algunos navegadores */
-      }
-      input:focus, select:focus, textarea:focus {
-        background-color: rgba(200, 230, 255, 0.5); /* Azul muy suave */
-      }
-
-
-    </style>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
   </head>
-
   <body class="font-nunito text-sm bg-green-200 text-purple-600 flex transition-colors duration-300">
     <!-- Navbar -->
+    <!-- Navbar -->
+    <div class="navbar bg-gradient-to-r from-black via-gray-900 to-black shadow-md shadow-gray-600 px-3 fixed top-0 w-full z-50 transition-colors duration-300">
+      <!-- Botón para alternar la sidebar -->
+      <div class="flex-none">
+        <button onclick="toggleSidebar()" class="btn btn-square btn-ghost">
+          <i class="bx bx-menu text-2xl text-white"></i>
+        </button>
+      </div>
 
-    
-    {% include 'base/navbar.html' %}
+      <!-- Título estático "O! Captain" y Título dinámico centrado -->
+      <div class="flex-1 text-center">
+        <span class="text-xl font-semibold text-white">
+          O! Captain
+        </span>
+      </div>
 
+      <!-- Título dinámico centrado -->
+      <div class="flex-1 text-center">
+        <span class="text-lg font-semibold text-white">
+          {% block page_title %}{% endblock %}
+        </span>
+      </div>
 
-
-
+      <!-- Iconos del navbar (carrito, tema, perfil) -->
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+          <div class="indicator">
+            <i class="bx bx-cart text-2xl text-white"></i>
+            <span class="badge badge-sm indicator-item bg-red-500 text-white">8</span>
+          </div>
+        </div>
+      </div>
+      <button id="theme-toggle" class="btn btn-ghost btn-circle text-xl mx-2">
+        <i id="theme-icon" class="bx bx-moon text-white"></i>
+      </button>
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+          <div class="w-10 rounded-full">
+            <img alt="Usuario" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"/>
+          </div>
+        </div>
+        <ul tabindex="0" class="menu menu-sm dropdown-content bg-white rounded-box z-50 mt-3 w-52 p-2 shadow-lg">
+          <li><a class="text-gray-800">Perfil</a></li>
+          <li><a class="text-gray-800">Configuración</a></li>
+          <li><a class="text-gray-800">Cerrar sesión</a></li>
+        </ul>
+      </div>
+    </div>
 
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="bg-base-200 text-gray-800 min-h-screen p-3 transition-all duration-300 fixed left-0 top-16 shadow-lg sidebar-expanded">
-      <ul>
-        <!-- Inicio -->
-        <li>
-          <a class="p-3 rounded-md flex items-center gap-3 transition-all duration-200 hover:bg-gray-300 text-gray-900">
-            <i class="bx bx-home text-xl"></i>
-            <span class="sidebar-text">Inicio</span>
-          </a>
-        </li>
+    {% include 'base/sidebar.html' %}
 
-        <!-- Usuarios (con submenú) -->
-        <li class="relative">
-          <button onclick="toggleSubmenu('users-submenu')" class="p-3 w-full rounded-md flex items-center justify-between transition-all duration-200 hover:bg-gray-300 text-gray-900 submenu-toggle">
-            <div class="flex items-center gap-3">
-              <i class="bx bx-user text-xl"></i>
-              <span class="sidebar-text">Comercial</span>
-            </div>
-            <i class="bx bx-chevron-down text-xl"></i>
-          </button>
-          <ul id="users-submenu" class="submenu bg-base-100 shadow-lg rounded-md w-full transition-all duration-300">
-            <li>
-              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="{% url 'clients_list' %}">
-                <i class="bx bx-list-ul text-lg"></i>
-                <span>Clientes</span>
-              </a>
-            </li>
-            <li>
-              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="{% url 'instruments_list' %}">
-                <i class="bx bx-user-plus text-lg"></i>
-                <span>Tabla de costos</span>
-              </a>
-            </li>
-            <li>
-              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="{% url 'proformas_list' %}">
-                <i class="bx bx-mail-send text-lg"></i>
-                <span>Proformas</span>
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <!-- Solicitudes (con submenú) -->
-        <li class="relative">
-          <button onclick="toggleSubmenu('solicitations-submenu')" class="p-3 w-full rounded-md flex items-center justify-between transition-all duration-200 hover:bg-gray-300 text-gray-900 submenu-toggle">
-            <div class="flex items-center gap-3">
-              <i class="bx bx-user text-xl"></i>
-              <span class="sidebar-text">Solicitudes</span>
-            </div>
-            <i class="bx bx-chevron-down text-xl"></i>
-          </button>
-          <ul id="solicitations-submenu" class="submenu bg-base-100 shadow-lg rounded-md w-full transition-all duration-300">
-            <li>
-              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="{% url 'solicitations_list' %}">
-                <i class="bx bx-list-ul text-lg"></i>
-                <span>Solicitudes</span>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <!-- Assets (con submenú) -->
-        <li class="relative">
-          <button onclick="toggleSubmenu('supply-submenu')" class="p-3 w-full rounded-md flex items-center justify-between transition-all duration-200 hover:bg-gray-300 text-gray-900 submenu-toggle">
-            <div class="flex items-center gap-3">
-              <i class="bx bxs-store-alt text-xl"></i>
-              <span class="sidebar-text">Logistica</span>
-            </div>
-            <i class="bx bx-chevron-down text-xl"></i>
-          </button>
-          <ul id="supply-submenu" class="submenu bg-base-100 shadow-lg rounded-md w-full transition-all duration-300">
-            <li>
-              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="{% url 'assets_list' %}">
-                <i class="bx bxs-package text-lg"></i>
-                <span>Inventario</span>
-              </a>
-            </li>
-            <li>
-              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="{% url 'asset_request' %}">
-                <i class="bx bxs-truck text-lg"></i>
-                <span>Requisiciones</span>
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <!-- Configuración (con submenú) -->
-        <li class="relative">
-          <button onclick="toggleSubmenu('settings-submenu')" class="p-3 w-full rounded-md flex items-center justify-between transition-all duration-200 hover:bg-gray-300 text-gray-900 submenu-toggle">
-            <div class="flex items-center gap-3">
-              <i class="bx bx-cog text-xl"></i>
-              <span class="sidebar-text">Configuración</span>
-            </div>
-            <i class="bx bx-chevron-down text-xl"></i>
-          </button>
-          <ul id="settings-submenu" class="submenu bg-base-100 shadow-lg rounded-md w-full transition-all duration-300">
-            <li>
-              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="#">
-                <i class="bx bx-cog text-lg"></i>
-                <span>General</span>
-              </a>
-            </li>
-            <li>
-              <a class="flex items-center gap-3 p-3 hover:bg-gray-200 transition-all" href="#">
-                <i class="bx bx-lock text-lg"></i>
-                <span>Seguridad</span>
-              </a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </aside>
 
 
     <!-- Contenido Principal -->
@@ -305,83 +77,8 @@
     </div>
 
     <!-- Scripts -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]')?.value
-          || document.querySelector('meta[name="csrf-token"]')?.content;
-        if (csrfToken) {
-          document.body.addEventListener("htmx:configRequest", function (event) {
-            event.detail.headers['X-CSRFToken'] = csrfToken;
-          });
-        }
-      });
-    </script>
-
-    <script>
-      // Alternar el modo oscuro/claro
-      function toggleTheme() {
-        const themeIcon = document.getElementById("theme-icon");
-        const currentTheme = document.documentElement.getAttribute("data-theme");
-
-        // Cambiar entre 'light' y 'dark'
-        if (currentTheme === "dark") {
-          document.documentElement.setAttribute("data-theme", "light");
-          localStorage.setItem("theme", "light");
-          themeIcon.classList.replace("bx-sun", "bx-moon");
-        } else {
-          document.documentElement.setAttribute("data-theme", "dark");
-          localStorage.setItem("theme", "dark");
-          themeIcon.classList.replace("bx-moon", "bx-sun");
-        }
-      }
-
-      // Aplicar el tema guardado al cargar la página
-      document.addEventListener("DOMContentLoaded", function () {
-        const savedTheme = localStorage.getItem("theme") || "light";
-        document.documentElement.setAttribute("data-theme", savedTheme);
-
-        const themeIcon = document.getElementById("theme-icon");
-        if (savedTheme === "dark") {
-          themeIcon.classList.replace("bx-moon", "bx-sun");
-        } else {
-          themeIcon.classList.replace("bx-sun", "bx-moon");
-        }
-      });
-
-      // Escuchar eventos en el botón de cambio de tema
-      document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
-      function toggleSidebar() {
-        const sidebar = document.getElementById("sidebar");
-        const mainContent = document.getElementById("main-content");
-
-        if (sidebar.classList.contains("sidebar-expanded")) {
-          sidebar.classList.replace("sidebar-expanded", "sidebar-collapsed");
-          mainContent.classList.replace("ml-48", "ml-20");
-        } else {
-          sidebar.classList.replace("sidebar-collapsed", "sidebar-expanded");
-          mainContent.classList.replace("ml-20", "ml-48");
-        }
-      }
-
-      function toggleSubmenu(id) {
-        const submenu = document.getElementById(id);
-
-        if (submenu.classList.contains("open")) {
-          submenu.classList.remove("open");
-          submenu.style.maxHeight = "0";
-        } else {
-          document.querySelectorAll(".submenu").forEach(s => {
-            s.classList.remove("open");
-            s.style.maxHeight = "0";
-          });
-
-          submenu.classList.add("open");
-          submenu.style.maxHeight = submenu.scrollHeight + "px";
-        }
-      }
-    </script>
+    <script src="{% static 'js/base.js' %}"></script>
     {% block extra_js %}
     {% endblock %}
-
   </body>
 </html>

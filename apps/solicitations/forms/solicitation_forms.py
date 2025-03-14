@@ -9,6 +9,16 @@ from apps.solicitations.models.solicitation_models import (
 from django import forms
 
 
+class SolicitationTypeForm(forms.ModelForm):
+    class Meta:
+        model = Solicitation
+        fields = [
+            'solicitation_type',
+        ]
+        widgets = {
+            'solicitation_type': forms.Select(attrs={'class': 'form-control'}),
+        }
+
 class SolicitationForm(forms.ModelForm):
     class Meta:
         model = Solicitation
@@ -26,6 +36,28 @@ class SolicitationForm(forms.ModelForm):
             'department': forms.Select(attrs={'class': 'form-control'}),
             'solicitation_type': forms.Select(attrs={'class': 'form-control'}),
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class ExitTicketForm(forms.ModelForm):

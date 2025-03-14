@@ -13,6 +13,9 @@ def proforma_equipment_add(request, id):
         equipment.code = equipment.quoted_instrument.procedure_code
         equipment.procedure = equipment.quoted_instrument.procedure
         equipment.magnitude = equipment.quoted_instrument.discipline
+        equipment.man_hours = equipment.quoted_instrument.man_hours
+        equipment.necessary_workers = equipment.quoted_instrument.necessary_workers
+        equipment.transport_cost = equipment.quoted_instrument.transport_cost
         equipment.indirect_cost = Decimal(str(equipment.indirect_cost))
 
         if equipment.service_place == "in_situ":
