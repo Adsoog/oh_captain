@@ -77,3 +77,6 @@ class Comment(models.Model):
 
     def get_related_object(self):
         return self.content_object
+
+class CostCenter(models.Model):
+    title = models.CharField(max_length=255, blank=True, null=True)

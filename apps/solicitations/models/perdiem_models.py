@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-
 from apps.solicitations.models.solicitation_models import Solicitation
 from apps.supply.models.asset_models import Asset
 
