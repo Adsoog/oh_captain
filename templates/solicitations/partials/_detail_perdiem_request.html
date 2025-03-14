@@ -4,77 +4,49 @@
 
   <!-- ***** Columna Izquierda: Formulario de solicitud de viáticos ***** -->
   <div class="bg-white shadow-md rounded-lg p-4">
-    <form method="POST" action="">
+    <form method="POST" action="{% url 'solicitation_detail' solicitation.pk %}">
       {% csrf_token %}
       <table class="w-full table-auto">
-        <tbody>
-
-          <!-- Fecha de Inicio -->
-          <tr class="border-b border-gray-200">
-            <td class="py-2 px-2 w-1/4 font-bold">Fecha de Inicio</td>
-            <td class="py-2 px-2">
-              {{ form.start_date|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-            </td>
-          </tr>
-
-          <!-- Fecha de Fin -->
-          <tr class="border-b border-gray-200">
-            <td class="py-2 px-2 font-bold">Fecha de Fin</td>
-            <td class="py-2 px-2">
-              {{ form.end_date|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-            </td>
-          </tr>
-
-          <!-- Cantidad de Días -->
-          <tr class="border-b border-gray-200">
-            <td class="py-2 px-2 font-bold">Días</td>
-            <td class="py-2 px-2">
-              {{ form.days|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-            </td>
-          </tr>
-
-          <!-- Vehículos Asignados -->
-          <tr class="border-b border-gray-200">
-            <td class="py-2 px-2 font-bold">Vehículos</td>
-            <td class="py-2 px-2">
-              {{ form.vehicles|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-            </td>
-          </tr>
-
-          <!-- Personas Asignadas -->
-          <tr class="border-b border-gray-200">
-            <td class="py-2 px-2 font-bold">Personas</td>
-            <td class="py-2 px-2">
-              {{ form.persons|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-            </td>
-          </tr>
-
-          <!-- Detalles de la Solicitud -->
-          <tr class="border-b border-gray-200">
-            <td class="py-2 px-2 font-bold">Detalles</td>
-            <td class="py-2 px-2">
-              {{ form.details|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-            </td>
-          </tr>
-
-          <!-- Total de Gastos -->
-          <tr class="border-b border-gray-200">
-            <td class="py-2 px-2 font-bold">Total Estimado</td>
-            <td class="py-2 px-2">
-              {{ form.total_expense|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
-            </td>
-          </tr>
-
-        </tbody>
+          <tbody>
+              <tr class="border-b border-gray-200">
+                  <td class="py-2 px-2 w-1/4 font-bold">Fecha de Inicio</td>
+                  <td class="py-2 px-2">
+                      {{ detail_form.start_date|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+                  </td>
+              </tr>
+              <tr class="border-b border-gray-200">
+                  <td class="py-2 px-2 font-bold">Fecha de Fin</td>
+                  <td class="py-2 px-2">
+                      {{ detail_form.end_date|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+                  </td>
+              </tr>
+              <tr class="border-b border-gray-200">
+                  <td class="py-2 px-2 font-bold">Días</td>
+                  <td class="py-2 px-2">
+                      {{ detail_form.days|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+                  </td>
+              </tr>
+              <tr class="border-b border-gray-200">
+                  <td class="py-2 px-2 font-bold">Detalles</td>
+                  <td class="py-2 px-2">
+                      {{ detail_form.details|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+                  </td>
+              </tr>
+              <tr class="border-b border-gray-200">
+                  <td class="py-2 px-2 font-bold">Total Estimado</td>
+                  <td class="py-2 px-2">
+                      {{ detail_form.total_expense|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+                  </td>
+              </tr>
+          </tbody>
       </table>
-
-      <!-- Botón de Guardar -->
       <div class="flex justify-end mt-4">
-        <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition">
-          Guardar Solicitud
-        </button>
+          <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition">
+              Guardar Solicitud
+          </button>
       </div>
-    </form>
+  </form>
+  
   </div>
 
   <!-- ***** Columna Derecha: Items de Viáticos ***** -->

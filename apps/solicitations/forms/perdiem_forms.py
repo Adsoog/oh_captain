@@ -1,5 +1,4 @@
 from django import forms
-from apps.solicitations.models.solicitation_models import Solicitation
 from apps.solicitations.models.perdiem_models import PerDiemRequest, PerDiemRequestItem
 
 class PerDiemRequestForm(forms.ModelForm):
@@ -48,7 +47,6 @@ class PerDiemRequestItemForm(forms.ModelForm):
         }
 
     def clean_total_price(self):
-        """Calcula el total automáticamente si no se ingresa manualmente"""
         price = self.cleaned_data.get("price", 0)
         amount = self.cleaned_data.get("amount", 1)
         return price * amount

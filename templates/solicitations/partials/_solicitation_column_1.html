@@ -1,0 +1,91 @@
+{% load widget_tweaks %}
+
+  <div class="bg-white shadow-md rounded-lg p-3 md:col-span-1">
+      <!-- Formulario para cambiar el tipo de solicitud -->
+      <form method="POST"
+            hx-post="{% url 'solicitation_type_form' solicitation.pk %}"
+            hx-target="body"
+            hx-swap="outerHTML"
+            hx-trigger="change">
+        {% csrf_token %}
+        <table class="w-full table-auto">
+          <tbody>
+            <tr class="border-b border-gray-200">
+              <td class="py-1 px-2 w-1/4 font-bold">Tipo de Solicitud</td>
+              <td class="py-1 px-2">
+                {% render_field type_form.solicitation_type class="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+
+      {% if solicitation.solicitation_type %}
+      <!-- Formulario de Solicitud -->
+      <form method="POST" action="{% url 'solicitation_edit' solicitation.pk %}">
+        {% csrf_token %}
+        <table class="w-full table-auto">
+          <tbody>
+            <!-- Fecha de Solicitud -->
+            <tr class="border-b border-gray-200">
+              <td class="py-1 px-2 w-1/4"><strong>Fecha de Solicitud:</strong></td>
+              <td class="py-1 px-2">
+                {{ form.requested_at|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+              </td>
+            </tr>
+            <!-- Razón -->
+            <tr class="border-b border-gray-200">
+              <td class="py-1 px-2"><strong>Razón:</strong></td>
+              <td class="py-1 px-2">
+                {{ form.reason|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+              </td>
+            </tr>
+            <!-- Empleado -->
+            <tr class="border-b border-gray-200">
+              <td class="py-1 px-2"><strong>Empleado:</strong></td>
+              <td class="py-1 px-2">
+                {{ form.employee|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+              </td>
+            </tr>
+            <!-- Área -->
+            <tr class="border-b border-gray-200">
+              <td class="py-1 px-2"><strong>Área:</strong></td>
+              <td class="py-1 px-2">
+                {{ form.area|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+              </td>
+            </tr>
+            <!-- Departamento -->
+            <tr class="border-b border-gray-200">
+              <td class="py-1 px-2"><strong>Departamento:</strong></td>
+              <td class="py-1 px-2">
+                {{ form.department|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+              </td>
+            </tr>
+            <!-- Orden de Trabajo -->
+            <tr class="border-b border-gray-200">
+              <td class="py-1 px-2"><strong>Orden de Trabajo:</strong></td>
+              <td class="py-1 px-2">
+                {{ form.work_order|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+              </td>
+            </tr>
+            <!-- Cliente -->
+            <tr class="border-b border-gray-200">
+              <td class="py-1 px-2"><strong>Cliente:</strong></td>
+              <td class="py-1 px-2">
+                {{ form.client|add_class:"w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Botón de Guardar -->
+        <div class="flex justify-end mt-4">
+          <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition">
+            Guardar cambios
+          </button>
+        </div>
+      </form>
+      {% else %}
+      <p class="text-gray-700">Para ver los campos de solicitud, primero seleccione el tipo de Solicitud.</p>
+      {% endif %}
+    </div>  <!-- Fin Columna Izquierda -->

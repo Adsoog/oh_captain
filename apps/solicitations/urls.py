@@ -1,19 +1,48 @@
+from apps.solicitations.views.exit_ticket_views import exit_ticket_detail
+from apps.solicitations.views.expense_views import expenses_detail
+from apps.solicitations.views.mobility_views import mobility_sheet_detail, mobility_item_create, mobility_item_delete
+from apps.solicitations.views.petty_cash_views import petty_cash_detail
 from apps.solicitations.views.solicitation_views import solicitations_list, auto_solicitation_create, \
     solicitation_detail, solicitation_delete, solicitation_edit, solicitation_type_form
+from apps.solicitations.views.perdiem_request_views import perdiem_request_detail
 from django.urls import path
 
-urlpatterns = [
+urlpatterns = []
+
+solicitationpatterns = [
     path('list/', solicitations_list, name='solicitations_list'),
     path('detail/<int:pk>/', solicitation_detail, name='solicitation_detail'),
     path('delete/<int:pk>/', solicitation_delete, name='solicitation_delete'),
     path('create/', auto_solicitation_create, name='auto_solicitation_create'),
-
-]
-
-solicitationpatterns = [
     path('detail/type/<int:pk>/', solicitation_type_form, name='solicitation_type_form'),    
     path('detail/edit/<int:pk>/', solicitation_edit, name='solicitation_edit'),
+]
 
+perdiempatterns = [
+    path('perdiems/detail/<int:pk>', perdiem_request_detail, name= 'perdiem_request_detail')
+]
+
+exit_ticketpatterns = [
+    path('exit_ticket/detail/<int:pk>/', exit_ticket_detail, name='exit_ticket_detail'),
+]
+
+expensespatterns = [
+    path('expenses/detail/<int:pk>/', expenses_detail, name='expenses_detail'),
+]
+
+pettycashpatterns = [
+    path('petty_cash/detail/<int:pk>/', petty_cash_detail, name='petty_cash_detail'),
+]
+
+mobilitysheetpatterns = [
+    path('mobility_sheet/detail/<int:pk>/', mobility_sheet_detail, name='mobility_sheet_detail'),
+    path('mobility_sheet/items/<int:pk>/', mobility_item_create, name='mobility_item_create'),
+    path('mobility_sheet/delete/<int:pk>/', mobility_item_delete, name='mobility_item_delete'),
 ]
 
 urlpatterns += solicitationpatterns
+urlpatterns += perdiempatterns
+urlpatterns += exit_ticketpatterns
+urlpatterns += expensespatterns
+urlpatterns += pettycashpatterns
+urlpatterns += mobilitysheetpatterns

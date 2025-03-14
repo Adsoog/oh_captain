@@ -1,0 +1,12 @@
+<div class="bg-white shadow-md rounded-lg p-3 md:col-span-2 {% if solicitation_detail_url %}bg-gray-100{% else %}bg-gray-50{% endif %}">
+    {% if solicitation_detail_url %}
+        <div id="solicitation-detail-container"
+            hx-get="{% url solicitation_detail_url solicitation.pk %}"
+            hx-trigger="load"
+            hx-target="#solicitation-detail-container"
+            hx-swap="innerHTML">
+        </div>
+    {% else %}
+        <p class="text-gray-700">No hay detalles adicionales porque aún no se ha seleccionado el tipo de Solicitud.</p>
+    {% endif %}
+</div>

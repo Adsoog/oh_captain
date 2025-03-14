@@ -1,16 +1,13 @@
+from apps.solicitations.models.exit_ticket_models import ExitTicket
+from apps.solicitations.models.expenses_models import Expenses
+from apps.solicitations.models.perdiem_models import PerDiemRequest
+from apps.solicitations.models.petty_cash_models import PettyCash
+from apps.solicitations.models.mobility_models import MobilitySheet
 from apps.solicitations.forms.solicitation_forms import SolicitationForm, SolicitationTypeForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.timezone import now
 from core.models import Period
 from apps.solicitations.models.solicitation_models import Solicitation
-from apps.solicitations.forms.solicitation_forms import (
-    SolicitationForm,
-    ExitTicketForm,
-    ExpensesForm,
-    PettyCashForm,
-    MobilitySheetForm,
-    PerdiemRequestForm,
-)
 
 
 def auto_solicitation_create(request):
@@ -39,40 +36,59 @@ def solicitation_detail(request, pk):
     solicitation = get_object_or_404(Solicitation, pk=pk)
     form_type = SolicitationTypeForm(instance=solicitation)
     form = SolicitationForm(instance=solicitation)
-    detail_form = None
-    if solicitation.solicitation_type == 'exit_ticket':
-        detail_form = ExitTicketForm(instance=getattr(solicitation, 'exit_ticket_detail', None))
-    elif solicitation.solicitation_type == 'expenses':
-        detail_form = ExpensesForm(instance=getattr(solicitation, 'expenses_detail', None))
-    elif solicitation.solicitation_type == 'petty_cash':
-        detail_form = PettyCashForm(instance=getattr(solicitation, 'petty_cash_detail', None))
-    elif solicitation.solicitation_type == 'mobility_sheet':
-        detail_form = MobilitySheetForm(instance=getattr(solicitation, 'mobility_sheet_detail', None))
-    elif solicitation.solicitation_type == 'perdiem_request':
-        detail_form = PerdiemRequestForm(instance=getattr(solicitation, 'perdiem_request_detail', None))
+
+    solicitation_urls_dict = {
+        'perdiem_request': 'perdiem_request_detail',
+        'exit_ticket': 'exit_ticket_detail',
+        'expenses': 'expenses_detail',
+        'petty_cash': 'petty_cash_detail',
+        'mobility_sheet': 'mobility_sheet_detail'
+    }
+
+    solicitation_detail_url = solicitation_urls_dict.get(solicitation.solicitation_type, None)
 
     context = {
         'solicitation': solicitation,
         'type_form': form_type,
         'form': form,
-        'detail_form': detail_form,
+        'solicitation_detail_url': solicitation_detail_url
     }
+
     return render(request, 'solicitations/solicitation_detail.html', context)
+
 
 def solicitation_type_form(request, pk):
     solicitation = get_object_or_404(Solicitation, pk=pk)
+    previous_type = solicitation.solicitation_type
     if request.method == 'POST':
         form = SolicitationTypeForm(request.POST, instance=solicitation)
         if form.is_valid():
-            form.save()
+            solicitation = form.save()
+            if solicitation.solicitation_type != previous_type:
+                related_models = {
+                    'exit_ticket': ExitTicket,
+                    'expenses': Expenses,
+                    'petty_cash': PettyCash,
+                    'mobility_sheet': MobilitySheet,
+                    'perdiem_request': PerDiemRequest
+                }
+                if previous_type in related_models:
+                    old_model_class = related_models[previous_type]
+                    old_model_class.objects.filter(solicitation=solicitation).delete()
+                model_class = related_models.get(solicitation.solicitation_type)
+                if model_class:
+                    model_class.objects.get_or_create(solicitation=solicitation)
             return redirect('solicitation_detail', pk=solicitation.pk)
+    return redirect('solicitation_detail', pk=solicitation.pk)
+
 
 def solicitation_edit(request, pk):
     solicitation = get_object_or_404(Solicitation, pk=pk)
     form = SolicitationForm(request.POST, instance=solicitation)
     if form.is_valid():
-        form.save()
+        solicitation = form.save()
         return redirect('solicitation_detail', pk=solicitation.pk)
+
 
 def solicitation_delete(request, pk):
     solicitation = get_object_or_404(Solicitation, pk=pk)
