@@ -1,12 +1,13 @@
-from apps.solicitations.forms.expense_forms import ExpenseItemForm
-from django.shortcuts import get_object_or_404, redirect
-from apps.solicitations.models.expenses_models import Expense, ExpenseItem
-from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseBadRequest
+from django.shortcuts import get_object_or_404, redirect
+from apps.solicitations.forms.expense_forms import ExpenseItemForm
+from apps.solicitations.models.expenses_models import Expense, ExpenseItem
+from apps.solicitations.utils import provider_name
 
 
 def expense_detail(request, pk):
-    expense = get_object_or_404(Expense, id=id)
+    expense = get_object_or_404(Expense, solicitation__pk=pk)
     item_form = ExpenseItemForm()
     return render(request, "solicitations/expenses/expense_detail.html", {
         "item_form": item_form,
@@ -14,58 +15,44 @@ def expense_detail(request, pk):
     })
 
 
-def expense_item_create(request, report_id):
+def expense_item_create(request, pk):
+    expense = get_object_or_404(Expense, pk=pk)
     if request.method == 'POST':
-        form = ExpenseItemForm(request.POST, request.FILES)
-        if form.is_valid():
-            expenditure_detail = form.save(commit=False)
-            _, _, razon_social = obtener_estado_condicion(expenditure_detail.ruc_or_dni)
-            expenditure_detail.provider_name = razon_social
-            expenditure_detail.report = report
-            expenditure_detail.save()
-
-            return render(request, 'expenses/expenditures/partials/expenditure_gastos.html', {
-                'report': report,
-                'item_form': ExpenditureDetailForm(),  # Crear un nuevo formulario vacío
+        item_form = ExpenseItemForm(request.POST, request.FILES)
+        if item_form.is_valid():
+            expense_item = item_form.save(commit=False)
+            expense_item.provider_name = provider_name(expense_item.ruc_or_dni)
+            expense_item.expense = expense
+            expense_item.save()
+            return render(request, 'solicitations/expenses/expense_item.html', {
+                'expense': expense,
+                'item_form': ExpenseItemForm()
             })
     return HttpResponse("Formulario inválido", status=400)
 
 
-def expense_item_edit(request, detail_id):
-    item = get_object_or_404(ExpenditureDetail, id=detail_id)
+def expense_item_edit(request, pk):
+    item = get_object_or_404(ExpenseItem, pk=pk)
     if request.method == 'POST':
-        form = ExpenditureDetailForm(request.POST, request.FILES, instance=detail)
-        if form.is_valid():
-            # Guardamos sin comprometer a la BD para poder modificar provider_name
-            detail = form.save(commit=False)
-            # Actualizamos provider_name con la razón social obtenida
-            _, _, razon_social = obtener_estado_condicion(detail.ruc_or_dni)
-            detail.provider_name = razon_social
-            detail.save()  # Guardamos la instancia actualizada
-
-            # Renderizamos la fila en modo 'lectura' ya actualizada
-            return render(request, 'expenses/expenditures/partials/expenditure_detail_row.html', {
-                'detail': detail,
+        item_form = ExpenseItemForm(request.POST, request.FILES, instance=item)
+        if item_form.is_valid():
+            item = item_form.save(commit=False)
+            item.provider_name = provider_name(item.ruc_or_dni)
+            item.save()
+            return render(request, 'solicitations/expenses/expense_item.html', {
+                'item': item,
             })
-        else:
-            # Renderizamos el mismo partial con el formulario (errores)
-            return render(request, 'expenses/expenditures/partials/expenditure_detail_edit_form.html', {
-                'form': form,
-                'detail': detail,
-            }, status=400)
     else:
-        # GET: devolvemos el formulario
-        form = ExpenditureDetailForm(instance=detail)
-        return render(request, 'expenses/expenditures/partials/expenditure_detail_edit_form.html', {
-            'form': form,
-            'detail': detail,
+        item_form = ExpenseItem(instance=item)
+        return render(request, 'solicitations/expenses/expense_item.html', {
+            'item_form': item_form,
+            'item': item,
         })
 
 
-def expense_item_delete(request, id):
-    item = get_object_or_404(ExpenseItem, id=id)
+def expense_item_delete(request, pk):
+    item = get_object_or_404(ExpenseItem, pk=pk)
     if request.method == 'POST':
         item.delete()
-        return render(request, 'expenses/expenditures/partials/expenditure_detail_deleted.html', {})
-
+        return render(request, 'solicitations/expenses/expense_item.html', {})
     return HttpResponseBadRequest("Método no permitido", status=405)

@@ -1,5 +1,5 @@
 from apps.solicitations.models.exit_ticket_models import ExitTicket
-from apps.solicitations.models.expenses_models import Expenses
+from apps.solicitations.models.expenses_models import Expense
 from apps.solicitations.models.perdiem_models import PerDiemRequest
 from apps.solicitations.models.petty_cash_models import PettyCash
 from apps.solicitations.models.mobility_models import MobilitySheet
@@ -67,7 +67,7 @@ def solicitation_type_form(request, pk):
             if solicitation.solicitation_type != previous_type:
                 related_models = {
                     'exit_ticket': ExitTicket,
-                    'expenses': Expenses,
+                    'expenses': Expense,
                     'petty_cash': PettyCash,
                     'mobility_sheet': MobilitySheet,
                     'perdiem_request': PerDiemRequest

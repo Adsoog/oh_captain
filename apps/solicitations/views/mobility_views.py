@@ -17,9 +17,9 @@ def mobility_sheet_detail(request, pk):
     })
 
 
-def mobility_item_create(request, id):
+def mobility_item_create(request, pk):
     if request.method == 'POST':
-        mobility_sheet = get_object_or_404(MobilitySheet, id=id)
+        mobility_sheet = get_object_or_404(MobilitySheet, pk=pk)
         form = MobilityItemForm(request.POST)
         if form.is_valid():
             mobility_item = form.save(commit=False)
@@ -34,8 +34,8 @@ def mobility_item_create(request, id):
             }, status=400)
 
 
-def mobility_item_delete(request, id):
-    mobility_item = get_object_or_404(MobilityItem, id=id)
+def mobility_item_delete(request, pk):
+    mobility_item = get_object_or_404(MobilityItem, pk=pk)
     mobility_sheet = mobility_item.mobility_sheet
     mobility_item.delete()
     return render(request, 'solicitations/mobilities/_mobility_item.html', {

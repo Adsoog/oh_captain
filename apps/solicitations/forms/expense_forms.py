@@ -9,10 +9,10 @@ class ExpenseItemForm(forms.ModelForm):
             "ruc_or_dni",
             "description",
             "doc_type",
-            "document",
+            "doc",
             "cost_center",
             "amount",
-            "attachment",
+            "file",
         ]
         widgets = {
             "date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
@@ -22,5 +22,5 @@ class ExpenseItemForm(forms.ModelForm):
             "document": forms.TextInput(attrs={"class": "form-control"}),
             "cost_center": forms.Select(attrs={"class": "form-control"}),
             "amount": forms.NumberInput(attrs={"class": "form-control"}),
-            "attachment": forms.ClearableFileInput(attrs={"class": "form-control-file"}),
+            "file": forms.ClearableFileInput(attrs={"class": "form-control-file"}),
         }

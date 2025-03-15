@@ -1,1 +1,96 @@
-expenses
+{% load widget_tweaks %}
+<div id="expense-report" class="w-full mx-auto">
+    <!-- Información General -->
+    <div id="info-report" class="bg-white shadow-md rounded-lg p-6">
+        <table class="w-full text-sm text-gray-700 table-auto">
+            <tbody>
+                <tr>
+                    <td class="py-2 px-4"><strong>Número de Informe:</strong></td>
+                    <td class="py-2 px-4">{{ expense.correlative }}</td>
+                    <td class="py-2 px-4"><strong>Balance:</strong></td>
+                    <td class="py-2 px-4">{{ expense.balance }}</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4"><strong>Total Pedido:</strong></td>
+                    <td class="py-2 px-4">{{ expense.total_requested }}</td>
+                    <td class="py-2 px-4"><strong>Total Items:</strong></td>
+                    <td class="py-2 px-4">{{ expense.total_items }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Detalles del Informe -->
+    <div id="expense-items" class="bg-white shadow-md rounded-lg mt-6">
+        <div class="flex items-center justify-between px-6 py-4 border-b bg-gray-100">
+            <h2 class="font-bold text-green-600">Gastos</h2>
+            <form method="post" enctype="multipart/form-data"
+                  hx-post="{% url 'expense_item_create' expense.id %}"
+                  hx-target="#expense-items"
+                  hx-swap="outerHTML"
+                  class="flex items-center gap-4 w-full ml-6">
+                {% csrf_token %}
+                <input type="hidden" name="expense" value="{{ expense.id }}">
+
+                <div class="flex-1">{{ item_form.date|add_class:"form-control text-sm py-1 px-2 w-full border border-gray-300 rounded-md"|attr:"placeholder: Fecha" }}</div>
+                <div class="flex-1">{{ item_form.ruc_or_dni|add_class:"form-control text-sm py-1 px-2 w-full border border-gray-300 rounded-md"|attr:"placeholder: RUC/DNI" }}</div>
+                <div class="flex-3">{{ item_form.description|add_class:"form-control text-sm py-1 px-2 w-full border border-gray-300 rounded-md"|attr:"placeholder: Descripción" }}</div>
+                <div class="flex-1">{{ item_form.doc_type|add_class:"form-control text-sm py-1 px-2 w-full border border-gray-300 rounded-md"|attr:"placeholder: Tipo Doc" }}</div>
+                <div class="flex-1">{{ item_form.doc|add_class:"form-control text-sm py-1 px-2 w-full border border-gray-300 rounded-md"|attr:"placeholder: Documento" }}</div>
+                <div class="flex-2">{{ item_form.cost_center|add_class:"form-control text-sm py-1 px-2 w-full border border-gray-300 rounded-md"|attr:"placeholder: Centro Costo" }}</div>
+                <div class="flex-1">{{ item_form.amount|add_class:"form-control text-sm py-1 px-2 w-full border border-gray-300 rounded-md"|attr:"placeholder: Monto" }}</div>
+                <div>
+                    <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded-md hover:bg-green-800 text-sm">Añadir</button>
+                </div>
+            </form>
+        </div>
+
+        <table class="w-full text-sm text-gray-700 text-center">
+            <thead class="bg-gray-100 border-b">
+                <tr>
+                    <th class="py-2 px-4">#</th>
+                    <th class="py-2 px-4">Fecha</th>
+                    <th class="py-2 px-4">RUC/DNI</th>
+                    <th class="py-2 px-4">Proveedor</th>
+                    <th class="py-2 px-4">Descripción</th>
+                    <th class="py-2 px-4">Tipo Doc</th>
+                    <th class="py-2 px-4">Documento</th>
+                    <th class="py-2 px-4">Monto</th>
+                    <th class="py-2 px-4">Centro de Costo</th>
+                    <th class="py-2 px-4">Archivo</th>
+                    <th class="py-2 px-4">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="detail-table">
+                {% for item in expense.items.all %}
+                <tr class="border-b hover:bg-gray-50" id="item-{{ item.id }}">
+                    <td class="py-2 px-4">{{ forloop.counter }}</td>
+                    <td class="py-2 px-4">{{ item.date|date:"Y-m-d" }}</td>
+                    <td class="py-2 px-4">{{ item.ruc_or_dni }}</td>
+                    <td class="py-2 px-4">{{ item.provider_name }}</td>
+                    <td class="py-2 px-4">{{ item.description }}</td>
+                    <td class="py-2 px-4">{{ item.get_doc_type_display }}</td>
+                    <td class="py-2 px-4">{{ item.doc }}</td>
+                    <td class="py-2 px-4">{{ item.amount }}</td>
+                    <td class="py-2 px-4">{{ item.cost_center.name }}</td>
+                    <td class="py-2 px-4">
+                        {% if item.file %}
+                            <a href="{{ item.file.url }}" target="_blank" class="text-blue-500 hover:underline">Ver Archivo</a>
+                        {% else %}
+                            No hay archivo
+                        {% endif %}
+                    </td>
+                    <td class="py-2 px-4 flex justify-center space-x-2">
+                        <button type="button" hx-get="{% url 'expense_item_edit' item.id %}" hx-target="#item-{{ item.id }}" hx-swap="outerHTML" class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-700">Editar</button>
+                        <button type="button" hx-post="{% url 'expense_item_delete' item.id %}" hx-target="#item-{{ item.id }}" hx-swap="outerHTML" hx-confirm="¿Estás seguro de eliminar este gasto?" class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-700">Eliminar</button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="10" class="py-2 px-4 text-gray-500">No hay gastos registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
